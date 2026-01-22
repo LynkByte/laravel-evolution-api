@@ -630,3 +630,294 @@ describe('AbstractWebhookHandler', function () {
     });
 
 });
+
+/**
+ * Minimal handler that doesn't override callbacks - to test base class implementations.
+ */
+class MinimalWebhookHandler extends AbstractWebhookHandler
+{
+    public array $handledPayloads = [];
+
+    public function events(): array
+    {
+        return array_map(fn($event) => $event->value, $this->allowedEvents);
+    }
+
+    protected function onWebhookReceived(WebhookPayloadDto $payload): void
+    {
+        $this->handledPayloads[] = $payload;
+    }
+}
+
+describe('AbstractWebhookHandler Base Callbacks', function () {
+    beforeEach(function () {
+        $this->handler = new MinimalWebhookHandler();
+    });
+
+    describe('base class callback methods execute without error', function () {
+        it('handles MESSAGES_UPSERT with base onMessageReceived', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            // This tests that base class empty methods don't throw
+            $this->handler->handle($payload);
+
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles MESSAGES_UPDATE with base onMessageUpdated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'MESSAGES_UPDATE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles SEND_MESSAGE with base onMessageSent', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'SEND_MESSAGE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles MESSAGES_DELETE with base onMessageDeleted', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'MESSAGES_DELETE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles CONNECTION_UPDATE with base onConnectionUpdated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles QRCODE_UPDATED with base onQrCodeReceived', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'QRCODE_UPDATED',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles PRESENCE_UPDATE with base onPresenceUpdated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'PRESENCE_UPDATE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles GROUPS_UPSERT with base onGroupCreated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'GROUPS_UPSERT',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles GROUP_UPDATE with base onGroupUpdated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'GROUP_UPDATE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles GROUP_PARTICIPANTS_UPDATE with base onGroupParticipantsUpdated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'GROUP_PARTICIPANTS_UPDATE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles CONTACTS_UPSERT with base onContactCreated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'CONTACTS_UPSERT',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles CONTACTS_UPDATE with base onContactUpdated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'CONTACTS_UPDATE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles CHATS_UPSERT with base onChatCreated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'CHATS_UPSERT',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles CHATS_UPDATE with base onChatUpdated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'CHATS_UPDATE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles CHATS_DELETE with base onChatDeleted', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'CHATS_DELETE',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles CALL with base onCallReceived', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'CALL',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles LABELS_EDIT with base onLabelsEdited', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'LABELS_EDIT',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles LABELS_ASSOCIATION with base onLabelsAssociated', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'LABELS_ASSOCIATION',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles unknown events with base onUnknownEvent', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'COMPLETELY_UNKNOWN_EVENT',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+
+        it('handles null event with base onUnknownEvent', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            $this->handler->handle($payload);
+            expect($this->handler->handledPayloads)->toHaveCount(1);
+        });
+    });
+
+    describe('shouldHandle with webhookEvent edge cases', function () {
+        it('allows payload when allowedEvents is empty and webhookEvent is UNKNOWN', function () {
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'COMPLETELY_UNKNOWN',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            // webhookEvent will be UNKNOWN, not null
+            expect($this->handler->shouldHandle($payload))->toBeTrue();
+        });
+
+        it('blocks UNKNOWN event when specific events are required', function () {
+            $this->handler->forEvents([WebhookEvent::MESSAGES_UPSERT]);
+
+            $payload = WebhookPayloadDto::fromPayload([
+                'event' => 'COMPLETELY_UNKNOWN',
+                'instance' => 'test',
+                'data' => [],
+            ]);
+
+            // UNKNOWN event is not in allowed events
+            expect($this->handler->shouldHandle($payload))->toBeFalse();
+        });
+
+        it('allows when webhookEvent is null (directly constructed DTO)', function () {
+            // Test the branch where webhookEvent is null
+            // This can happen if DTO is constructed directly without fromPayload
+            $payload = new WebhookPayloadDto(
+                event: 'CUSTOM_EVENT',
+                instanceName: 'test',
+                data: [],
+                webhookEvent: null,
+                apiKey: null,
+                receivedAt: time()
+            );
+
+            $this->handler->forEvents([WebhookEvent::MESSAGES_UPSERT]);
+
+            // When webhookEvent is null, the event filter check is skipped entirely
+            expect($this->handler->shouldHandle($payload))->toBeTrue();
+        });
+    });
+});

@@ -461,6 +461,159 @@ describe('NullCache methods', function () {
     });
 });
 
+describe('NullCache direct method tests', function () {
+    beforeEach(function () {
+        // Create NullCache instance directly via reflection
+        $this->nullCache = new \Lynkbyte\EvolutionApi\Client\NullCache();
+    });
+
+    it('has() returns false', function () {
+        expect($this->nullCache->has('any-key'))->toBeFalse();
+    });
+
+    it('get() returns default value', function () {
+        expect($this->nullCache->get('any-key'))->toBeNull();
+        expect($this->nullCache->get('any-key', 'default-value'))->toBe('default-value');
+    });
+
+    it('pull() returns default value', function () {
+        expect($this->nullCache->pull('any-key'))->toBeNull();
+        expect($this->nullCache->pull('any-key', 'default-value'))->toBe('default-value');
+    });
+
+    it('put() returns true', function () {
+        expect($this->nullCache->put('key', 'value'))->toBeTrue();
+        expect($this->nullCache->put('key', 'value', 60))->toBeTrue();
+    });
+
+    it('add() returns true', function () {
+        expect($this->nullCache->add('key', 'value'))->toBeTrue();
+        expect($this->nullCache->add('key', 'value', 60))->toBeTrue();
+    });
+
+    it('increment() returns 1', function () {
+        expect($this->nullCache->increment('key'))->toBe(1);
+        expect($this->nullCache->increment('key', 5))->toBe(1);
+    });
+
+    it('decrement() returns 0', function () {
+        expect($this->nullCache->decrement('key'))->toBe(0);
+        expect($this->nullCache->decrement('key', 5))->toBe(0);
+    });
+
+    it('forever() returns true', function () {
+        expect($this->nullCache->forever('key', 'value'))->toBeTrue();
+    });
+
+    it('forget() returns true', function () {
+        expect($this->nullCache->forget('key'))->toBeTrue();
+    });
+
+    it('flush() returns true', function () {
+        expect($this->nullCache->flush())->toBeTrue();
+    });
+
+    it('getPrefix() returns empty string', function () {
+        expect($this->nullCache->getPrefix())->toBe('');
+    });
+
+    it('set() returns true', function () {
+        expect($this->nullCache->set('key', 'value'))->toBeTrue();
+        expect($this->nullCache->set('key', 'value', 60))->toBeTrue();
+    });
+
+    it('delete() returns true', function () {
+        expect($this->nullCache->delete('key'))->toBeTrue();
+    });
+
+    it('clear() returns true', function () {
+        expect($this->nullCache->clear())->toBeTrue();
+    });
+
+    it('getMultiple() returns empty array', function () {
+        expect($this->nullCache->getMultiple(['key1', 'key2']))->toBe([]);
+        expect($this->nullCache->getMultiple(['key1', 'key2'], 'default'))->toBe([]);
+    });
+
+    it('setMultiple() returns true', function () {
+        expect($this->nullCache->setMultiple(['key1' => 'value1', 'key2' => 'value2']))->toBeTrue();
+        expect($this->nullCache->setMultiple(['key1' => 'value1'], 60))->toBeTrue();
+    });
+
+    it('deleteMultiple() returns true', function () {
+        expect($this->nullCache->deleteMultiple(['key1', 'key2']))->toBeTrue();
+    });
+
+    it('remember() calls and returns callback result', function () {
+        $result = $this->nullCache->remember('key', 60, fn () => 'computed-value');
+        expect($result)->toBe('computed-value');
+    });
+
+    it('sear() calls and returns callback result', function () {
+        $result = $this->nullCache->sear('key', fn () => 'seared-value');
+        expect($result)->toBe('seared-value');
+    });
+
+    it('rememberForever() calls and returns callback result', function () {
+        $result = $this->nullCache->rememberForever('key', fn () => 'forever-value');
+        expect($result)->toBe('forever-value');
+    });
+
+    it('getStore() returns NullStore implementing Store interface', function () {
+        $store = $this->nullCache->getStore();
+        expect($store)->toBeInstanceOf(\Illuminate\Contracts\Cache\Store::class);
+    });
+});
+
+describe('NullCache Store methods', function () {
+    beforeEach(function () {
+        $nullCache = new \Lynkbyte\EvolutionApi\Client\NullCache();
+        $this->store = $nullCache->getStore();
+    });
+
+    it('get() returns null', function () {
+        expect($this->store->get('any-key'))->toBeNull();
+    });
+
+    it('many() returns empty array', function () {
+        expect($this->store->many(['key1', 'key2']))->toBe([]);
+    });
+
+    it('put() returns true', function () {
+        expect($this->store->put('key', 'value', 60))->toBeTrue();
+    });
+
+    it('putMany() returns true', function () {
+        expect($this->store->putMany(['key1' => 'value1'], 60))->toBeTrue();
+    });
+
+    it('increment() returns 1', function () {
+        expect($this->store->increment('key'))->toBe(1);
+        expect($this->store->increment('key', 5))->toBe(1);
+    });
+
+    it('decrement() returns 0', function () {
+        expect($this->store->decrement('key'))->toBe(0);
+        expect($this->store->decrement('key', 5))->toBe(0);
+    });
+
+    it('forever() returns true', function () {
+        expect($this->store->forever('key', 'value'))->toBeTrue();
+    });
+
+    it('forget() returns true', function () {
+        expect($this->store->forget('key'))->toBeTrue();
+    });
+
+    it('flush() returns true', function () {
+        expect($this->store->flush())->toBeTrue();
+    });
+
+    it('getPrefix() returns empty string', function () {
+        expect($this->store->getPrefix())->toBe('');
+    });
+});
+
 describe('wait() method', function () {
     it('returns true immediately when rate limiting is disabled', function () {
         $cache = new CacheRepository(new ArrayStore);

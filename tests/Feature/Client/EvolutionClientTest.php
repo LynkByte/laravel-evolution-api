@@ -1486,4 +1486,120 @@ describe('EvolutionClient', function () {
         });
     });
 
+    describe('convertRequestException', function () {
+        it('converts RequestException without response to ConnectionException', function () {
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'retry' => ['enabled' => false],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            // Simulate a connection error (no response)
+            Http::fake([
+                'api.evolution.test/*' => function () {
+                    throw new \Illuminate\Http\Client\ConnectionException('Connection refused');
+                },
+            ]);
+
+            expect(fn () => $client->get('/test'))
+                ->toThrow(ConnectionException::class, 'Failed to connect');
+        });
+
+        it('handles connection failures on upload', function () {
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'retry' => ['enabled' => false],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            Http::fake([
+                'api.evolution.test/*' => function () {
+                    throw new \Illuminate\Http\Client\ConnectionException('Upload failed');
+                },
+            ]);
+
+            expect(fn () => $client->upload('/sendMedia/test', [], []))
+                ->toThrow(ConnectionException::class);
+        });
+
+        it('properly handles error responses with instance context', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Rate limited',
+                ], 429, ['Retry-After' => '45']),
+            ]);
+
+            try {
+                $this->client->instance('my-instance')->get('/test');
+                test()->fail('Expected RateLimitException');
+            } catch (RateLimitException $e) {
+                // The createExceptionFromResponse handles this case
+                expect($e->getInstanceName())->toBe('my-instance');
+                expect($e->getRetryAfter())->toBe(45);
+            }
+        });
+
+        it('handles generic throwable during request as ConnectionException', function () {
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'retry' => ['enabled' => false],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            Http::fake([
+                'api.evolution.test/*' => function () {
+                    throw new \RuntimeException('Unexpected error');
+                },
+            ]);
+
+            expect(fn () => $client->get('/test'))
+                ->toThrow(ConnectionException::class, 'Failed to connect');
+        });
+
+        it('rethrows EvolutionApiException without wrapping', function () {
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'retry' => ['enabled' => false],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            Http::fake([
+                'api.evolution.test/*' => function () {
+                    throw new AuthenticationException('Already an auth exception');
+                },
+            ]);
+
+            expect(fn () => $client->get('/test'))
+                ->toThrow(AuthenticationException::class, 'Already an auth exception');
+        });
+    });
+
 });
