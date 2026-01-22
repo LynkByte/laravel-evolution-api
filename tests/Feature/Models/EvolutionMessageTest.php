@@ -277,4 +277,241 @@ describe('EvolutionMessage Model', function () {
         });
     });
 
+    describe('markAsSent', function () {
+        it('updates status to sent and sets sent_at timestamp', function () {
+            $message = EvolutionMessage::create([
+                'message_id' => 'msg-123',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'pending',
+                'content' => 'Hello',
+            ]);
+
+            $result = $message->markAsSent(['id' => 'response-123']);
+
+            expect($result)->toBeTrue();
+            expect($message->status)->toBe('sent');
+            expect($message->sent_at)->not->toBeNull();
+            expect($message->response)->toBe(['id' => 'response-123']);
+
+            // Verify database was updated
+            $message->refresh();
+            expect($message->status)->toBe('sent');
+        });
+
+        it('marks as sent without response', function () {
+            $message = EvolutionMessage::create([
+                'message_id' => 'msg-456',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'pending',
+            ]);
+
+            $result = $message->markAsSent();
+
+            expect($result)->toBeTrue();
+            expect($message->status)->toBe('sent');
+            expect($message->response)->toBe([]);
+        });
+    });
+
+    describe('markAsDelivered', function () {
+        it('updates status to delivered and sets delivered_at timestamp', function () {
+            $message = EvolutionMessage::create([
+                'message_id' => 'msg-789',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'sent',
+            ]);
+
+            $result = $message->markAsDelivered();
+
+            expect($result)->toBeTrue();
+            expect($message->status)->toBe('delivered');
+            expect($message->delivered_at)->not->toBeNull();
+
+            // Verify database was updated
+            $message->refresh();
+            expect($message->status)->toBe('delivered');
+        });
+    });
+
+    describe('markAsRead', function () {
+        it('updates status to read and sets read_at timestamp', function () {
+            $message = EvolutionMessage::create([
+                'message_id' => 'msg-101',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'delivered',
+            ]);
+
+            $result = $message->markAsRead();
+
+            expect($result)->toBeTrue();
+            expect($message->status)->toBe('read');
+            expect($message->read_at)->not->toBeNull();
+
+            // Verify database was updated
+            $message->refresh();
+            expect($message->status)->toBe('read');
+        });
+    });
+
+    describe('markAsFailed', function () {
+        it('updates status to failed and sets error message and failed_at timestamp', function () {
+            $message = EvolutionMessage::create([
+                'message_id' => 'msg-102',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'pending',
+            ]);
+
+            $result = $message->markAsFailed('Connection timeout');
+
+            expect($result)->toBeTrue();
+            expect($message->status)->toBe('failed');
+            expect($message->failed_at)->not->toBeNull();
+            expect($message->error_message)->toBe('Connection timeout');
+
+            // Verify database was updated
+            $message->refresh();
+            expect($message->status)->toBe('failed');
+            expect($message->error_message)->toBe('Connection timeout');
+        });
+    });
+
+    describe('incrementRetry', function () {
+        it('increments retry_count by one', function () {
+            $message = EvolutionMessage::create([
+                'message_id' => 'msg-103',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'failed',
+                'retry_count' => 0,
+            ]);
+
+            $result = $message->incrementRetry();
+
+            expect($result)->toBeTrue();
+            expect($message->retry_count)->toBe(1);
+
+            // Verify database was updated
+            $message->refresh();
+            expect($message->retry_count)->toBe(1);
+        });
+
+        it('increments retry_count multiple times', function () {
+            $message = EvolutionMessage::create([
+                'message_id' => 'msg-104',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'failed',
+                'retry_count' => 2,
+            ]);
+
+            $message->incrementRetry();
+            $message->incrementRetry();
+
+            expect($message->retry_count)->toBe(4);
+        });
+    });
+
+    describe('findByMessageId', function () {
+        it('finds message by message_id and instance_name', function () {
+            EvolutionMessage::create([
+                'message_id' => 'unique-msg-id',
+                'instance_name' => 'test-instance',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'sent',
+            ]);
+
+            $found = EvolutionMessage::findByMessageId('unique-msg-id', 'test-instance');
+
+            expect($found)->not->toBeNull();
+            expect($found->message_id)->toBe('unique-msg-id');
+            expect($found->instance_name)->toBe('test-instance');
+        });
+
+        it('returns null when message does not exist', function () {
+            $found = EvolutionMessage::findByMessageId('nonexistent', 'test-instance');
+
+            expect($found)->toBeNull();
+        });
+
+        it('returns null when instance_name does not match', function () {
+            EvolutionMessage::create([
+                'message_id' => 'another-msg-id',
+                'instance_name' => 'instance-a',
+                'remote_jid' => '5511999999999@s.whatsapp.net',
+                'from_me' => true,
+                'message_type' => 'text',
+                'status' => 'sent',
+            ]);
+
+            $found = EvolutionMessage::findByMessageId('another-msg-id', 'instance-b');
+
+            expect($found)->toBeNull();
+        });
+    });
+
+    describe('isSent with sent_at', function () {
+        it('returns true when sent_at is set even if status is not sent', function () {
+            $message = new EvolutionMessage([
+                'status' => 'pending',
+                'sent_at' => now(),
+            ]);
+
+            expect($message->isSent())->toBeTrue();
+        });
+    });
+
+    describe('isDelivered with delivered_at', function () {
+        it('returns true when delivered_at is set even if status is not delivered', function () {
+            $message = new EvolutionMessage([
+                'status' => 'sent',
+                'delivered_at' => now(),
+            ]);
+
+            expect($message->isDelivered())->toBeTrue();
+        });
+    });
+
+    describe('isRead with read_at', function () {
+        it('returns true when read_at is set even if status is not read', function () {
+            $message = new EvolutionMessage([
+                'status' => 'delivered',
+                'read_at' => now(),
+            ]);
+
+            expect($message->isRead())->toBeTrue();
+        });
+    });
+
+    describe('isFailed with failed_at', function () {
+        it('returns true when failed_at is set even if status is not failed', function () {
+            $message = new EvolutionMessage([
+                'status' => 'pending',
+                'failed_at' => now(),
+            ]);
+
+            expect($message->isFailed())->toBeTrue();
+        });
+    });
+
 });

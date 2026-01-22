@@ -181,6 +181,30 @@ describe('ProcessWebhookJob', function () {
 
             expect($job->backoff)->toBe([10, 30, 60]);
         });
+
+        it('uses configured queue name', function () {
+            config(['evolution-api.queue.queue' => 'custom-queue']);
+            
+            $job = new ProcessWebhookJob(['data' => []]);
+
+            expect($job->queue)->toBe('custom-queue');
+        });
+
+        it('uses default queue name when not configured', function () {
+            config(['evolution-api.queue' => []]);
+            
+            $job = new ProcessWebhookJob(['data' => []]);
+
+            expect($job->queue)->toBe('evolution-api');
+        });
+
+        it('uses configured connection when set', function () {
+            config(['evolution-api.queue.connection' => 'redis']);
+            
+            $job = new ProcessWebhookJob(['data' => []]);
+
+            expect($job->connection)->toBe('redis');
+        });
     });
 
 });

@@ -96,6 +96,30 @@ describe('SyncInstanceStatusJob', function () {
 
             expect($job->tries)->toBe(3);
         });
+
+        it('uses configured queue name', function () {
+            config(['evolution-api.queue.queue' => 'sync-queue']);
+            
+            $job = new SyncInstanceStatusJob;
+
+            expect($job->queue)->toBe('sync-queue');
+        });
+
+        it('uses default queue name when not configured', function () {
+            config(['evolution-api.queue' => []]);
+            
+            $job = new SyncInstanceStatusJob;
+
+            expect($job->queue)->toBe('evolution-api');
+        });
+
+        it('uses configured connection when set', function () {
+            config(['evolution-api.queue.connection' => 'redis']);
+            
+            $job = new SyncInstanceStatusJob;
+
+            expect($job->connection)->toBe('redis');
+        });
     });
 
 });

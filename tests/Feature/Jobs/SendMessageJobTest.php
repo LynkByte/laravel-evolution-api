@@ -142,4 +142,88 @@ describe('SendMessageJob', function () {
         });
     });
 
+    describe('job configuration', function () {
+        it('uses configured queue name', function () {
+            config(['evolution-api.queue.queue' => 'messages-queue']);
+            
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            expect($job->queue)->toBe('messages-queue');
+        });
+
+        it('uses default queue name when not configured', function () {
+            config(['evolution-api.queue' => []]);
+            
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            expect($job->queue)->toBe('evolution-api');
+        });
+
+        it('uses configured connection when set', function () {
+            config(['evolution-api.queue.connection' => 'redis']);
+            
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            expect($job->connection)->toBe('redis');
+        });
+
+        it('sets tries from config', function () {
+            config(['evolution-api.queue.max_exceptions' => 5]);
+            
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            expect($job->tries)->toBe(5);
+            expect($job->maxExceptions)->toBe(5);
+        });
+
+        it('sets backoff from config', function () {
+            config(['evolution-api.queue.backoff' => [30, 60, 120]]);
+            
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            expect($job->backoff)->toBe([30, 60, 120]);
+        });
+    });
+
+    describe('failed', function () {
+        it('dispatches MessageFailed event when job fails after retries', function () {
+            Event::fake();
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            $exception = new \Exception('Final failure');
+            $job->failed($exception);
+
+            Event::assertDispatched(\Lynkbyte\EvolutionApi\Events\MessageFailed::class, function ($event) {
+                return $event->instanceName === 'test-instance'
+                    && $event->messageType === 'text'
+                    && $event->exception->getMessage() === 'Final failure';
+            });
+        });
+    });
+
 });

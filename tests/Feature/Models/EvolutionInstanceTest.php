@@ -196,4 +196,129 @@ describe('EvolutionInstance Model', function () {
         });
     });
 
+    describe('updateStatus', function () {
+        it('updates status and saves', function () {
+            $instance = EvolutionInstance::create([
+                'name' => 'test-status-update',
+                'connection_name' => 'default',
+                'status' => 'disconnected',
+            ]);
+
+            $result = $instance->updateStatus('open');
+
+            expect($result)->toBeTrue();
+            expect($instance->fresh()->status)->toBe('open');
+        });
+
+        it('sets connected_at when transitioning to connected status', function () {
+            $instance = EvolutionInstance::create([
+                'name' => 'test-connected',
+                'connection_name' => 'default',
+                'status' => 'disconnected',
+            ]);
+
+            expect($instance->connected_at)->toBeNull();
+
+            $instance->updateStatus('open');
+
+            expect($instance->fresh()->connected_at)->not->toBeNull();
+        });
+
+        it('sets disconnected_at when transitioning to disconnected status', function () {
+            $instance = EvolutionInstance::create([
+                'name' => 'test-disconnected',
+                'connection_name' => 'default',
+                'status' => 'open',
+            ]);
+
+            expect($instance->disconnected_at)->toBeNull();
+
+            $instance->updateStatus('close');
+
+            expect($instance->fresh()->disconnected_at)->not->toBeNull();
+        });
+
+        it('updates last_seen_at on every status change', function () {
+            $instance = EvolutionInstance::create([
+                'name' => 'test-last-seen',
+                'connection_name' => 'default',
+                'status' => 'disconnected',
+            ]);
+
+            expect($instance->last_seen_at)->toBeNull();
+
+            $instance->updateStatus('qrcode');
+
+            expect($instance->fresh()->last_seen_at)->not->toBeNull();
+        });
+
+        it('does not set connected_at when already connected', function () {
+            $originalConnectedAt = now()->subHour();
+            $instance = EvolutionInstance::create([
+                'name' => 'test-already-connected',
+                'connection_name' => 'default',
+                'status' => 'open',
+                'connected_at' => $originalConnectedAt,
+            ]);
+
+            $instance->updateStatus('connected');
+
+            // connected_at should not change since it was already connected
+            expect($instance->fresh()->connected_at->timestamp)->toBe($originalConnectedAt->timestamp);
+        });
+    });
+
+    describe('findByName', function () {
+        it('finds instance by name', function () {
+            EvolutionInstance::create([
+                'name' => 'findable-instance',
+                'connection_name' => 'default',
+                'status' => 'open',
+            ]);
+
+            $found = EvolutionInstance::findByName('findable-instance');
+
+            expect($found)->not->toBeNull();
+            expect($found->name)->toBe('findable-instance');
+        });
+
+        it('returns null when instance not found', function () {
+            $found = EvolutionInstance::findByName('non-existent');
+
+            expect($found)->toBeNull();
+        });
+    });
+
+    describe('findOrCreateByName', function () {
+        it('finds existing instance', function () {
+            $existing = EvolutionInstance::create([
+                'name' => 'existing-instance',
+                'connection_name' => 'default',
+                'status' => 'open',
+            ]);
+
+            $found = EvolutionInstance::findOrCreateByName('existing-instance');
+
+            expect($found->id)->toBe($existing->id);
+        });
+
+        it('creates new instance when not found', function () {
+            $result = EvolutionInstance::findOrCreateByName('new-instance');
+
+            expect($result->name)->toBe('new-instance');
+            expect($result->status)->toBe('disconnected'); // default status
+            expect($result->exists)->toBeTrue();
+        });
+
+        it('creates new instance with provided attributes', function () {
+            $result = EvolutionInstance::findOrCreateByName('custom-instance', [
+                'connection_name' => 'secondary',
+                'status' => 'open',
+            ]);
+
+            expect($result->connection_name)->toBe('secondary');
+            expect($result->status)->toBe('open');
+        });
+    });
+
 });
