@@ -1,0 +1,5 @@
+{
+    "error": true,
+    "message": "Message send failed: number not registered on WhatsApp",
+    "statusCode": 400
+}

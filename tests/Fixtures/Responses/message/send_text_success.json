@@ -1,0 +1,12 @@
+{
+    "key": {
+        "remoteJid": "5511999999999@s.whatsapp.net",
+        "fromMe": true,
+        "id": "BAE5F2A7C4E12345"
+    },
+    "message": {
+        "conversation": "Hello World!"
+    },
+    "messageTimestamp": 1704067200,
+    "status": "PENDING"
+}

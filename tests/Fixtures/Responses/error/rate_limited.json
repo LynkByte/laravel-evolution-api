@@ -1,0 +1,6 @@
+{
+    "error": true,
+    "message": "Rate limit exceeded. Please retry after 60 seconds.",
+    "statusCode": 429,
+    "retryAfter": 60
+}

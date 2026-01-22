@@ -1,0 +1,23 @@
+{
+    "event": "MESSAGES_UPSERT",
+    "instance": "test-instance",
+    "data": {
+        "key": {
+            "remoteJid": "5511999999999@s.whatsapp.net",
+            "fromMe": false,
+            "id": "BAE5F2A7C4E99999"
+        },
+        "pushName": "John Doe",
+        "message": {
+            "conversation": "Hello, this is a test message!"
+        },
+        "messageType": "conversation",
+        "messageTimestamp": 1704067200,
+        "owner": "test-instance"
+    },
+    "destination": "http://localhost/webhook",
+    "date_time": "2024-01-01 00:00:00",
+    "sender": "5511999999999@s.whatsapp.net",
+    "server_url": "http://localhost:8080",
+    "apikey": "test-api-key"
+}

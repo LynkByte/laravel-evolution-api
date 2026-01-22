@@ -1,0 +1,21 @@
+{
+    "key": {
+        "remoteJid": "5511999999999@s.whatsapp.net",
+        "fromMe": true,
+        "id": "BAE5F2A7C4E67890"
+    },
+    "message": {
+        "imageMessage": {
+            "url": "https://mmg.whatsapp.net/v/t62.7118-24/...",
+            "mimetype": "image/jpeg",
+            "caption": "Check this image!",
+            "fileSha256": "abc123...",
+            "fileLength": 12345,
+            "height": 800,
+            "width": 600,
+            "mediaKey": "xyz789..."
+        }
+    },
+    "messageTimestamp": 1704067200,
+    "status": "PENDING"
+}

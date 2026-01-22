@@ -1,0 +1,14 @@
+{
+    "event": "CONNECTION_UPDATE",
+    "instance": "test-instance",
+    "data": {
+        "instance": "test-instance",
+        "state": "open",
+        "statusReason": 200
+    },
+    "destination": "http://localhost/webhook",
+    "date_time": "2024-01-01 00:00:00",
+    "sender": "Evolution API",
+    "server_url": "http://localhost:8080",
+    "apikey": "test-api-key"
+}

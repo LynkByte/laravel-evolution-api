@@ -1,0 +1,20 @@
+{
+    "key": {
+        "remoteJid": "5511999999999@s.whatsapp.net",
+        "fromMe": true,
+        "id": "BAE5F2A7C4E11111"
+    },
+    "message": {
+        "audioMessage": {
+            "url": "https://mmg.whatsapp.net/v/t62.7118-24/...",
+            "mimetype": "audio/ogg; codecs=opus",
+            "fileSha256": "def456...",
+            "fileLength": 54321,
+            "seconds": 15,
+            "ptt": true,
+            "mediaKey": "abc123..."
+        }
+    },
+    "messageTimestamp": 1704067200,
+    "status": "PENDING"
+}

@@ -1,0 +1,22 @@
+[
+    {
+        "instance": {
+            "instanceName": "test-instance",
+            "instanceId": "inst_abc123",
+            "status": "open",
+            "state": "open",
+            "integration": "WHATSAPP-BAILEYS"
+        },
+        "owner": "5511999999999@s.whatsapp.net"
+    },
+    {
+        "instance": {
+            "instanceName": "secondary-instance",
+            "instanceId": "inst_def456",
+            "status": "close",
+            "state": "close",
+            "integration": "WHATSAPP-BAILEYS"
+        },
+        "owner": null
+    }
+]

@@ -1,0 +1,16 @@
+{
+    "event": "QRCODE_UPDATED",
+    "instance": "test-instance",
+    "data": {
+        "qrcode": {
+            "base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAA...",
+            "code": "2@ABC123XYZ789"
+        },
+        "count": 1
+    },
+    "destination": "http://localhost/webhook",
+    "date_time": "2024-01-01 00:00:00",
+    "sender": "Evolution API",
+    "server_url": "http://localhost:8080",
+    "apikey": "test-api-key"
+}

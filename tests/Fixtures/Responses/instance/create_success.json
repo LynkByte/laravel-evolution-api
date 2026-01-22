@@ -1,0 +1,24 @@
+{
+    "instance": {
+        "instanceName": "test-instance",
+        "instanceId": "inst_abc123def456",
+        "status": "created",
+        "state": "close",
+        "integration": "WHATSAPP-BAILEYS"
+    },
+    "hash": {
+        "apikey": "test-api-key-hash"
+    },
+    "settings": {
+        "reject_call": false,
+        "msg_call": "",
+        "groups_ignore": false,
+        "always_online": false,
+        "read_messages": false,
+        "read_status": false
+    },
+    "qrcode": {
+        "base64": null,
+        "code": null
+    }
+}

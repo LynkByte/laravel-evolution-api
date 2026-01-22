@@ -1,0 +1,14 @@
+{
+    "event": "GROUP_PARTICIPANTS_UPDATE",
+    "instance": "test-instance",
+    "data": {
+        "id": "123456789@g.us",
+        "participants": ["5511999999999@s.whatsapp.net"],
+        "action": "add"
+    },
+    "destination": "http://localhost/webhook",
+    "date_time": "2024-01-01 00:00:00",
+    "sender": "Evolution API",
+    "server_url": "http://localhost:8080",
+    "apikey": "test-api-key"
+}
