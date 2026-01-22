@@ -1,2 +1,1159 @@
 parameters:
-    ignoreErrors: []
+	ignoreErrors:
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Client\\ConnectionManager\:\:getAvailableConnections\(\) should return array\<string\> but returns array\<int\<0, max\>, int\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Client/ConnectionManager.php
+
+		-
+			message: '#^Parameter \$message of class Lynkbyte\\EvolutionApi\\DTOs\\ApiResponse constructor expects string\|null, string\|false\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Client/EvolutionClient.php
+
+		-
+			message: '#^Cannot call method ttl\(\) on class\-string\|object\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Method Illuminate\\Contracts\\Cache\\Store@anonymous/Client/RateLimiter\.php\:435\:\:decrement\(\) never returns bool so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Method Illuminate\\Contracts\\Cache\\Store@anonymous/Client/RateLimiter\.php\:435\:\:increment\(\) never returns bool so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Method Illuminate\\Contracts\\Cache\\Store@anonymous/Client/RateLimiter\.php\:435\:\:many\(\) has parameter \$keys with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Method Illuminate\\Contracts\\Cache\\Store@anonymous/Client/RateLimiter\.php\:435\:\:many\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Method Illuminate\\Contracts\\Cache\\Store@anonymous/Client/RateLimiter\.php\:435\:\:putMany\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Client\\NullCache\:\:pull\(\) has parameter \$key with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Client\\NullCache\:\:setMultiple\(\) has parameter \$values with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Client/RateLimiter.php
+
+		-
+			message: '#^Call to an undefined method Lynkbyte\\EvolutionApi\\DTOs\\ApiResponse\:\:getError\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Console/Commands/HealthCheckCommand.php
+
+		-
+			message: '#^Call to an undefined method Lynkbyte\\EvolutionApi\\DTOs\\ApiResponse\:\:isSuccess\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Console/Commands/HealthCheckCommand.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:connection\(\) expects string, array\|string\|true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/HealthCheckCommand.php
+
+		-
+			message: '#^Part \$connection \(non\-empty\-array\|non\-falsy\-string\|true\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Console/Commands/HealthCheckCommand.php
+
+		-
+			message: '#^Parameter \#1 \$haystack of function str_contains expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/InstallCommand.php
+
+		-
+			message: '#^Call to an undefined method Lynkbyte\\EvolutionApi\\DTOs\\ApiResponse\:\:getError\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: src/Console/Commands/InstanceStatusCommand.php
+
+		-
+			message: '#^Call to an undefined method Lynkbyte\\EvolutionApi\\DTOs\\ApiResponse\:\:isSuccess\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: src/Console/Commands/InstanceStatusCommand.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:updateOrCreate\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Console/Commands/InstanceStatusCommand.php
+
+		-
+			message: '#^Parameter \#1 \$action of method Lynkbyte\\EvolutionApi\\Console\\Commands\\InstanceStatusCommand\:\:invalidAction\(\) expects string, array\|bool\|string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/InstanceStatusCommand.php
+
+		-
+			message: '#^Parameter \#1 \$instanceName of method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:for\(\) expects string, array\|string\|true given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Console/Commands/InstanceStatusCommand.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:connection\(\) expects string, array\|string\|true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/InstanceStatusCommand.php
+
+		-
+			message: '#^Part \$instanceName \(non\-empty\-array\|non\-falsy\-string\|true\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 3
+			path: src/Console/Commands/InstanceStatusCommand.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Console/Commands/PruneOldDataCommand.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Console/Commands/PruneOldDataCommand.php
+
+		-
+			message: '#^Parameter \#2 \$dryRun of method Lynkbyte\\EvolutionApi\\Console\\Commands\\PruneOldDataCommand\:\:pruneMessages\(\) expects bool, array\|bool\|string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/PruneOldDataCommand.php
+
+		-
+			message: '#^Parameter \#2 \$dryRun of method Lynkbyte\\EvolutionApi\\Console\\Commands\\PruneOldDataCommand\:\:pruneWebhooks\(\) expects bool, array\|bool\|string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/PruneOldDataCommand.php
+
+		-
+			message: '#^Call to an undefined method Lynkbyte\\EvolutionApi\\DTOs\\ApiResponse\:\:getError\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Console/Commands/RetryFailedMessagesCommand.php
+
+		-
+			message: '#^Call to an undefined method Lynkbyte\\EvolutionApi\\DTOs\\ApiResponse\:\:isSuccess\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Console/Commands/RetryFailedMessagesCommand.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:retryable\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Console/Commands/RetryFailedMessagesCommand.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendMedia\(\) invoked with 4 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Console/Commands/RetryFailedMessagesCommand.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendText\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Console/Commands/RetryFailedMessagesCommand.php
+
+		-
+			message: '#^Parameter \#1 \$message of method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendMedia\(\) expects array\|Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendMediaMessageDto, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/RetryFailedMessagesCommand.php
+
+		-
+			message: '#^Parameter \#1 \$message of method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendText\(\) expects array\|Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendTextMessageDto, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/RetryFailedMessagesCommand.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: src/DTOs/BaseDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendAudioMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendAudioMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendContactMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendContactMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendListMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendListMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendLocationMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendLocationMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendMediaMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendMediaMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendPollMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendPollMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendReactionMessageDto\:\:__construct\(\) has parameter \$key with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendReactionMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendStatusMessageDto\:\:__construct\(\) has parameter \$statusJidList with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendStatusMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendStickerMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendStickerMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendTemplateMessageDto\:\:__construct\(\) has parameter \$components with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 2
+			path: src/DTOs/Message/SendTemplateMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendTemplateMessageDto\:\:withButtons\(\) has parameter \$buttons with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendTemplateMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendTemplateMessageDto\:\:withHeader\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 3
+			path: src/DTOs/Message/SendTemplateMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendTextMessageDto\:\:__construct\(\) has parameter \$mentioned with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendTextMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\DTOs\\Message\\SendTextMessageDto\:\:__construct\(\) has parameter \$quoted with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DTOs/Message/SendTextMessageDto.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Enums\\MediaType\:\:fromMimeType\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Enums/MediaType.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Client\\ConnectionManager constructor invoked with 3 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/EvolutionApiServiceProvider.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Client\\EvolutionClient constructor invoked with 6 parameters, 1\-3 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/EvolutionApiServiceProvider.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 3
+			path: src/Exceptions/AuthenticationException.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 5
+			path: src/Exceptions/ConnectionException.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: src/Exceptions/EvolutionApiException.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: src/Exceptions/InstanceNotFoundException.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 4
+			path: src/Exceptions/MessageException.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 3
+			path: src/Exceptions/RateLimitException.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 2
+			path: src/Exceptions/ValidationException.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 5
+			path: src/Exceptions/WebhookException.php
+
+		-
+			message: '#^Cannot call method assertMessageContains\(\) on Lynkbyte\\EvolutionApi\\Testing\\Fakes\\EvolutionApiFake\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Cannot call method assertMessageSent\(\) on Lynkbyte\\EvolutionApi\\Testing\\Fakes\\EvolutionApiFake\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Cannot call method assertMessageSentTimes\(\) on Lynkbyte\\EvolutionApi\\Testing\\Fakes\\EvolutionApiFake\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Cannot call method assertNothingSent\(\) on Lynkbyte\\EvolutionApi\\Testing\\Fakes\\EvolutionApiFake\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method connectionState\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method createInstance\(\) parameter \#1 \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method createInstance\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method fake\(\) parameter \#1 \$responses with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method fetchInstances\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method getQrCode\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendAudio\(\) parameter \#4 \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendAudio\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendContact\(\) parameter \#3 \$contact with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendContact\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendList\(\) parameter \#3 \$list with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendList\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendLocation\(\) parameter \#5 \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendLocation\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendMedia\(\) parameter \#3 \$media with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendMedia\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendPoll\(\) parameter \#4 \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendPoll\(\) parameter \#5 \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendPoll\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendReaction\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendText\(\) parameter \#4 \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi has PHPDoc tag @method for method sendText\(\) return type with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Facades\\EvolutionApi\:\:fake\(\) should return Lynkbyte\\EvolutionApi\\Testing\\Fakes\\EvolutionApiFake but returns Lynkbyte\\EvolutionApi\\Testing\\Fakes\\EvolutionApiFake\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Facades/EvolutionApi.php
+
+		-
+			message: '#^Cannot call method error\(\) on Psr\\Log\\LoggerInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Http/Controllers/WebhookController.php
+
+		-
+			message: '#^Cannot call method info\(\) on Psr\\Log\\LoggerInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Http/Controllers/WebhookController.php
+
+		-
+			message: '#^Cannot call method warning\(\) on Psr\\Log\\LoggerInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Http/Controllers/WebhookController.php
+
+		-
+			message: '#^Parameter \#2 \$user_string of function hash_equals expects string, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Http/Middleware/VerifyWebhookSignature.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Events\\WebhookReceived constructor invoked with 1 parameter, 3\-4 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Jobs/ProcessWebhookJob.php
+
+		-
+			message: '#^Parameter \#1 \$instanceName of class Lynkbyte\\EvolutionApi\\Events\\WebhookReceived constructor expects string, Lynkbyte\\EvolutionApi\\DTOs\\Webhook\\WebhookPayloadDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Jobs/ProcessWebhookJob.php
+
+		-
+			message: '#^Parameter \#1 \$payload of method Lynkbyte\\EvolutionApi\\Webhooks\\WebhookProcessor\:\:process\(\) expects array\<string, mixed\>, Lynkbyte\\EvolutionApi\\DTOs\\Webhook\\WebhookPayloadDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Jobs/ProcessWebhookJob.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Jobs\\SyncInstanceStatusJob\:\:syncAllInstances\(\) has parameter \$service with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Jobs/SyncInstanceStatusJob.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Jobs\\SyncInstanceStatusJob\:\:syncInstance\(\) has parameter \$service with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Jobs/SyncInstanceStatusJob.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Logging\\EvolutionApiLogger\:\:maskPhoneNumber\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Logging/EvolutionApiLogger.php
+
+		-
+			message: '#^Parameter \#1 \$data of method Lynkbyte\\EvolutionApi\\Logging\\EvolutionApiLogger\:\:redactSensitive\(\) expects array\<string, mixed\>, array\<int\|string, array\<mixed\>\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Logging/EvolutionApiLogger.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strlen expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Logging/EvolutionApiLogger.php
+
+		-
+			message: '#^Parameter \#1 \$string of function substr expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Logging/EvolutionApiLogger.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Metrics\\MetricsCollector\:\:buildMetricKey\(\) has parameter \$entry with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metrics/MetricsCollector.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Metrics\\MetricsCollector\:\:normalizeEndpoint\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Metrics/MetricsCollector.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function preg_replace expects array\<float\|int\|string\>\|string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Metrics/MetricsCollector.php
+
+		-
+			message: '#^Property Lynkbyte\\EvolutionApi\\Metrics\\MetricsCollector\:\:\$buffer \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Metrics/MetricsCollector.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:firstOrCreate\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Models\\EvolutionContact has PHPDoc tag @property for property \$metadata with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:findOrCreateByJid\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:instance\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:messages\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:messages\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany but returns Illuminate\\Database\\Eloquent\\Builder\<Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeBlocked\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeBlocked\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeBusiness\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeBusiness\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeForInstance\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeForInstance\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeGroups\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeGroups\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeIndividuals\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:scopeIndividuals\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property Lynkbyte\\EvolutionApi\\Models\\EvolutionContact\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Models/EvolutionContact.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:firstOrCreate\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance has PHPDoc tag @property for property \$settings with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance has PHPDoc tag @property for property \$webhook_config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:contacts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:findOrCreateByName\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:messages\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:scopeConnected\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:scopeConnected\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:scopeDisconnected\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:scopeDisconnected\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:scopeForConnection\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:scopeForConnection\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:webhookLogs\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property Lynkbyte\\EvolutionApi\\Models\\EvolutionInstance\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Models/EvolutionInstance.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage has PHPDoc tag @property for property \$media with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage has PHPDoc tag @property for property \$payload with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage has PHPDoc tag @property for property \$response with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:instance\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:markAsSent\(\) has parameter \$response with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeFailed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeFailed\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeForInstance\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeForInstance\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeIncoming\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeIncoming\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeOutgoing\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeOutgoing\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopePending\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopePending\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeRetryable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeRetryable\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeWithStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:scopeWithStatus\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property Lynkbyte\\EvolutionApi\\Models\\EvolutionMessage\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Models/EvolutionMessage.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Call to an undefined static method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Class Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog has PHPDoc tag @property for property \$payload with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:instance\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeFailed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeFailed\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeForEvent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeForEvent\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeForInstance\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeForInstance\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeSuccessful\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:scopeSuccessful\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property Lynkbyte\\EvolutionApi\\Models\\EvolutionWebhookLog\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Models/EvolutionWebhookLog.php
+
+		-
+			message: '#^Parameter \#1 \$instanceName of method Lynkbyte\\EvolutionApi\\Client\\EvolutionClient\:\:instance\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 13
+			path: src/Resources/Instance.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendAudio\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendContact\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendList\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendLocation\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendMedia\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendPoll\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendReaction\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendStatus\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendSticker\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendTemplate\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Message\:\:sendText\(\) has parameter \$message with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Message.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Resource\:\:formatPhoneNumber\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Resources/Resource.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Resources\\Webhook\:\:enable\(\) has parameter \$events with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Resources/Webhook.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:chats\(\) should return Lynkbyte\\EvolutionApi\\Resources\\Chat but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:groups\(\) should return Lynkbyte\\EvolutionApi\\Resources\\Group but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:instances\(\) should return Lynkbyte\\EvolutionApi\\Resources\\Instance but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:messages\(\) should return Lynkbyte\\EvolutionApi\\Resources\\Message but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:profile\(\) should return Lynkbyte\\EvolutionApi\\Resources\\Profile but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:settings\(\) should return Lynkbyte\\EvolutionApi\\Resources\\Settings but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^Method Lynkbyte\\EvolutionApi\\Services\\EvolutionService\:\:webhooks\(\) should return Lynkbyte\\EvolutionApi\\Resources\\Webhook but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^PHPDoc tag @return with type T is not subtype of native type object\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Services/EvolutionService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Webhooks/WebhookProcessor.php
