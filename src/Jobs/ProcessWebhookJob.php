@@ -59,13 +59,18 @@ class ProcessWebhookJob implements ShouldQueue
      */
     public function handle(WebhookProcessor $processor): void
     {
-        $dto = WebhookPayloadDto::fromArray($this->payload);
+        $dto = WebhookPayloadDto::fromPayload($this->payload);
 
         // Dispatch event for listeners
-        event(new WebhookReceived($dto));
+        event(new WebhookReceived(
+            instanceName: $dto->instanceName,
+            event: $dto->event,
+            payload: $dto->data,
+            webhookEvent: $dto->webhookEvent
+        ));
 
         // Process through the webhook processor
-        $processor->process($dto);
+        $processor->process($this->payload);
     }
 
     /**

@@ -602,6 +602,888 @@ describe('EvolutionClient', function () {
 
             expect($result)->toBe($this->client);
         });
+
+        it('logs requests when logger is set', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $this->client->setLogger($logger);
+            $this->client->get('/test');
+
+            // Should have logged request and response
+            expect(count($logger->logs))->toBeGreaterThanOrEqual(2);
+            expect($logger->logs[0][1])->toBe('Evolution API Request');
+            expect($logger->logs[1][1])->toBe('Evolution API Response');
+        });
+
+        it('logs error responses with error level', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['error' => 'Bad request'], 400),
+            ]);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $this->client->setLogger($logger);
+            $this->client->withoutThrowing()->get('/test');
+
+            // Response should be logged as error
+            $responseLogs = array_filter($logger->logs, fn ($log) => $log[1] === 'Evolution API Response');
+            $responseLog = array_values($responseLogs)[0];
+            expect($responseLog[0])->toBe('error');
+        });
+
+        it('respects log_requests config', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'logging' => [
+                    'log_requests' => false,
+                    'log_responses' => true,
+                ],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $client->setLogger($logger);
+            $client->get('/test');
+
+            // Should only have response log, not request log
+            $requestLogs = array_filter($logger->logs, fn ($log) => $log[1] === 'Evolution API Request');
+            expect(count($requestLogs))->toBe(0);
+        });
+
+        it('respects log_responses config', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'logging' => [
+                    'log_requests' => true,
+                    'log_responses' => false,
+                ],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $client->setLogger($logger);
+            $client->get('/test');
+
+            // Should only have request log, not response log
+            $responseLogs = array_filter($logger->logs, fn ($log) => $log[1] === 'Evolution API Response');
+            expect(count($responseLogs))->toBe(0);
+        });
+
+        it('redacts sensitive fields when configured', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $this->client->setLogger($logger);
+            $this->client->post('/test', ['token' => 'secret-token', 'data' => 'value']);
+
+            $requestLogs = array_filter($logger->logs, fn ($log) => $log[1] === 'Evolution API Request');
+            $requestLog = array_values($requestLogs)[0];
+
+            // Token should be redacted
+            expect($requestLog[2]['options']['json']['token'])->toBe('[REDACTED]');
+            expect($requestLog[2]['options']['json']['data'])->toBe('value');
+        });
+
+        it('does not redact when redact_sensitive is disabled', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'logging' => [
+                    'log_requests' => true,
+                    'log_responses' => true,
+                    'redact_sensitive' => false,
+                    'sensitive_fields' => ['token'],
+                ],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $client->setLogger($logger);
+            $client->post('/test', ['token' => 'secret-token']);
+
+            $requestLogs = array_filter($logger->logs, fn ($log) => $log[1] === 'Evolution API Request');
+            $requestLog = array_values($requestLogs)[0];
+
+            // Token should NOT be redacted
+            expect($requestLog[2]['options']['json']['token'])->toBe('secret-token');
+        });
+
+        it('includes instance name in logs when set', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $this->client->setLogger($logger);
+            $this->client->instance('my-instance')->get('/test');
+
+            $requestLogs = array_filter($logger->logs, fn ($log) => $log[1] === 'Evolution API Request');
+            $requestLog = array_values($requestLogs)[0];
+
+            expect($requestLog[2]['instance'])->toBe('my-instance');
+        });
+    });
+
+    describe('rate limit type detection', function () {
+        it('detects media endpoints', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $cache = new CacheRepository(new ArrayStore);
+            $rateLimiter = new RateLimiter($cache, [
+                'enabled' => true,
+                'on_limit_reached' => 'skip',
+                'limits' => [
+                    'media' => ['max_attempts' => 5, 'decay_seconds' => 60],
+                ],
+            ]);
+
+            $client = new EvolutionClient($this->connectionManager, $rateLimiter);
+
+            // Make requests to media endpoints
+            $client->post('/sendMedia/test', []);
+            $client->post('/sendImage/test', []);
+            $client->post('/sendVideo/test', []);
+            $client->post('/sendAudio/test', []);
+            $client->post('/sendDocument/test', []);
+
+            // Should have used media rate limit (5 attempts)
+            expect($rateLimiter->remaining('default', 'media'))->toBe(0);
+        });
+
+        it('detects message endpoints', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $cache = new CacheRepository(new ArrayStore);
+            $rateLimiter = new RateLimiter($cache, [
+                'enabled' => true,
+                'on_limit_reached' => 'skip',
+                'limits' => [
+                    'messages' => ['max_attempts' => 3, 'decay_seconds' => 60],
+                ],
+            ]);
+
+            $client = new EvolutionClient($this->connectionManager, $rateLimiter);
+
+            // Make requests to message endpoints
+            $client->post('/send/test', []);
+            $client->post('/message/send/test', []);
+            $client->post('/sendText/test', []);
+
+            // Should have used messages rate limit (3 attempts)
+            expect($rateLimiter->remaining('default', 'messages'))->toBe(0);
+        });
+
+        it('uses default rate limit for other endpoints', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $cache = new CacheRepository(new ArrayStore);
+            $rateLimiter = new RateLimiter($cache, [
+                'enabled' => true,
+                'on_limit_reached' => 'skip',
+                'limits' => [
+                    'default' => ['max_attempts' => 2, 'decay_seconds' => 60],
+                ],
+            ]);
+
+            $client = new EvolutionClient($this->connectionManager, $rateLimiter);
+
+            // Make requests to non-media/message endpoints
+            $client->get('/instance/list');
+            $client->get('/settings/test');
+
+            // Should have used default rate limit (2 attempts)
+            expect($rateLimiter->remaining('default', 'default'))->toBe(0);
+        });
+
+        it('includes instance in rate limit key when set', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $cache = new CacheRepository(new ArrayStore);
+            $rateLimiter = new RateLimiter($cache, [
+                'enabled' => true,
+                'limits' => [
+                    'default' => ['max_attempts' => 60, 'decay_seconds' => 60],
+                ],
+            ]);
+
+            $client = new EvolutionClient($this->connectionManager, $rateLimiter);
+
+            // Make request without instance
+            $client->get('/test');
+            expect($rateLimiter->remaining('default', 'default'))->toBe(59);
+
+            // Make request with instance
+            $client->instance('my-instance')->get('/test');
+            expect($rateLimiter->remaining('default:my-instance', 'default'))->toBe(59);
+        });
+    });
+
+    describe('rate limit throws exception', function () {
+        it('throws RateLimitException when rate limiter is configured to throw', function () {
+            $cache = new CacheRepository(new ArrayStore);
+            $rateLimiter = new RateLimiter($cache, [
+                'enabled' => true,
+                'on_limit_reached' => 'throw',
+                'limits' => [
+                    'default' => ['max_attempts' => 1, 'decay_seconds' => 60],
+                ],
+            ]);
+
+            $client = new EvolutionClient($this->connectionManager, $rateLimiter);
+
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            // First request should succeed
+            $client->get('/test');
+
+            // Second request should throw rate limit exception
+            expect(fn () => $client->get('/test'))
+                ->toThrow(RateLimitException::class);
+        });
+    });
+
+    describe('upload error handling', function () {
+        it('throws AuthenticationException on upload 401', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Invalid API key',
+                ], 401),
+            ]);
+
+            expect(fn () => $this->client->upload('/sendMedia/test', [], []))
+                ->toThrow(AuthenticationException::class);
+        });
+
+        it('throws InstanceNotFoundException on upload 404', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Instance not found',
+                ], 404),
+            ]);
+
+            expect(fn () => $this->client->upload('/sendMedia/test', [], []))
+                ->toThrow(InstanceNotFoundException::class);
+        });
+
+        it('throws RateLimitException on upload 429', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Too many requests',
+                ], 429, ['Retry-After' => '60']),
+            ]);
+
+            expect(fn () => $this->client->upload('/sendMedia/test', [], []))
+                ->toThrow(RateLimitException::class);
+        });
+
+        it('throws ConnectionException on upload connection failure', function () {
+            Http::fake([
+                'api.evolution.test/*' => function () {
+                    throw new \Illuminate\Http\Client\ConnectionException('Connection refused');
+                },
+            ]);
+
+            expect(fn () => $this->client->upload('/sendMedia/test', [], []))
+                ->toThrow(ConnectionException::class);
+        });
+
+        it('can disable throwing on upload errors', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['error' => 'Bad request'], 400),
+            ]);
+
+            $response = $this->client
+                ->throwOnError(false)
+                ->upload('/sendMedia/test', [], []);
+
+            expect($response->isSuccessful())->toBeFalse();
+            expect($response->statusCode)->toBe(400);
+        });
+
+        it('uploads multiple files', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $response = $this->client->upload(
+                '/sendMedia/test',
+                ['number' => '5511999999999', 'caption' => 'Multiple files'],
+                [
+                    ['name' => 'file1', 'contents' => 'content1', 'filename' => 'file1.jpg'],
+                    ['name' => 'file2', 'contents' => 'content2', 'filename' => 'file2.jpg'],
+                ]
+            );
+
+            expect($response->isSuccessful())->toBeTrue();
+        });
+
+        it('uploads file without filename', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $response = $this->client->upload(
+                '/sendMedia/test',
+                [],
+                [
+                    ['name' => 'file', 'contents' => 'content'],
+                ]
+            );
+
+            expect($response->isSuccessful())->toBeTrue();
+        });
+
+        it('rethrows EvolutionApiException during upload', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Server error',
+                ], 500),
+            ]);
+
+            expect(fn () => $this->client->upload('/sendMedia/test', [], []))
+                ->toThrow(EvolutionApiException::class);
+        });
+    });
+
+    describe('SSL verification', function () {
+        it('disables SSL verification when configured', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'http' => [
+                    'verify_ssl' => false,
+                ],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            $response = $client->get('/test');
+
+            expect($response->isSuccessful())->toBeTrue();
+        });
+    });
+
+    describe('API response message handling', function () {
+        it('extracts message from response', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Operation successful',
+                ], 200),
+            ]);
+
+            $response = $this->client->get('/test');
+
+            expect($response->message)->toBe('Operation successful');
+        });
+
+        it('converts non-string message to JSON', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => ['error' => 'details'],
+                ], 200),
+            ]);
+
+            $response = $this->client->get('/test');
+
+            expect($response->message)->toBe('{"error":"details"}');
+        });
+
+        it('uses reason phrase for error responses without message', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'data' => [],
+                ], 400),
+            ]);
+
+            $response = $this->client->withoutThrowing()->get('/test');
+
+            expect($response->message)->toBe('Bad Request');
+        });
+    });
+
+    describe('exception details', function () {
+        it('includes instance name in exceptions', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Instance not found',
+                ], 404),
+            ]);
+
+            try {
+                $this->client->instance('my-instance')->get('/test');
+                $this->fail('Expected InstanceNotFoundException');
+            } catch (InstanceNotFoundException $e) {
+                expect($e->getInstanceName())->toBe('my-instance');
+            }
+        });
+
+        it('includes retry after in rate limit exception', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Rate limited',
+                ], 429, ['Retry-After' => '30']),
+            ]);
+
+            try {
+                $this->client->get('/test');
+                $this->fail('Expected RateLimitException');
+            } catch (RateLimitException $e) {
+                expect($e->getRetryAfter())->toBe(30);
+            }
+        });
+
+        it('handles error response status code in exception', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'message' => 'Server error',
+                ], 503),
+            ]);
+
+            try {
+                $this->client->get('/test');
+                $this->fail('Expected EvolutionApiException');
+            } catch (EvolutionApiException $e) {
+                expect($e->getStatusCode())->toBe(503);
+            }
+        });
+    });
+
+    describe('retry logic', function () {
+        it('retries on retryable status codes', function () {
+            $attempts = 0;
+
+            Http::fake([
+                'api.evolution.test/*' => function () use (&$attempts) {
+                    $attempts++;
+                    if ($attempts < 3) {
+                        return Http::response(['error' => 'Server error'], 503);
+                    }
+
+                    return Http::response(['ok' => true], 200);
+                },
+            ]);
+
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'retry' => [
+                    'enabled' => true,
+                    'max_attempts' => 3,
+                    'base_delay' => 10, // 10ms for fast test
+                    'retryable_status_codes' => [503],
+                ],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            $response = $client->get('/test');
+
+            expect($response->isSuccessful())->toBeTrue();
+            expect($attempts)->toBe(3);
+        });
     });
 
 });

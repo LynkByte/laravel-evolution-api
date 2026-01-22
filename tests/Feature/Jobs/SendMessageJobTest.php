@@ -5,7 +5,13 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
+use Lynkbyte\EvolutionApi\DTOs\ApiResponse;
+use Lynkbyte\EvolutionApi\Events\MessageFailed;
+use Lynkbyte\EvolutionApi\Events\MessageSent;
+use Lynkbyte\EvolutionApi\Facades\EvolutionApi;
 use Lynkbyte\EvolutionApi\Jobs\SendMessageJob;
+use Lynkbyte\EvolutionApi\Resources\Message;
+use Lynkbyte\EvolutionApi\Services\EvolutionService;
 
 describe('SendMessageJob', function () {
 
@@ -13,6 +19,11 @@ describe('SendMessageJob', function () {
         Http::preventStrayRequests();
         Event::fake();
         Queue::fake();
+    });
+
+    afterEach(function () {
+        // Clean up mocks
+        Mockery::close();
     });
 
     describe('constructor', function () {
@@ -222,6 +233,304 @@ describe('SendMessageJob', function () {
                 return $event->instanceName === 'test-instance'
                     && $event->messageType === 'text'
                     && $event->exception->getMessage() === 'Final failure';
+            });
+        });
+    });
+
+    describe('handle', function () {
+        it('sends text message successfully', function () {
+            Event::fake();
+
+            $mockResponse = new ApiResponse(
+                success: true,
+                statusCode: 200,
+                data: ['key' => ['id' => 'MSG123']],
+                message: 'Message sent'
+            );
+
+            $mockMessage = Mockery::mock(Message::class);
+            $mockMessage->shouldReceive('sendText')
+                ->once()
+                ->andReturn($mockResponse);
+
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('messages')
+                ->once()
+                ->andReturn($mockMessage);
+
+            // Swap the facade with our mock
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            $job->handle();
+
+            Event::assertDispatched(MessageSent::class, function ($event) {
+                return $event->instanceName === 'test-instance'
+                    && $event->messageType === 'text';
+            });
+        });
+
+        it('sends media message successfully', function () {
+            Event::fake();
+
+            $mockResponse = new ApiResponse(
+                success: true,
+                statusCode: 200,
+                data: ['key' => ['id' => 'MSG456']],
+                message: 'Media sent'
+            );
+
+            $mockMessage = Mockery::mock(Message::class);
+            $mockMessage->shouldReceive('sendMedia')
+                ->once()
+                ->andReturn($mockResponse);
+
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('messages')
+                ->once()
+                ->andReturn($mockMessage);
+
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'media',
+                message: ['number' => '5511999999999', 'mediatype' => 'image', 'media' => 'https://example.com/image.jpg']
+            );
+
+            $job->handle();
+
+            Event::assertDispatched(MessageSent::class, function ($event) {
+                return $event->messageType === 'media';
+            });
+        });
+
+        it('sends audio message successfully', function () {
+            Event::fake();
+
+            $mockResponse = new ApiResponse(
+                success: true,
+                statusCode: 200,
+                data: ['key' => ['id' => 'MSG789']],
+                message: 'Audio sent'
+            );
+
+            $mockMessage = Mockery::mock(Message::class);
+            $mockMessage->shouldReceive('sendAudio')
+                ->once()
+                ->andReturn($mockResponse);
+
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('messages')
+                ->once()
+                ->andReturn($mockMessage);
+
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'audio',
+                message: ['number' => '5511999999999', 'audio' => 'https://example.com/audio.mp3']
+            );
+
+            $job->handle();
+
+            Event::assertDispatched(MessageSent::class, function ($event) {
+                return $event->messageType === 'audio';
+            });
+        });
+
+        it('sends location message successfully', function () {
+            Event::fake();
+
+            $mockResponse = new ApiResponse(
+                success: true,
+                statusCode: 200,
+                data: ['key' => ['id' => 'MSG101']],
+                message: 'Location sent'
+            );
+
+            $mockMessage = Mockery::mock(Message::class);
+            $mockMessage->shouldReceive('sendLocation')
+                ->once()
+                ->andReturn($mockResponse);
+
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('messages')
+                ->once()
+                ->andReturn($mockMessage);
+
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'location',
+                message: ['number' => '5511999999999', 'latitude' => -23.5505, 'longitude' => -46.6333]
+            );
+
+            $job->handle();
+
+            Event::assertDispatched(MessageSent::class, function ($event) {
+                return $event->messageType === 'location';
+            });
+        });
+
+        it('uses connection when provided', function () {
+            Event::fake();
+
+            $mockResponse = new ApiResponse(
+                success: true,
+                statusCode: 200,
+                data: ['key' => ['id' => 'MSG123']],
+                message: 'Message sent'
+            );
+
+            $mockMessage = Mockery::mock(Message::class);
+            $mockMessage->shouldReceive('sendText')
+                ->once()
+                ->andReturn($mockResponse);
+
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('connection')
+                ->with('secondary')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('messages')
+                ->once()
+                ->andReturn($mockMessage);
+
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello'],
+                connectionName: 'secondary'
+            );
+
+            $job->handle();
+
+            Event::assertDispatched(MessageSent::class);
+        });
+
+        it('dispatches MessageFailed event when response is not successful', function () {
+            Event::fake();
+
+            $mockResponse = new ApiResponse(
+                success: false,
+                statusCode: 400,
+                data: ['error' => 'Bad request'],
+                message: 'Invalid number format'
+            );
+
+            $mockMessage = Mockery::mock(Message::class);
+            $mockMessage->shouldReceive('sendText')
+                ->once()
+                ->andReturn($mockResponse);
+
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('messages')
+                ->once()
+                ->andReturn($mockMessage);
+
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => 'invalid', 'text' => 'Hello']
+            );
+
+            $job->handle();
+
+            Event::assertDispatched(MessageFailed::class, function ($event) {
+                return $event->instanceName === 'test-instance'
+                    && str_contains($event->exception->getMessage(), 'Invalid number format');
+            });
+        });
+
+        it('throws exception for unknown message type', function () {
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'unknown',
+                message: ['number' => '5511999999999']
+            );
+
+            expect(fn () => $job->handle())
+                ->toThrow(\InvalidArgumentException::class, 'Unknown message type: unknown');
+        });
+
+        it('rethrows exception and dispatches MessageFailed event', function () {
+            Event::fake();
+
+            $mockMessage = Mockery::mock(Message::class);
+            $mockMessage->shouldReceive('sendText')
+                ->once()
+                ->andThrow(new \RuntimeException('API Error'));
+
+            $mockService = Mockery::mock(EvolutionService::class);
+            $mockService->shouldReceive('for')
+                ->with('test-instance')
+                ->once()
+                ->andReturnSelf();
+            $mockService->shouldReceive('messages')
+                ->once()
+                ->andReturn($mockMessage);
+
+            EvolutionApi::swap($mockService);
+
+            $job = new SendMessageJob(
+                instanceName: 'test-instance',
+                messageType: 'text',
+                message: ['number' => '5511999999999', 'text' => 'Hello']
+            );
+
+            try {
+                $job->handle();
+                $this->fail('Expected exception was not thrown');
+            } catch (\RuntimeException $e) {
+                expect($e->getMessage())->toBe('API Error');
+            }
+
+            Event::assertDispatched(MessageFailed::class, function ($event) {
+                return $event->exception->getMessage() === 'API Error';
             });
         });
     });

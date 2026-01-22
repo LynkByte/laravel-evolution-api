@@ -77,7 +77,7 @@ class SyncInstanceStatusJob implements ShouldQueue
 
             event(new InstanceStatusChanged(
                 instanceName: $instanceName,
-                status: $state,
+                status: \Lynkbyte\EvolutionApi\Enums\InstanceStatus::fromString($state),
                 previousStatus: null, // Could cache previous status
                 data: $response->getData()
             ));

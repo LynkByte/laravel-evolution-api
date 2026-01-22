@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
+use Lynkbyte\EvolutionApi\Events\WebhookReceived;
 use Lynkbyte\EvolutionApi\Jobs\ProcessWebhookJob;
+use Lynkbyte\EvolutionApi\Enums\WebhookEvent;
+use Lynkbyte\EvolutionApi\Webhooks\WebhookProcessor;
 
 describe('ProcessWebhookJob', function () {
 
     beforeEach(function () {
         Event::fake();
         Queue::fake();
+    });
+
+    afterEach(function () {
+        Mockery::close();
     });
 
     describe('constructor', function () {
@@ -204,6 +211,208 @@ describe('ProcessWebhookJob', function () {
             $job = new ProcessWebhookJob(['data' => []]);
 
             expect($job->connection)->toBe('redis');
+        });
+    });
+
+    describe('handle', function () {
+        it('dispatches WebhookReceived event', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => ['key' => ['id' => 'msg-123']],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->instanceName === 'test-instance'
+                    && $event->event === 'MESSAGES_UPSERT';
+            });
+        });
+
+        it('calls processor with the raw payload', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'my-instance',
+                'data' => ['state' => 'open'],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            // Test passes if no exception and mock expectations are met
+            expect(true)->toBeTrue();
+        });
+
+        it('handles MESSAGE_UPSERT webhook', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['conversation' => 'Hello'],
+                ],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->event === 'MESSAGES_UPSERT';
+            });
+        });
+
+        it('handles CONNECTION_UPDATE webhook', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'open'],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->event === 'CONNECTION_UPDATE';
+            });
+        });
+
+        it('handles QRCODE_UPDATED webhook', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'QRCODE_UPDATED',
+                'instance' => 'test-instance',
+                'data' => ['qrcode' => ['base64' => 'data:image/png;base64,...']],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->event === 'QRCODE_UPDATED';
+            });
+        });
+
+        it('handles webhook with instanceName field', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'MESSAGES_UPDATE',
+                'instanceName' => 'other-instance',
+                'data' => ['status' => 3],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->instanceName === 'other-instance';
+            });
+        });
+
+        it('handles webhook with unknown event', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'CUSTOM_EVENT',
+                'instance' => 'test-instance',
+                'data' => ['custom' => 'data'],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->event === 'CUSTOM_EVENT'
+                    && $event->webhookEvent === WebhookEvent::UNKNOWN;
+            });
+        });
+
+        it('handles webhook with missing event field', function () {
+            Event::fake();
+
+            $payload = [
+                'instance' => 'test-instance',
+                'data' => ['key' => 'value'],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->event === 'UNKNOWN';
+            });
+        });
+
+        it('handles webhook with missing instance field', function () {
+            Event::fake();
+
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'data' => ['key' => 'value'],
+            ];
+
+            $mockProcessor = Mockery::mock(WebhookProcessor::class);
+            $mockProcessor->shouldReceive('process')
+                ->with($payload)
+                ->once();
+
+            $job = new ProcessWebhookJob($payload);
+            $job->handle($mockProcessor);
+
+            Event::assertDispatched(WebhookReceived::class, function ($event) {
+                return $event->instanceName === 'unknown';
+            });
         });
     });
 
