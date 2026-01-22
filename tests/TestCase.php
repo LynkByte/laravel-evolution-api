@@ -80,10 +80,18 @@ abstract class TestCase extends Orchestra
             'prefix' => '',
         ]);
 
+        // Cache configuration for testing
+        $app['config']->set('cache.default', 'array');
+        $app['config']->set('cache.stores.array', [
+            'driver' => 'array',
+            'serialize' => false,
+        ]);
+
         // Evolution API specific configs
         $app['config']->set('evolution-api.database.enabled', true);
         $app['config']->set('evolution-api.queue.enabled', false);
         $app['config']->set('evolution-api.rate_limiting.enabled', true);
+        $app['config']->set('evolution-api.rate_limiting.driver', 'array');
         $app['config']->set('evolution-api.logging.enabled', false);
         $app['config']->set('evolution-api.metrics.enabled', false);
         $app['config']->set('evolution-api.webhook.enabled', true);

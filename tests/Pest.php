@@ -18,7 +18,7 @@ pest()->extend(TestCase::class)
     ->in('Feature/Models', 'Feature/Console/Commands');
 
 pest()->extend(TestCase::class)
-    ->in('Feature/Client', 'Feature/Resources', 'Feature/Services', 'Feature/Webhooks', 'Feature/Jobs');
+    ->in('Feature/Client', 'Feature/Resources', 'Feature/Services', 'Feature/Webhooks', 'Feature/Jobs', 'Feature/ServiceProvider');
 
 /*
 |--------------------------------------------------------------------------
