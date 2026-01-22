@@ -12,7 +12,7 @@ class QrCodeReceived extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $data The raw QR code data from webhook
+     * @param  array<string, mixed>  $data  The raw QR code data from webhook
      */
     public function __construct(
         string $instanceName,
@@ -76,7 +76,7 @@ class QrCodeReceived extends BaseEvent
 
         // If it's base64 image data, wrap it
         if (preg_match('/^[A-Za-z0-9+\/=]+$/', $this->qrCode)) {
-            return 'data:image/png;base64,' . $this->qrCode;
+            return 'data:image/png;base64,'.$this->qrCode;
         }
 
         // Return the raw QR string (for QR code generation libraries)

@@ -17,7 +17,7 @@ class Webhook extends Resource
     /**
      * Set webhook configuration for an instance.
      *
-     * @param array<string>|null $events Array of webhook events to subscribe to
+     * @param  array<string>|null  $events  Array of webhook events to subscribe to
      */
     public function set(
         string $url,
@@ -36,7 +36,7 @@ class Webhook extends Resource
             'webhookByEvents' => $webhookByEvents,
         ]);
 
-        return $this->post("webhook/set/{instance}", $data);
+        return $this->post('webhook/set/{instance}', $data);
     }
 
     /**
@@ -46,7 +46,7 @@ class Webhook extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("webhook/find/{instance}");
+        return $this->get('webhook/find/{instance}');
     }
 
     /**
@@ -80,7 +80,7 @@ class Webhook extends Resource
     /**
      * Subscribe to specific events.
      *
-     * @param array<string|WebhookEvent> $events
+     * @param  array<string|WebhookEvent>  $events
      */
     public function subscribeToEvents(array $events, ?string $url = null): ApiResponse
     {

@@ -14,7 +14,7 @@ abstract class BaseDto implements JsonSerializable
     /**
      * Create a new DTO instance.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public static function make(array $data = []): static
     {
@@ -24,7 +24,7 @@ abstract class BaseDto implements JsonSerializable
     /**
      * Create a DTO from an array.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public static function fromArray(array $data): static
     {
@@ -80,7 +80,8 @@ abstract class BaseDto implements JsonSerializable
     /**
      * Validate required fields.
      *
-     * @param array<string> $fields
+     * @param  array<string>  $fields
+     *
      * @throws \InvalidArgumentException
      */
     protected function validateRequired(array $fields): void

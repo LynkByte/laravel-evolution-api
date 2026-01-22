@@ -13,7 +13,7 @@ use Lynkbyte\EvolutionApi\Http\Middleware\VerifyWebhookSignature;
 |
 | These routes handle incoming webhooks from Evolution API.
 | Configure the webhook URL in Evolution API to point to:
-| 
+|
 | POST {your-app-url}/api/evolution-api/webhook
 |
 | Or for instance-specific webhooks:
@@ -25,10 +25,10 @@ use Lynkbyte\EvolutionApi\Http\Middleware\VerifyWebhookSignature;
 Route::prefix(config('evolution-api.webhook.path', 'api/evolution-api'))
     ->middleware(config('evolution-api.webhook.middleware', ['api']))
     ->group(function () {
-        
+
         // Apply webhook signature verification middleware
         Route::middleware([VerifyWebhookSignature::class])->group(function () {
-            
+
             // Main webhook endpoint
             Route::post('/webhook', [WebhookController::class, 'handle'])
                 ->name('evolution-api.webhook');

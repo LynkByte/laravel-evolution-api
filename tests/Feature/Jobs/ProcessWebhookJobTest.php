@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
-use Lynkbyte\EvolutionApi\DTOs\Webhook\WebhookPayloadDto;
-use Lynkbyte\EvolutionApi\Events\WebhookReceived;
 use Lynkbyte\EvolutionApi\Jobs\ProcessWebhookJob;
 
 describe('ProcessWebhookJob', function () {
@@ -162,7 +160,7 @@ describe('ProcessWebhookJob', function () {
             ];
 
             $job = ProcessWebhookJob::fromWebhook($data);
-            
+
             // Test that the job was created correctly
             expect($job)->toBeInstanceOf(ProcessWebhookJob::class);
             expect($job->payload)->toBe($data);

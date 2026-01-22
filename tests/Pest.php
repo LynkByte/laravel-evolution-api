@@ -65,7 +65,7 @@ expect()->extend('toBeSuccessfulApiResponse', function () {
  */
 function fixture(string $path): string
 {
-    return __DIR__ . '/Fixtures/' . ltrim($path, '/');
+    return __DIR__.'/Fixtures/'.ltrim($path, '/');
 }
 
 /**
@@ -74,6 +74,7 @@ function fixture(string $path): string
 function fixtureArray(string $path): array
 {
     $content = file_get_contents(fixture($path));
+
     return json_decode($content, true);
 }
 
@@ -109,7 +110,7 @@ function sampleWebhookPayload(string $event = 'MESSAGES_UPSERT', array $override
             'key' => [
                 'remoteJid' => '5511999999999@s.whatsapp.net',
                 'fromMe' => false,
-                'id' => 'MSG_' . uniqid(),
+                'id' => 'MSG_'.uniqid(),
             ],
             'message' => [
                 'conversation' => 'Test message',
@@ -135,7 +136,7 @@ function sampleMessageResponse(array $overrides = []): array
         'key' => [
             'remoteJid' => '5511999999999@s.whatsapp.net',
             'fromMe' => true,
-            'id' => 'MSG_' . uniqid(),
+            'id' => 'MSG_'.uniqid(),
         ],
         'message' => [
             'conversation' => 'Test message',
@@ -169,5 +170,6 @@ function sampleInstanceResponse(string $status = 'open', array $overrides = []):
 function formatJid(string $number, bool $isGroup = false): string
 {
     $cleaned = preg_replace('/[^0-9]/', '', $number);
-    return $cleaned . ($isGroup ? '@g.us' : '@s.whatsapp.net');
+
+    return $cleaned.($isGroup ? '@g.us' : '@s.whatsapp.net');
 }

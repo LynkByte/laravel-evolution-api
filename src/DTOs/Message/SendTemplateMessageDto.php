@@ -12,7 +12,7 @@ use Lynkbyte\EvolutionApi\DTOs\BaseDto;
 final class SendTemplateMessageDto extends BaseDto
 {
     /**
-     * @param array<array{type: string, text?: string, currency?: array, date_time?: array}> $components
+     * @param  array<array{type: string, text?: string, currency?: array, date_time?: array}>  $components
      */
     public function __construct(
         public readonly string $number,
@@ -34,7 +34,7 @@ final class SendTemplateMessageDto extends BaseDto
     /**
      * Add header component.
      *
-     * @param array<array{type: string, text?: string, image?: array, video?: array, document?: array}> $parameters
+     * @param  array<array{type: string, text?: string, image?: array, video?: array, document?: array}>  $parameters
      */
     public function withHeader(array $parameters): self
     {
@@ -55,7 +55,7 @@ final class SendTemplateMessageDto extends BaseDto
     /**
      * Add body component.
      *
-     * @param array<array{type: string, text?: string}> $parameters
+     * @param  array<array{type: string, text?: string}>  $parameters
      */
     public function withBody(array $parameters): self
     {
@@ -76,7 +76,7 @@ final class SendTemplateMessageDto extends BaseDto
     /**
      * Add button component.
      *
-     * @param array<array{type: string, sub_type: string, index: int, parameters: array}> $buttons
+     * @param  array<array{type: string, sub_type: string, index: int, parameters: array}>  $buttons
      */
     public function withButtons(array $buttons): self
     {

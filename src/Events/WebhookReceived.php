@@ -8,7 +8,7 @@ use Lynkbyte\EvolutionApi\Enums\WebhookEvent;
 
 /**
  * Event fired when any webhook is received from Evolution API.
- * 
+ *
  * This is a generic event that fires for all webhook types.
  * Use this for logging, debugging, or handling custom webhook events.
  */
@@ -17,7 +17,7 @@ class WebhookReceived extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $payload The raw webhook payload
+     * @param  array<string, mixed>  $payload  The raw webhook payload
      */
     public function __construct(
         string $instanceName,
@@ -61,7 +61,7 @@ class WebhookReceived extends BaseEvent
         $value = $this->payload;
 
         foreach ($keys as $segment) {
-            if (!is_array($value) || !array_key_exists($segment, $value)) {
+            if (! is_array($value) || ! array_key_exists($segment, $value)) {
                 return $default;
             }
             $value = $value[$segment];

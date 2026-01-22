@@ -14,7 +14,7 @@ class ConnectionUpdated extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $data The raw connection data from webhook
+     * @param  array<string, mixed>  $data  The raw connection data from webhook
      */
     public function __construct(
         string $instanceName,
@@ -30,7 +30,7 @@ class ConnectionUpdated extends BaseEvent
      */
     public function isConnected(): bool
     {
-        return $this->status === InstanceStatus::OPEN 
+        return $this->status === InstanceStatus::OPEN
             || $this->status === InstanceStatus::CONNECTED;
     }
 
@@ -39,7 +39,7 @@ class ConnectionUpdated extends BaseEvent
      */
     public function isDisconnected(): bool
     {
-        return $this->status === InstanceStatus::CLOSE 
+        return $this->status === InstanceStatus::CLOSE
             || $this->status === InstanceStatus::DISCONNECTED;
     }
 

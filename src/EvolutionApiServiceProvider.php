@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Lynkbyte\EvolutionApi;
 
 use Illuminate\Support\ServiceProvider;
-use Lynkbyte\EvolutionApi\Client\EvolutionClient;
 use Lynkbyte\EvolutionApi\Client\ConnectionManager;
+use Lynkbyte\EvolutionApi\Client\EvolutionClient;
 use Lynkbyte\EvolutionApi\Client\RateLimiter;
-use Lynkbyte\EvolutionApi\Contracts\EvolutionClientInterface;
-use Lynkbyte\EvolutionApi\Contracts\RateLimiterInterface;
-use Lynkbyte\EvolutionApi\Console\Commands\InstallCommand;
 use Lynkbyte\EvolutionApi\Console\Commands\HealthCheckCommand;
+use Lynkbyte\EvolutionApi\Console\Commands\InstallCommand;
 use Lynkbyte\EvolutionApi\Console\Commands\InstanceStatusCommand;
 use Lynkbyte\EvolutionApi\Console\Commands\PruneOldDataCommand;
 use Lynkbyte\EvolutionApi\Console\Commands\RetryFailedMessagesCommand;
+use Lynkbyte\EvolutionApi\Contracts\EvolutionClientInterface;
+use Lynkbyte\EvolutionApi\Contracts\RateLimiterInterface;
 use Lynkbyte\EvolutionApi\Logging\EvolutionApiLogger;
 use Lynkbyte\EvolutionApi\Metrics\MetricsCollector;
 use Lynkbyte\EvolutionApi\Services\EvolutionService;
@@ -28,7 +28,7 @@ class EvolutionApiServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/evolution-api.php',
+            __DIR__.'/../config/evolution-api.php',
             'evolution-api'
         );
 
@@ -164,7 +164,7 @@ class EvolutionApiServiceProvider extends ServiceProvider
     protected function publishConfig(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/evolution-api.php' => config_path('evolution-api.php'),
+            __DIR__.'/../config/evolution-api.php' => config_path('evolution-api.php'),
         ], 'evolution-api-config');
     }
 
@@ -174,12 +174,12 @@ class EvolutionApiServiceProvider extends ServiceProvider
     protected function publishMigrations(): void
     {
         $this->publishes([
-            __DIR__ . '/../database/migrations/' => database_path('migrations'),
+            __DIR__.'/../database/migrations/' => database_path('migrations'),
         ], 'evolution-api-migrations');
 
         // Optionally load migrations automatically if enabled
         if (config('evolution-api.database.enabled', true)) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
     }
 
@@ -205,7 +205,7 @@ class EvolutionApiServiceProvider extends ServiceProvider
     protected function registerRoutes(): void
     {
         if (config('evolution-api.webhook.enabled', true)) {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/evolution-api.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/evolution-api.php');
         }
     }
 

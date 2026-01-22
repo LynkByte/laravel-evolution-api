@@ -10,8 +10,8 @@ namespace Lynkbyte\EvolutionApi\DTOs;
 final class ApiResponse
 {
     /**
-     * @param array<string, mixed> $data
-     * @param array<string, mixed> $headers
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $headers
      */
     public function __construct(
         public readonly bool $success,
@@ -25,8 +25,8 @@ final class ApiResponse
     /**
      * Create a successful response.
      *
-     * @param array<string, mixed> $data
-     * @param array<string, mixed> $headers
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $headers
      */
     public static function success(
         array $data = [],
@@ -48,8 +48,8 @@ final class ApiResponse
     /**
      * Create a failed response.
      *
-     * @param array<string, mixed> $data
-     * @param array<string, mixed> $headers
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $headers
      */
     public static function failure(
         string $message,
@@ -81,7 +81,7 @@ final class ApiResponse
      */
     public function isFailed(): bool
     {
-        return !$this->success;
+        return ! $this->success;
     }
 
     /**

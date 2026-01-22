@@ -15,7 +15,7 @@ class WebhookPayloadDto extends BaseDto
     /**
      * Create a new webhook payload DTO.
      *
-     * @param array<string, mixed> $data The raw webhook data
+     * @param  array<string, mixed>  $data  The raw webhook data
      */
     public function __construct(
         public readonly string $event,
@@ -24,19 +24,18 @@ class WebhookPayloadDto extends BaseDto
         public readonly ?WebhookEvent $webhookEvent = null,
         public readonly ?string $apiKey = null,
         public readonly int $receivedAt = 0
-    ) {
-    }
+    ) {}
 
     /**
      * Create from raw webhook payload.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public static function fromPayload(array $payload): self
     {
         $event = $payload['event'] ?? 'UNKNOWN';
         $instanceName = $payload['instance'] ?? $payload['instanceName'] ?? 'unknown';
-        
+
         // Remove event and instance from data to keep only the actual payload
         $data = $payload;
         unset($data['event'], $data['instance'], $data['instanceName']);
@@ -76,7 +75,7 @@ class WebhookPayloadDto extends BaseDto
         $value = $this->data;
 
         foreach ($keys as $segment) {
-            if (!is_array($value) || !array_key_exists($segment, $value)) {
+            if (! is_array($value) || ! array_key_exists($segment, $value)) {
                 return $default;
             }
             $value = $value[$segment];
@@ -141,7 +140,7 @@ class WebhookPayloadDto extends BaseDto
     public function isFromGroup(): bool
     {
         $remoteJid = $this->getRemoteJid();
-        
+
         if ($remoteJid === null) {
             return false;
         }
@@ -154,7 +153,7 @@ class WebhookPayloadDto extends BaseDto
      */
     public function getGroupId(): ?string
     {
-        if (!$this->isFromGroup()) {
+        if (! $this->isFromGroup()) {
             return null;
         }
 

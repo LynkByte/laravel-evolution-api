@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Lynkbyte\EvolutionApi\DTOs\Message\SendListMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\ListMessageBuilder;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendListMessageDto;
 
 describe('SendListMessageDto', function () {
     describe('constructor', function () {
@@ -13,10 +13,10 @@ describe('SendListMessageDto', function () {
                     'title' => 'Section 1',
                     'rows' => [
                         ['title' => 'Option 1', 'rowId' => 'opt1', 'description' => 'First option'],
-                    ]
-                ]
+                    ],
+                ],
             ];
-            
+
             $dto = new SendListMessageDto(
                 number: '5511999999999',
                 title: 'Choose an option',
@@ -90,9 +90,9 @@ describe('SendListMessageDto', function () {
     describe('toApiPayload', function () {
         it('returns correct payload structure', function () {
             $sections = [
-                ['title' => 'Section 1', 'rows' => [['title' => 'Row 1', 'rowId' => 'r1']]]
+                ['title' => 'Section 1', 'rows' => [['title' => 'Row 1', 'rowId' => 'r1']]],
             ];
-            
+
             $dto = new SendListMessageDto(
                 number: '5511999999999',
                 title: 'Title',

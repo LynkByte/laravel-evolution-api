@@ -74,7 +74,7 @@ final class SendStatusMessageDto extends BaseDto
     /**
      * Send to specific contacts only.
      *
-     * @param array<string> $jids
+     * @param  array<string>  $jids
      */
     public function toContacts(array $jids): self
     {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Lynkbyte\EvolutionApi\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Lynkbyte\EvolutionApi\Enums\InstanceStatus;
 
 /**
@@ -135,11 +135,11 @@ class EvolutionInstance extends Model
         $oldStatus = $this->status;
         $this->status = $status;
 
-        if ($this->isConnected() && !in_array($oldStatus, ['open', 'connected'], true)) {
+        if ($this->isConnected() && ! in_array($oldStatus, ['open', 'connected'], true)) {
             $this->connected_at = now();
         }
 
-        if ($this->isDisconnected() && !in_array($oldStatus, ['close', 'disconnected'], true)) {
+        if ($this->isDisconnected() && ! in_array($oldStatus, ['close', 'disconnected'], true)) {
             $this->disconnected_at = now();
         }
 

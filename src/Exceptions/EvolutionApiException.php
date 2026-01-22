@@ -32,7 +32,7 @@ class EvolutionApiException extends Exception
     /**
      * Create a new exception instance.
      *
-     * @param array<string, mixed>|null $responseData
+     * @param  array<string, mixed>|null  $responseData
      */
     public function __construct(
         string $message = '',
@@ -78,7 +78,7 @@ class EvolutionApiException extends Exception
     /**
      * Create an exception from an API response.
      *
-     * @param array<string, mixed> $response
+     * @param  array<string, mixed>  $response
      */
     public static function fromResponse(array $response, int $statusCode, ?string $instanceName = null): static
     {

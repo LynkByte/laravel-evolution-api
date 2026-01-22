@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Lynkbyte\EvolutionApi\Tests;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Lynkbyte\EvolutionApi\EvolutionApiServiceProvider;
 use Lynkbyte\EvolutionApi\Facades\EvolutionApi;
@@ -26,7 +25,7 @@ abstract class TestCase extends Orchestra
     /**
      * Get package providers.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      * @return array<int, class-string>
      */
     protected function getPackageProviders($app): array
@@ -39,7 +38,7 @@ abstract class TestCase extends Orchestra
     /**
      * Get package aliases.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      * @return array<string, class-string>
      */
     protected function getPackageAliases($app): array
@@ -52,7 +51,7 @@ abstract class TestCase extends Orchestra
     /**
      * Define environment setup.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      */
     protected function defineEnvironment($app): void
     {
@@ -96,13 +95,13 @@ abstract class TestCase extends Orchestra
      */
     protected function defineDatabaseMigrations(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
      * Mock HTTP responses for Evolution API.
      *
-     * @param array<string, mixed> $responses
+     * @param  array<string, mixed>  $responses
      */
     protected function mockEvolutionApi(array $responses): void
     {
@@ -111,18 +110,15 @@ abstract class TestCase extends Orchestra
 
     /**
      * Mock a successful message send response.
-     *
-     * @param string $messageId
-     * @param string $recipient
      */
     protected function mockMessageSendSuccess(?string $messageId = null, string $recipient = '5511999999999'): void
     {
-        $messageId = $messageId ?? 'MSG_' . uniqid();
+        $messageId = $messageId ?? 'MSG_'.uniqid();
 
         Http::fake([
             '*/message/sendText/*' => Http::response([
                 'key' => [
-                    'remoteJid' => $recipient . '@s.whatsapp.net',
+                    'remoteJid' => $recipient.'@s.whatsapp.net',
                     'fromMe' => true,
                     'id' => $messageId,
                 ],
@@ -135,9 +131,6 @@ abstract class TestCase extends Orchestra
 
     /**
      * Mock a failed message send response.
-     *
-     * @param string $error
-     * @param int $status
      */
     protected function mockMessageSendFailure(string $error = 'Send failed', int $status = 400): void
     {
@@ -151,8 +144,6 @@ abstract class TestCase extends Orchestra
 
     /**
      * Mock instance connection state.
-     *
-     * @param string $state
      */
     protected function mockConnectionState(string $state = 'open'): void
     {
@@ -181,9 +172,6 @@ abstract class TestCase extends Orchestra
 
     /**
      * Assert that an HTTP request was sent to a specific endpoint.
-     *
-     * @param string $method
-     * @param string $urlPattern
      */
     protected function assertHttpRequestSent(string $method, string $urlPattern): void
     {
@@ -195,8 +183,6 @@ abstract class TestCase extends Orchestra
 
     /**
      * Get a fresh EvolutionApi service instance.
-     *
-     * @return \Lynkbyte\EvolutionApi\Services\EvolutionService
      */
     protected function getEvolutionService(): \Lynkbyte\EvolutionApi\Services\EvolutionService
     {
@@ -205,8 +191,6 @@ abstract class TestCase extends Orchestra
 
     /**
      * Get a fresh Evolution client instance.
-     *
-     * @return \Lynkbyte\EvolutionApi\Client\EvolutionClient
      */
     protected function getEvolutionClient(): \Lynkbyte\EvolutionApi\Client\EvolutionClient
     {

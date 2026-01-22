@@ -12,7 +12,7 @@ use Lynkbyte\EvolutionApi\DTOs\BaseDto;
 final class SendListMessageDto extends BaseDto
 {
     /**
-     * @param array<array{title: string, rows: array<array{title: string, description?: string, rowId: string}>}> $sections
+     * @param  array<array{title: string, rows: array<array{title: string, description?: string, rowId: string}>}>  $sections
      */
     public function __construct(
         public readonly string $number,
@@ -67,10 +67,14 @@ final class SendListMessageDto extends BaseDto
 final class ListMessageBuilder
 {
     private string $description = '';
+
     private string $buttonText = 'Options';
+
     private string $footerText = '';
+
     /** @var array<array{title: string, rows: array<array{title: string, description?: string, rowId: string}>}> */
     private array $sections = [];
+
     private ?int $delay = null;
 
     public function __construct(
@@ -81,25 +85,28 @@ final class ListMessageBuilder
     public function description(string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 
     public function buttonText(string $buttonText): self
     {
         $this->buttonText = $buttonText;
+
         return $this;
     }
 
     public function footerText(string $footerText): self
     {
         $this->footerText = $footerText;
+
         return $this;
     }
 
     /**
      * Add a section with rows.
      *
-     * @param array<array{title: string, description?: string, rowId: string}> $rows
+     * @param  array<array{title: string, description?: string, rowId: string}>  $rows
      */
     public function addSection(string $title, array $rows): self
     {
@@ -107,6 +114,7 @@ final class ListMessageBuilder
             'title' => $title,
             'rows' => $rows,
         ];
+
         return $this;
     }
 
@@ -127,12 +135,14 @@ final class ListMessageBuilder
         }
 
         $this->sections[$lastIndex]['rows'][] = $row;
+
         return $this;
     }
 
     public function delay(int $milliseconds): self
     {
         $this->delay = $milliseconds;
+
         return $this;
     }
 

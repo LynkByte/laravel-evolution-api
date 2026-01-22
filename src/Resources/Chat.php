@@ -16,7 +16,7 @@ class Chat extends Resource
     /**
      * Check if a phone number is registered on WhatsApp.
      *
-     * @param array<string>|string $numbers One or more phone numbers
+     * @param  array<string>|string  $numbers  One or more phone numbers
      */
     public function checkNumber(array|string $numbers): ApiResponse
     {
@@ -24,7 +24,7 @@ class Chat extends Resource
 
         $numbers = is_array($numbers) ? $numbers : [$numbers];
 
-        return $this->post("chat/whatsappNumbers/{instance}", [
+        return $this->post('chat/whatsappNumbers/{instance}', [
             'numbers' => $numbers,
         ]);
     }
@@ -44,7 +44,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("chat/findChats/{instance}");
+        return $this->get('chat/findChats/{instance}');
     }
 
     /**
@@ -54,7 +54,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("chat/findChats/{instance}", [
+        return $this->get('chat/findChats/{instance}', [
             'page' => $page,
             'limit' => $limit,
         ]);
@@ -67,7 +67,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/findChat/{instance}", [
+        return $this->post('chat/findChat/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
         ]);
     }
@@ -79,7 +79,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("chat/findContacts/{instance}");
+        return $this->get('chat/findContacts/{instance}');
     }
 
     /**
@@ -89,7 +89,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/findContacts/{instance}", [
+        return $this->post('chat/findContacts/{instance}', [
             'where' => [
                 'pushName' => [
                     'contains' => $query,
@@ -121,13 +121,13 @@ class Chat extends Resource
             $data['cursor'] = $cursor;
         }
 
-        return $this->post("chat/findMessages/{instance}", $data);
+        return $this->post('chat/findMessages/{instance}', $data);
     }
 
     /**
      * Get all messages (optionally filtered).
      *
-     * @param array<string, mixed>|null $where Filter conditions
+     * @param  array<string, mixed>|null  $where  Filter conditions
      */
     public function findAllMessages(?array $where = null, int $limit = 100): ApiResponse
     {
@@ -139,7 +139,7 @@ class Chat extends Resource
             $data['where'] = $where;
         }
 
-        return $this->post("chat/findMessages/{instance}", $data);
+        return $this->post('chat/findMessages/{instance}', $data);
     }
 
     /**
@@ -153,7 +153,7 @@ class Chat extends Resource
     ): ApiResponse {
         $this->ensureInstance();
 
-        return $this->post("chat/findMessages/{instance}", [
+        return $this->post('chat/findMessages/{instance}', [
             'where' => [
                 'key' => [
                     'remoteJid' => $this->formatRemoteJid($remoteJid),
@@ -174,7 +174,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("chat/findStatusMessages/{instance}");
+        return $this->get('chat/findStatusMessages/{instance}');
     }
 
     /**
@@ -184,7 +184,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("chat/findLabels/{instance}");
+        return $this->get('chat/findLabels/{instance}');
     }
 
     /**
@@ -194,7 +194,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/markChatUnread/{instance}", [
+        return $this->post('chat/markChatUnread/{instance}', [
             'chat' => $this->formatRemoteJid($remoteJid),
         ]);
     }
@@ -206,7 +206,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/archiveChat/{instance}", [
+        return $this->post('chat/archiveChat/{instance}', [
             'lastMessage' => [
                 'key' => [
                     'remoteJid' => $this->formatRemoteJid($remoteJid),
@@ -223,7 +223,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/archiveChat/{instance}", [
+        return $this->post('chat/archiveChat/{instance}', [
             'lastMessage' => [
                 'key' => [
                     'remoteJid' => $this->formatRemoteJid($remoteJid),
@@ -240,7 +240,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->delete("chat/deleteChat/{instance}", [
+        return $this->delete('chat/deleteChat/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
         ]);
     }
@@ -252,7 +252,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->delete("chat/clearMessages/{instance}", [
+        return $this->delete('chat/clearMessages/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
         ]);
     }
@@ -264,7 +264,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/fetchProfilePictureUrl/{instance}", [
+        return $this->post('chat/fetchProfilePictureUrl/{instance}', [
             'number' => $number,
         ]);
     }
@@ -276,7 +276,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/fetchBusinessProfile/{instance}", [
+        return $this->post('chat/fetchBusinessProfile/{instance}', [
             'number' => $number,
         ]);
     }
@@ -284,13 +284,13 @@ class Chat extends Resource
     /**
      * Mute a chat.
      *
-     * @param int $expiration Mute expiration timestamp (0 for indefinite)
+     * @param  int  $expiration  Mute expiration timestamp (0 for indefinite)
      */
     public function mute(string $remoteJid, int $expiration = 0): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("chat/muteChat/{instance}", [
+        return $this->post('chat/muteChat/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
             'expiration' => $expiration,
         ]);
@@ -303,7 +303,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/unmuteChat/{instance}", [
+        return $this->post('chat/unmuteChat/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
         ]);
     }
@@ -315,7 +315,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/pinChat/{instance}", [
+        return $this->post('chat/pinChat/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
             'pin' => true,
         ]);
@@ -328,7 +328,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/pinChat/{instance}", [
+        return $this->post('chat/pinChat/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
             'pin' => false,
         ]);
@@ -341,7 +341,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/blockContact/{instance}", [
+        return $this->post('chat/blockContact/{instance}', [
             'number' => $number,
             'status' => 'block',
         ]);
@@ -354,7 +354,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/blockContact/{instance}", [
+        return $this->post('chat/blockContact/{instance}', [
             'number' => $number,
             'status' => 'unblock',
         ]);
@@ -367,7 +367,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/fetchPresence/{instance}", [
+        return $this->post('chat/fetchPresence/{instance}', [
             'number' => $number,
         ]);
     }
@@ -379,7 +379,7 @@ class Chat extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("chat/updateContact/{instance}", [
+        return $this->post('chat/updateContact/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
             'name' => $name,
         ]);

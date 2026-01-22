@@ -14,7 +14,7 @@ use Psr\Log\NullLogger;
 
 /**
  * Controller for handling incoming webhooks from Evolution API.
- * 
+ *
  * This controller receives webhooks and either processes them immediately
  * or queues them for background processing.
  */
@@ -27,7 +27,7 @@ class WebhookController extends Controller
         protected WebhookProcessor $processor,
         protected ?LoggerInterface $logger = null
     ) {
-        $this->logger = $logger ?? new NullLogger();
+        $this->logger = $logger ?? new NullLogger;
     }
 
     /**
@@ -38,7 +38,7 @@ class WebhookController extends Controller
         $payload = $request->all();
 
         // Validate payload has minimum required data
-        if (!$this->isValidPayload($payload)) {
+        if (! $this->isValidPayload($payload)) {
             $this->logger->warning('Invalid webhook payload received', [
                 'payload' => $payload,
             ]);
@@ -69,9 +69,9 @@ class WebhookController extends Controller
     public function handleInstance(Request $request, string $instance): JsonResponse
     {
         $payload = $request->all();
-        
+
         // Add instance to payload if not present
-        if (!isset($payload['instance']) && !isset($payload['instanceName'])) {
+        if (! isset($payload['instance']) && ! isset($payload['instanceName'])) {
             $payload['instance'] = $instance;
         }
 
@@ -81,7 +81,7 @@ class WebhookController extends Controller
     /**
      * Process the webhook immediately.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     protected function processWebhook(array $payload): JsonResponse
     {
@@ -111,7 +111,7 @@ class WebhookController extends Controller
     /**
      * Queue the webhook for background processing.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     protected function queueWebhook(array $payload): JsonResponse
     {
@@ -140,7 +140,7 @@ class WebhookController extends Controller
     /**
      * Validate the webhook payload.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     protected function isValidPayload(array $payload): bool
     {

@@ -5,8 +5,6 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
-use Lynkbyte\EvolutionApi\Events\MessageFailed;
-use Lynkbyte\EvolutionApi\Events\MessageSent;
 use Lynkbyte\EvolutionApi\Jobs\SendMessageJob;
 
 describe('SendMessageJob', function () {

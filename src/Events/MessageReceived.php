@@ -14,8 +14,8 @@ class MessageReceived extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $message The raw message data from webhook
-     * @param array<string, mixed> $sender The sender information
+     * @param  array<string, mixed>  $message  The raw message data from webhook
+     * @param  array<string, mixed>  $sender  The sender information
      */
     public function __construct(
         string $instanceName,
@@ -41,8 +41,8 @@ class MessageReceived extends BaseEvent
      */
     public function getSenderNumber(): ?string
     {
-        return $this->sender['pushName'] 
-            ?? $this->message['key']['remoteJid'] 
+        return $this->sender['pushName']
+            ?? $this->message['key']['remoteJid']
             ?? null;
     }
 

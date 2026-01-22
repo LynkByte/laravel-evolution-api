@@ -40,7 +40,7 @@ class PruneOldDataCommand extends Command
         $pruneWebhooks = $this->option('webhooks') || $this->option('all');
 
         // Default to pruning all if no specific option is given
-        if (!$pruneMessages && !$pruneWebhooks) {
+        if (! $pruneMessages && ! $pruneWebhooks) {
             $pruneMessages = true;
             $pruneWebhooks = true;
         }
@@ -86,16 +86,19 @@ class PruneOldDataCommand extends Command
 
         if ($count === 0) {
             $this->line('  No old messages to prune.');
+
             return 0;
         }
 
-        if (!$dryRun) {
+        if (! $dryRun) {
             $deleted = $query->delete();
             $this->line("  Deleted <info>{$deleted}</info> messages.");
+
             return $deleted;
         }
 
         $this->line("  Would delete <info>{$count}</info> messages.");
+
         return $count;
     }
 
@@ -111,16 +114,19 @@ class PruneOldDataCommand extends Command
 
         if ($count === 0) {
             $this->line('  No old webhook logs to prune.');
+
             return 0;
         }
 
-        if (!$dryRun) {
+        if (! $dryRun) {
             $deleted = $query->delete();
             $this->line("  Deleted <info>{$deleted}</info> webhook logs.");
+
             return $deleted;
         }
 
         $this->line("  Would delete <info>{$count}</info> webhook logs.");
+
         return $count;
     }
 }

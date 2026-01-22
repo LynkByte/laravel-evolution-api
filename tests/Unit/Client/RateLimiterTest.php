@@ -265,7 +265,7 @@ describe('RateLimiter', function () {
                 $limiter->attempt('user-1', 'media');
             }
 
-            expect(fn() => $limiter->attempt('user-1', 'media'))
+            expect(fn () => $limiter->attempt('user-1', 'media'))
                 ->toThrow(RateLimitException::class);
         });
 
@@ -365,7 +365,7 @@ describe('RateLimiter', function () {
                 $limiter->attempt('user-1', 'media');
             }
 
-            expect(fn() => $limiter->attempt('user-1', 'media'))
+            expect(fn () => $limiter->attempt('user-1', 'media'))
                 ->toThrow(RateLimitException::class);
         });
 
@@ -385,7 +385,7 @@ describe('RateLimiter', function () {
         it('throws InvalidArgumentException for invalid action', function () {
             $limiter = new RateLimiter($this->cache);
 
-            expect(fn() => $limiter->setOnLimitReached('invalid'))
+            expect(fn () => $limiter->setOnLimitReached('invalid'))
                 ->toThrow(InvalidArgumentException::class, 'Invalid onLimitReached action');
         });
     });

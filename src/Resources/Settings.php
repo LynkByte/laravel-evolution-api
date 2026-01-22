@@ -16,13 +16,13 @@ class Settings extends Resource
     /**
      * Set instance settings.
      *
-     * @param array<string, mixed> $settings
+     * @param  array<string, mixed>  $settings
      */
     public function set(array $settings): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("settings/set/{instance}", $settings);
+        return $this->post('settings/set/{instance}', $settings);
     }
 
     /**
@@ -32,7 +32,7 @@ class Settings extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("settings/find/{instance}");
+        return $this->get('settings/find/{instance}');
     }
 
     /**

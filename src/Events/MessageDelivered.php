@@ -12,7 +12,7 @@ class MessageDelivered extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $data The raw delivery data from webhook
+     * @param  array<string, mixed>  $data  The raw delivery data from webhook
      */
     public function __construct(
         string $instanceName,

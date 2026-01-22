@@ -12,8 +12,8 @@ class MessageRead extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string>|string $messageIds The message ID(s) that were read
-     * @param array<string, mixed> $data The raw read receipt data from webhook
+     * @param  array<string>|string  $messageIds  The message ID(s) that were read
+     * @param  array<string, mixed>  $data  The raw read receipt data from webhook
      */
     public function __construct(
         string $instanceName,

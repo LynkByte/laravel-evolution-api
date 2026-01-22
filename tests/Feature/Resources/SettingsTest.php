@@ -109,7 +109,7 @@ describe('Settings Resource', function () {
 
             Http::assertSent(function (Request $request) {
                 return $request['rejectCall'] === false &&
-                    !isset($request['msgCall']);
+                    ! isset($request['msgCall']);
             });
         });
     });
@@ -398,8 +398,8 @@ describe('Settings Resource', function () {
             Http::assertSent(function (Request $request) {
                 return $request['alwaysOnline'] === true &&
                     $request['groupsIgnore'] === false &&
-                    !isset($request['rejectCall']) &&
-                    !isset($request['readMessages']);
+                    ! isset($request['rejectCall']) &&
+                    ! isset($request['readMessages']);
             });
         });
     });

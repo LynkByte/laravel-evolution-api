@@ -53,7 +53,7 @@ class HealthCheckCommand extends Command
 
         } catch (\Throwable $e) {
             $this->newLine();
-            $this->error('Health check failed: ' . $e->getMessage());
+            $this->error('Health check failed: '.$e->getMessage());
 
             if ($this->output->isVerbose()) {
                 $this->newLine();
@@ -79,7 +79,7 @@ class HealthCheckCommand extends Command
         $response = $evolution->instance()->fetchAll();
         $responseTime = round((microtime(true) - $startTime) * 1000);
 
-        $this->line("  Status: <info>Connected</info>");
+        $this->line('  Status: <info>Connected</info>');
         $this->line("  Response time: <info>{$responseTime}ms</info>");
     }
 
@@ -93,8 +93,9 @@ class HealthCheckCommand extends Command
 
         $response = $evolution->instance()->fetchAll();
 
-        if (!$response->isSuccess()) {
-            $this->warn('  Could not fetch instances: ' . ($response->getError() ?? 'Unknown error'));
+        if (! $response->isSuccess()) {
+            $this->warn('  Could not fetch instances: '.($response->getError() ?? 'Unknown error'));
+
             return;
         }
 
@@ -102,6 +103,7 @@ class HealthCheckCommand extends Command
 
         if (empty($instances)) {
             $this->line('  No instances found.');
+
             return;
         }
 

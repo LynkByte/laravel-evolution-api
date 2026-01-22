@@ -58,7 +58,7 @@ describe('ConnectionManager', function () {
                 ],
             ]);
 
-            expect(fn() => $manager->connection('default'))
+            expect(fn () => $manager->connection('default'))
                 ->toThrow(ConnectionException::class);
         });
     });
@@ -106,7 +106,7 @@ describe('ConnectionManager', function () {
         it('throws ConnectionException for non-existent connection', function () {
             $manager = new ConnectionManager([]);
 
-            expect(fn() => $manager->connection('non-existent'))
+            expect(fn () => $manager->connection('non-existent'))
                 ->toThrow(ConnectionException::class, 'Evolution API connection [non-existent] is not configured.');
         });
 
@@ -119,7 +119,7 @@ describe('ConnectionManager', function () {
                 ],
             ]);
 
-            expect(fn() => $manager->connection('invalid'))
+            expect(fn () => $manager->connection('invalid'))
                 ->toThrow(ConnectionException::class, "missing 'server_url'");
         });
 
@@ -132,7 +132,7 @@ describe('ConnectionManager', function () {
                 ],
             ]);
 
-            expect(fn() => $manager->connection('invalid'))
+            expect(fn () => $manager->connection('invalid'))
                 ->toThrow(ConnectionException::class, "missing 'api_key'");
         });
 
@@ -146,7 +146,7 @@ describe('ConnectionManager', function () {
                 ],
             ]);
 
-            expect(fn() => $manager->connection('invalid'))
+            expect(fn () => $manager->connection('invalid'))
                 ->toThrow(ConnectionException::class, "invalid 'server_url'");
         });
     });
@@ -191,7 +191,7 @@ describe('ConnectionManager', function () {
         it('validates connection exists before setting active', function () {
             $manager = new ConnectionManager([]);
 
-            expect(fn() => $manager->setActiveConnection('non-existent'))
+            expect(fn () => $manager->setActiveConnection('non-existent'))
                 ->toThrow(ConnectionException::class);
         });
     });
@@ -249,7 +249,7 @@ describe('ConnectionManager', function () {
         it('validates connection config when adding', function () {
             $manager = new ConnectionManager([]);
 
-            expect(fn() => $manager->addConnection('invalid', [
+            expect(fn () => $manager->addConnection('invalid', [
                 'server_url' => '',
                 'api_key' => 'key',
             ]))->toThrow(ConnectionException::class, "missing 'server_url'");
@@ -441,7 +441,7 @@ describe('ConnectionManager', function () {
             ]);
 
             $available = $manager->getAvailableConnections();
-            $sharedCount = count(array_filter($available, fn($name) => $name === 'shared'));
+            $sharedCount = count(array_filter($available, fn ($name) => $name === 'shared'));
 
             expect($sharedCount)->toBe(1);
         });

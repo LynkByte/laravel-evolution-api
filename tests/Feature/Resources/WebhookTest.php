@@ -172,6 +172,7 @@ describe('Webhook Resource', function () {
                     return $request['url'] === 'https://new-url.com/webhook' &&
                         $request['events'] === ['MESSAGES_UPSERT', 'CONNECTION_UPDATE'];
                 }
+
                 return true;
             });
         });
@@ -193,6 +194,7 @@ describe('Webhook Resource', function () {
                     return $request['events'] === ['MESSAGES_UPSERT', 'MESSAGES_UPDATE'] &&
                         $request['url'] === 'https://example.com/webhook';
                 }
+
                 return true;
             });
         });
@@ -214,6 +216,7 @@ describe('Webhook Resource', function () {
                 if (str_contains($request->url(), 'webhook/set')) {
                     return $request['events'] === ['MESSAGES_UPSERT', 'CONNECTION_UPDATE'];
                 }
+
                 return true;
             });
         });
@@ -253,6 +256,7 @@ describe('Webhook Resource', function () {
                 if (str_contains($request->url(), 'webhook/set')) {
                     return $request['events'] === $allEvents;
                 }
+
                 return true;
             });
         });
@@ -294,6 +298,7 @@ describe('Webhook Resource', function () {
                 if (str_contains($request->url(), 'webhook/set')) {
                     return $request['events'] === $expectedEvents;
                 }
+
                 return true;
             });
         });
@@ -332,6 +337,7 @@ describe('Webhook Resource', function () {
                 if (str_contains($request->url(), 'webhook/set')) {
                     return $request['events'] === $expectedEvents;
                 }
+
                 return true;
             });
         });

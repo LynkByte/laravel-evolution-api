@@ -20,7 +20,7 @@ describe('MetricsCollector', function () {
         });
 
         it('defaults to disabled', function () {
-            $collector = new MetricsCollector();
+            $collector = new MetricsCollector;
 
             expect($collector->isEnabled())->toBeFalse();
         });
@@ -806,7 +806,7 @@ describe('MetricsCollector', function () {
 
     describe('constructor defaults', function () {
         it('uses default config values', function () {
-            $collector = new MetricsCollector();
+            $collector = new MetricsCollector;
 
             expect($collector->isEnabled())->toBeFalse();
 

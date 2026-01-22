@@ -178,7 +178,7 @@ class EvolutionClient implements EvolutionClientInterface
     /**
      * Add custom headers for the next request.
      *
-     * @param array<string, string> $headers
+     * @param  array<string, string>  $headers
      */
     public function withHeaders(array $headers): self
     {
@@ -190,7 +190,7 @@ class EvolutionClient implements EvolutionClientInterface
     /**
      * Make an HTTP request to the Evolution API.
      *
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      *
      * @throws EvolutionApiException
      */
@@ -403,7 +403,7 @@ class EvolutionClient implements EvolutionClientInterface
         $message = null;
         if (isset($data['message'])) {
             $message = is_string($data['message']) ? $data['message'] : json_encode($data['message']);
-        } elseif (!$isSuccess) {
+        } elseif (! $isSuccess) {
             $message = $response->reason();
         }
 
@@ -526,7 +526,7 @@ class EvolutionClient implements EvolutionClientInterface
     /**
      * Log an outgoing request.
      *
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      */
     protected function logRequest(string $method, string $url, array $options): void
     {
@@ -588,9 +588,8 @@ class EvolutionClient implements EvolutionClientInterface
     /**
      * Redact sensitive fields from data.
      *
-     * @param array<string, mixed> $data
-     * @param array<string> $sensitiveFields
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string>  $sensitiveFields
      * @return array<string, mixed>
      */
     protected function redactSensitive(array $data, array $sensitiveFields): array
@@ -659,8 +658,8 @@ class EvolutionClient implements EvolutionClientInterface
     /**
      * Upload a file via multipart form.
      *
-     * @param array<string, mixed> $fields
-     * @param array<string, mixed> $files Array of ['name' => 'field_name', 'contents' => $contents, 'filename' => 'name.ext']
+     * @param  array<string, mixed>  $fields
+     * @param  array<string, mixed>  $files  Array of ['name' => 'field_name', 'contents' => $contents, 'filename' => 'name.ext']
      */
     public function upload(string $endpoint, array $fields = [], array $files = []): ApiResponse
     {
@@ -670,7 +669,7 @@ class EvolutionClient implements EvolutionClientInterface
 
         $url = $this->buildUrl($endpoint);
 
-        $this->logRequest('POST', $url, ['fields' => $fields, 'files' => count($files) . ' files']);
+        $this->logRequest('POST', $url, ['fields' => $fields, 'files' => count($files).' files']);
 
         try {
             $client = $this->createHttpClient()

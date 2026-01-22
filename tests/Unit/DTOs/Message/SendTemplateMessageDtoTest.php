@@ -21,9 +21,9 @@ describe('SendTemplateMessageDto', function () {
 
         it('creates with components', function () {
             $components = [
-                ['type' => 'body', 'parameters' => [['type' => 'text', 'text' => 'John']]]
+                ['type' => 'body', 'parameters' => [['type' => 'text', 'text' => 'John']]],
             ];
-            
+
             $dto = new SendTemplateMessageDto(
                 number: '5511999999999',
                 name: 'welcome',
@@ -71,7 +71,7 @@ describe('SendTemplateMessageDto', function () {
         it('adds header component', function () {
             $dto = SendTemplateMessageDto::create('5511999999999', 'welcome')
                 ->withHeader([
-                    ['type' => 'image', 'image' => ['link' => 'https://example.com/image.jpg']]
+                    ['type' => 'image', 'image' => ['link' => 'https://example.com/image.jpg']],
                 ]);
 
             expect($dto->components)->toHaveCount(1);
@@ -85,7 +85,7 @@ describe('SendTemplateMessageDto', function () {
             $dto = SendTemplateMessageDto::create('5511999999999', 'order')
                 ->withBody([
                     ['type' => 'text', 'text' => 'John Doe'],
-                    ['type' => 'text', 'text' => 'Order #12345']
+                    ['type' => 'text', 'text' => 'Order #12345'],
                 ]);
 
             expect($dto->components)->toHaveCount(1);
@@ -101,13 +101,13 @@ describe('SendTemplateMessageDto', function () {
                     [
                         'sub_type' => 'quick_reply',
                         'index' => 0,
-                        'parameters' => [['type' => 'payload', 'payload' => 'yes']]
+                        'parameters' => [['type' => 'payload', 'payload' => 'yes']],
                     ],
                     [
                         'sub_type' => 'quick_reply',
                         'index' => 1,
-                        'parameters' => [['type' => 'payload', 'payload' => 'no']]
-                    ]
+                        'parameters' => [['type' => 'payload', 'payload' => 'no']],
+                    ],
                 ]);
 
             expect($dto->components)->toHaveCount(2);
@@ -122,10 +122,10 @@ describe('SendTemplateMessageDto', function () {
                 ->withHeader([['type' => 'text', 'text' => 'Order Update']])
                 ->withBody([
                     ['type' => 'text', 'text' => 'John'],
-                    ['type' => 'text', 'text' => '#12345']
+                    ['type' => 'text', 'text' => '#12345'],
                 ])
                 ->withButtons([
-                    ['sub_type' => 'url', 'index' => 0, 'parameters' => [['type' => 'text', 'text' => 'order/12345']]]
+                    ['sub_type' => 'url', 'index' => 0, 'parameters' => [['type' => 'text', 'text' => 'order/12345']]],
                 ]);
 
             expect($dto->components)->toHaveCount(3);

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Lynkbyte\EvolutionApi\Models\EvolutionContact;
-use Lynkbyte\EvolutionApi\Models\EvolutionInstance;
-use Lynkbyte\EvolutionApi\Models\EvolutionMessage;
 
 describe('EvolutionContact Model', function () {
 
@@ -57,7 +55,7 @@ describe('EvolutionContact Model', function () {
         });
 
         it('casts metadata to array', function () {
-            $contact = new EvolutionContact();
+            $contact = new EvolutionContact;
             $contact->metadata = ['key' => 'value'];
 
             expect($contact->metadata)->toBeArray();
@@ -155,7 +153,7 @@ describe('EvolutionContact Model', function () {
 
     describe('relationships', function () {
         it('defines instance relationship', function () {
-            $contact = new EvolutionContact();
+            $contact = new EvolutionContact;
 
             expect($contact->instance())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class);
         });
@@ -204,7 +202,7 @@ describe('EvolutionContact Model', function () {
 
     describe('table configuration', function () {
         it('uses correct table name', function () {
-            $contact = new EvolutionContact();
+            $contact = new EvolutionContact;
 
             expect($contact->getTable())->toBe('evolution_contacts');
         });

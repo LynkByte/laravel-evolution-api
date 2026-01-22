@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Http;
 use Lynkbyte\EvolutionApi\Client\ConnectionManager;
 use Lynkbyte\EvolutionApi\Client\EvolutionClient;
 use Lynkbyte\EvolutionApi\DTOs\ApiResponse;
-use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
-use Lynkbyte\EvolutionApi\DTOs\Message\SendMediaMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendAudioMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendLocationMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendMediaMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendPollMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
 use Lynkbyte\EvolutionApi\Resources\Message;
 
 describe('Message Resource', function () {

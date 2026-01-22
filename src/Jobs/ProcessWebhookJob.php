@@ -38,7 +38,7 @@ class ProcessWebhookJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function __construct(
         public readonly array $payload,
@@ -91,7 +91,7 @@ class ProcessWebhookJob implements ShouldQueue
     /**
      * Create from raw webhook data.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public static function fromWebhook(array $data): self
     {

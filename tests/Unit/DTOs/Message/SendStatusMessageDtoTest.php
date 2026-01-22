@@ -93,9 +93,9 @@ describe('SendStatusMessageDto', function () {
         it('restricts status to specific contacts', function () {
             $jids = [
                 '5511999999999@s.whatsapp.net',
-                '5511888888888@s.whatsapp.net'
+                '5511888888888@s.whatsapp.net',
             ];
-            
+
             $dto = SendStatusMessageDto::text('Private status')->toContacts($jids);
 
             expect($dto->allContacts)->toBeFalse();

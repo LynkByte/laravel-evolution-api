@@ -82,7 +82,7 @@ class EvolutionWebhookLog extends Model
     /**
      * Mark the webhook as processed.
      */
-    public function markAsProcessed(int $processingTimeMs = null): bool
+    public function markAsProcessed(?int $processingTimeMs = null): bool
     {
         $this->status = 'processed';
         $this->processing_time_ms = $processingTimeMs;
@@ -93,7 +93,7 @@ class EvolutionWebhookLog extends Model
     /**
      * Mark the webhook as failed.
      */
-    public function markAsFailed(string $errorMessage, int $processingTimeMs = null): bool
+    public function markAsFailed(string $errorMessage, ?int $processingTimeMs = null): bool
     {
         $this->status = 'failed';
         $this->error_message = $errorMessage;
@@ -137,7 +137,7 @@ class EvolutionWebhookLog extends Model
     /**
      * Create a log entry from webhook data.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public static function createFromWebhook(
         string $instanceName,

@@ -20,7 +20,7 @@ describe('SendAudioMessageDto', function () {
 
         it('creates with all optional parameters', function () {
             $quoted = ['key' => ['id' => 'msg-123']];
-            
+
             $dto = new SendAudioMessageDto(
                 number: '5511999999999',
                 audio: 'https://example.com/audio.mp3',

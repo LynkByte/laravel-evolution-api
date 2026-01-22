@@ -10,7 +10,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Custom logger wrapper for Evolution API operations.
- * 
+ *
  * Provides centralized logging with support for:
  * - Configurable log levels
  * - Request/response logging
@@ -48,8 +48,7 @@ class EvolutionApiLogger
     /**
      * Create a new logger instance.
      *
-     * @param LogManager $logManager
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(LogManager $logManager, array $config = [])
     {
@@ -71,7 +70,7 @@ class EvolutionApiLogger
             : $logManager->driver();
 
         // Merge custom sensitive fields
-        if (!empty($this->config['sensitive_fields'])) {
+        if (! empty($this->config['sensitive_fields'])) {
             $this->sensitiveFields = array_merge(
                 $this->sensitiveFields,
                 $this->config['sensitive_fields']
@@ -82,13 +81,13 @@ class EvolutionApiLogger
     /**
      * Log an API request.
      *
-     * @param string $method HTTP method
-     * @param string $url Request URL
-     * @param array<string, mixed> $options Request options
+     * @param  string  $method  HTTP method
+     * @param  string  $url  Request URL
+     * @param  array<string, mixed>  $options  Request options
      */
     public function logRequest(string $method, string $url, array $options = []): void
     {
-        if (!$this->shouldLog() || !$this->config['log_requests']) {
+        if (! $this->shouldLog() || ! $this->config['log_requests']) {
             return;
         }
 
@@ -104,11 +103,11 @@ class EvolutionApiLogger
     /**
      * Log an API response.
      *
-     * @param string $method HTTP method
-     * @param string $url Request URL
-     * @param int $statusCode HTTP status code
-     * @param array<string, mixed>|string $body Response body
-     * @param float|null $duration Request duration in seconds
+     * @param  string  $method  HTTP method
+     * @param  string  $url  Request URL
+     * @param  int  $statusCode  HTTP status code
+     * @param  array<string, mixed>|string  $body  Response body
+     * @param  float|null  $duration  Request duration in seconds
      */
     public function logResponse(
         string $method,
@@ -117,7 +116,7 @@ class EvolutionApiLogger
         array|string $body = [],
         ?float $duration = null
     ): void {
-        if (!$this->shouldLog() || !$this->config['log_responses']) {
+        if (! $this->shouldLog() || ! $this->config['log_responses']) {
             return;
         }
 
@@ -144,13 +143,13 @@ class EvolutionApiLogger
     /**
      * Log a webhook event.
      *
-     * @param string $event Event type
-     * @param string $instanceName Instance name
-     * @param array<string, mixed> $payload Webhook payload
+     * @param  string  $event  Event type
+     * @param  string  $instanceName  Instance name
+     * @param  array<string, mixed>  $payload  Webhook payload
      */
     public function logWebhook(string $event, string $instanceName, array $payload = []): void
     {
-        if (!$this->shouldLog() || !$this->config['log_webhooks']) {
+        if (! $this->shouldLog() || ! $this->config['log_webhooks']) {
             return;
         }
 
@@ -170,13 +169,13 @@ class EvolutionApiLogger
     /**
      * Log an error.
      *
-     * @param string $message Error message
-     * @param array<string, mixed> $context Additional context
-     * @param \Throwable|null $exception Optional exception
+     * @param  string  $message  Error message
+     * @param  array<string, mixed>  $context  Additional context
+     * @param  \Throwable|null  $exception  Optional exception
      */
     public function logError(string $message, array $context = [], ?\Throwable $exception = null): void
     {
-        if (!$this->shouldLog()) {
+        if (! $this->shouldLog()) {
             return;
         }
 
@@ -200,13 +199,13 @@ class EvolutionApiLogger
     /**
      * Log instance status change.
      *
-     * @param string $instanceName Instance name
-     * @param string $oldStatus Previous status
-     * @param string $newStatus New status
+     * @param  string  $instanceName  Instance name
+     * @param  string  $oldStatus  Previous status
+     * @param  string  $newStatus  New status
      */
     public function logStatusChange(string $instanceName, string $oldStatus, string $newStatus): void
     {
-        if (!$this->shouldLog()) {
+        if (! $this->shouldLog()) {
             return;
         }
 
@@ -220,11 +219,11 @@ class EvolutionApiLogger
     /**
      * Log a message send operation.
      *
-     * @param string $instanceName Instance name
-     * @param string $recipient Message recipient
-     * @param string $type Message type
-     * @param bool $success Whether the send was successful
-     * @param string|null $messageId Message ID if successful
+     * @param  string  $instanceName  Instance name
+     * @param  string  $recipient  Message recipient
+     * @param  string  $type  Message type
+     * @param  bool  $success  Whether the send was successful
+     * @param  string|null  $messageId  Message ID if successful
      */
     public function logMessageSend(
         string $instanceName,
@@ -233,7 +232,7 @@ class EvolutionApiLogger
         bool $success,
         ?string $messageId = null
     ): void {
-        if (!$this->shouldLog()) {
+        if (! $this->shouldLog()) {
             return;
         }
 
@@ -257,8 +256,7 @@ class EvolutionApiLogger
     /**
      * Log a debug message.
      *
-     * @param string $message
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     public function debug(string $message, array $context = []): void
     {
@@ -268,8 +266,7 @@ class EvolutionApiLogger
     /**
      * Log an info message.
      *
-     * @param string $message
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     public function info(string $message, array $context = []): void
     {
@@ -279,8 +276,7 @@ class EvolutionApiLogger
     /**
      * Log a warning message.
      *
-     * @param string $message
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     public function warning(string $message, array $context = []): void
     {
@@ -290,8 +286,7 @@ class EvolutionApiLogger
     /**
      * Log an error message.
      *
-     * @param string $message
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     public function error(string $message, array $context = []): void
     {
@@ -301,13 +296,11 @@ class EvolutionApiLogger
     /**
      * Log a message with the specified level.
      *
-     * @param string $level
-     * @param string $message
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     public function log(string $level, string $message, array $context = []): void
     {
-        if (!$this->shouldLog()) {
+        if (! $this->shouldLog()) {
             return;
         }
 
@@ -328,12 +321,12 @@ class EvolutionApiLogger
     /**
      * Redact sensitive data from an array.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     protected function redactSensitive(array $data): array
     {
-        if (!$this->config['redact_sensitive']) {
+        if (! $this->config['redact_sensitive']) {
             return $data;
         }
 
@@ -343,7 +336,7 @@ class EvolutionApiLogger
     /**
      * Recursively redact sensitive fields.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     protected function recursiveRedact(array $data): array
@@ -355,6 +348,7 @@ class EvolutionApiLogger
             foreach ($this->sensitiveFields as $sensitiveField) {
                 if (str_contains($lowercaseKey, strtolower($sensitiveField))) {
                     $data[$key] = '[REDACTED]';
+
                     continue 2;
                 }
             }
@@ -370,19 +364,16 @@ class EvolutionApiLogger
 
     /**
      * Redact sensitive query parameters from URL.
-     *
-     * @param string $url
-     * @return string
      */
     protected function redactUrl(string $url): string
     {
-        if (!$this->config['redact_sensitive']) {
+        if (! $this->config['redact_sensitive']) {
             return $url;
         }
 
         $parsed = parse_url($url);
 
-        if (!isset($parsed['query'])) {
+        if (! isset($parsed['query'])) {
             return $url;
         }
 
@@ -397,15 +388,14 @@ class EvolutionApiLogger
     /**
      * Build URL from parsed components.
      *
-     * @param array<string, mixed> $parts
-     * @return string
+     * @param  array<string, mixed>  $parts
      */
     protected function buildUrl(array $parts): string
     {
         $url = '';
 
         if (isset($parts['scheme'])) {
-            $url .= $parts['scheme'] . '://';
+            $url .= $parts['scheme'].'://';
         }
 
         if (isset($parts['host'])) {
@@ -413,7 +403,7 @@ class EvolutionApiLogger
         }
 
         if (isset($parts['port'])) {
-            $url .= ':' . $parts['port'];
+            $url .= ':'.$parts['port'];
         }
 
         if (isset($parts['path'])) {
@@ -421,11 +411,11 @@ class EvolutionApiLogger
         }
 
         if (isset($parts['query'])) {
-            $url .= '?' . $parts['query'];
+            $url .= '?'.$parts['query'];
         }
 
         if (isset($parts['fragment'])) {
-            $url .= '#' . $parts['fragment'];
+            $url .= '#'.$parts['fragment'];
         }
 
         return $url;
@@ -433,9 +423,6 @@ class EvolutionApiLogger
 
     /**
      * Mask a phone number for privacy.
-     *
-     * @param string $phoneNumber
-     * @return string
      */
     protected function maskPhoneNumber(string $phoneNumber): string
     {
@@ -456,8 +443,8 @@ class EvolutionApiLogger
         }
 
         return substr($cleaned, 0, $visible)
-            . str_repeat('*', $masked)
-            . substr($cleaned, -2);
+            .str_repeat('*', $masked)
+            .substr($cleaned, -2);
     }
 
     /**
@@ -473,7 +460,7 @@ class EvolutionApiLogger
      */
     public function isEnabled(string $type = 'general'): bool
     {
-        if (!$this->config['enabled']) {
+        if (! $this->config['enabled']) {
             return false;
         }
 

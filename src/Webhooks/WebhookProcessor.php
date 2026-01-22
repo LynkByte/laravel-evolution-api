@@ -62,13 +62,14 @@ class WebhookProcessor
         ?LoggerInterface $logger = null
     ) {
         $this->events = $events;
-        $this->logger = $logger ?? new NullLogger();
+        $this->logger = $logger ?? new NullLogger;
     }
 
     /**
      * Process an incoming webhook payload.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
+     *
      * @throws WebhookException
      */
     public function process(array $payload): void
@@ -123,13 +124,13 @@ class WebhookProcessor
      */
     protected function handleMessageReceived(WebhookPayloadDto $dto): void
     {
-        if (!$this->dispatchEvents) {
+        if (! $this->dispatchEvents) {
             return;
         }
 
         $messageData = $dto->getMessageData() ?? [];
         $senderData = $dto->getSenderData() ?? [];
-        
+
         // Determine message type
         $messageType = $this->determineMessageType($messageData);
 
@@ -150,7 +151,7 @@ class WebhookProcessor
      */
     protected function handleMessageUpdate(WebhookPayloadDto $dto): void
     {
-        if (!$this->dispatchEvents) {
+        if (! $this->dispatchEvents) {
             return;
         }
 
@@ -189,7 +190,7 @@ class WebhookProcessor
      */
     protected function handleMessageSent(WebhookPayloadDto $dto): void
     {
-        if (!$this->dispatchEvents) {
+        if (! $this->dispatchEvents) {
             return;
         }
 
@@ -211,12 +212,12 @@ class WebhookProcessor
      */
     protected function handleConnectionUpdate(WebhookPayloadDto $dto): void
     {
-        if (!$this->dispatchEvents) {
+        if (! $this->dispatchEvents) {
             return;
         }
 
         $state = $dto->getConnectionStatus();
-        
+
         if ($state === null) {
             return;
         }
@@ -248,12 +249,12 @@ class WebhookProcessor
      */
     protected function handleQrCodeUpdated(WebhookPayloadDto $dto): void
     {
-        if (!$this->dispatchEvents) {
+        if (! $this->dispatchEvents) {
             return;
         }
 
         $qrCode = $dto->getQrCode();
-        
+
         if ($qrCode === null) {
             return;
         }
@@ -303,7 +304,7 @@ class WebhookProcessor
     /**
      * Determine the message type from message data.
      *
-     * @param array<string, mixed> $messageData
+     * @param  array<string, mixed>  $messageData
      */
     protected function determineMessageType(array $messageData): ?MessageType
     {
@@ -384,6 +385,7 @@ class WebhookProcessor
     public function registerHandler(string $event, WebhookHandlerInterface $handler): self
     {
         $this->handlers[$event] = $handler;
+
         return $this;
     }
 
@@ -401,6 +403,7 @@ class WebhookProcessor
     public function removeHandler(string $event): self
     {
         unset($this->handlers[$event]);
+
         return $this;
     }
 
@@ -410,6 +413,7 @@ class WebhookProcessor
     public function enableEvents(): self
     {
         $this->dispatchEvents = true;
+
         return $this;
     }
 
@@ -419,6 +423,7 @@ class WebhookProcessor
     public function disableEvents(): self
     {
         $this->dispatchEvents = false;
+
         return $this;
     }
 
@@ -436,6 +441,7 @@ class WebhookProcessor
     public function setLogger(LoggerInterface $logger): self
     {
         $this->logger = $logger;
+
         return $this;
     }
 }

@@ -6,7 +6,6 @@ namespace Lynkbyte\EvolutionApi\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Lynkbyte\EvolutionApi\Exceptions\WebhookException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,12 +16,12 @@ class VerifyWebhookSignature
     /**
      * Handle an incoming request.
      *
-     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         // Skip verification if disabled in config
-        if (!config('evolution-api.webhook.verify_signature', true)) {
+        if (! config('evolution-api.webhook.verify_signature', true)) {
             return $next($request);
         }
 
@@ -46,7 +45,7 @@ class VerifyWebhookSignature
         $payload = $request->getContent();
         $expectedSignature = hash_hmac('sha256', $payload, $secret);
 
-        if (!hash_equals($expectedSignature, $signature)) {
+        if (! hash_equals($expectedSignature, $signature)) {
             return $this->invalidSignatureResponse('Invalid signature');
         }
 

@@ -16,7 +16,7 @@ class Group extends Resource
     /**
      * Create a new group.
      *
-     * @param array<string> $participants Array of phone numbers to add
+     * @param  array<string>  $participants  Array of phone numbers to add
      */
     public function create(string $subject, array $participants, ?string $description = null): ApiResponse
     {
@@ -31,7 +31,7 @@ class Group extends Resource
             $data['description'] = $description;
         }
 
-        return $this->post("group/create/{instance}", $data);
+        return $this->post('group/create/{instance}', $data);
     }
 
     /**
@@ -41,7 +41,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->put("group/updateSubject/{instance}", [
+        return $this->put('group/updateSubject/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'subject' => $subject,
         ]);
@@ -54,7 +54,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->put("group/updateDescription/{instance}", [
+        return $this->put('group/updateDescription/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'description' => $description,
         ]);
@@ -63,13 +63,13 @@ class Group extends Resource
     /**
      * Update group picture.
      *
-     * @param string $image Base64 encoded image or URL
+     * @param  string  $image  Base64 encoded image or URL
      */
     public function updatePicture(string $groupJid, string $image): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->put("group/updatePicture/{instance}", [
+        return $this->put('group/updatePicture/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'image' => $image,
         ]);
@@ -82,7 +82,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->delete("group/removePicture/{instance}", [
+        return $this->delete('group/removePicture/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -94,7 +94,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("group/findGroupInfos/{instance}", [
+        return $this->get('group/findGroupInfos/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -106,7 +106,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("group/fetchAllGroups/{instance}", [
+        return $this->get('group/fetchAllGroups/{instance}', [
             'getParticipants' => $getParticipants ? 'true' : 'false',
         ]);
     }
@@ -118,7 +118,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("group/participants/{instance}", [
+        return $this->get('group/participants/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -130,7 +130,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("group/inviteCode/{instance}", [
+        return $this->get('group/inviteCode/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -142,7 +142,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->put("group/revokeInviteCode/{instance}", [
+        return $this->put('group/revokeInviteCode/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -154,7 +154,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("group/acceptInviteCode/{instance}", [
+        return $this->post('group/acceptInviteCode/{instance}', [
             'inviteCode' => $inviteCode,
         ]);
     }
@@ -166,7 +166,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("group/inviteInfo/{instance}", [
+        return $this->get('group/inviteInfo/{instance}', [
             'inviteCode' => $inviteCode,
         ]);
     }
@@ -174,7 +174,7 @@ class Group extends Resource
     /**
      * Send group invite link.
      *
-     * @param array<string> $numbers Phone numbers to invite
+     * @param  array<string>  $numbers  Phone numbers to invite
      */
     public function sendInvite(string $groupJid, array $numbers, ?string $description = null): ApiResponse
     {
@@ -189,19 +189,19 @@ class Group extends Resource
             $data['description'] = $description;
         }
 
-        return $this->post("group/sendInvite/{instance}", $data);
+        return $this->post('group/sendInvite/{instance}', $data);
     }
 
     /**
      * Add participants to group.
      *
-     * @param array<string> $participants Phone numbers to add
+     * @param  array<string>  $participants  Phone numbers to add
      */
     public function addParticipants(string $groupJid, array $participants): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("group/updateParticipant/{instance}", [
+        return $this->post('group/updateParticipant/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'action' => 'add',
             'participants' => $participants,
@@ -211,13 +211,13 @@ class Group extends Resource
     /**
      * Remove participants from group.
      *
-     * @param array<string> $participants Phone numbers to remove
+     * @param  array<string>  $participants  Phone numbers to remove
      */
     public function removeParticipants(string $groupJid, array $participants): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("group/updateParticipant/{instance}", [
+        return $this->post('group/updateParticipant/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'action' => 'remove',
             'participants' => $participants,
@@ -227,13 +227,13 @@ class Group extends Resource
     /**
      * Promote participants to admin.
      *
-     * @param array<string> $participants Phone numbers to promote
+     * @param  array<string>  $participants  Phone numbers to promote
      */
     public function promoteToAdmin(string $groupJid, array $participants): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("group/updateParticipant/{instance}", [
+        return $this->post('group/updateParticipant/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'action' => 'promote',
             'participants' => $participants,
@@ -243,13 +243,13 @@ class Group extends Resource
     /**
      * Demote participants from admin.
      *
-     * @param array<string> $participants Phone numbers to demote
+     * @param  array<string>  $participants  Phone numbers to demote
      */
     public function demoteFromAdmin(string $groupJid, array $participants): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("group/updateParticipant/{instance}", [
+        return $this->post('group/updateParticipant/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'action' => 'demote',
             'participants' => $participants,
@@ -259,14 +259,14 @@ class Group extends Resource
     /**
      * Update group settings.
      *
-     * @param string $action announce (only admins can send), not_announce (everyone can send),
-     *                       locked (only admins can edit), unlocked (everyone can edit)
+     * @param  string  $action  announce (only admins can send), not_announce (everyone can send),
+     *                          locked (only admins can edit), unlocked (everyone can edit)
      */
     public function updateSettings(string $groupJid, string $action): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->put("group/updateSetting/{instance}", [
+        return $this->put('group/updateSetting/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'action' => $action,
         ]);
@@ -291,14 +291,14 @@ class Group extends Resource
     /**
      * Toggle ephemeral messages (disappearing messages).
      *
-     * @param int $expiration Message expiration in seconds (0 to disable)
-     *                        Common values: 86400 (24h), 604800 (7d), 7776000 (90d)
+     * @param  int  $expiration  Message expiration in seconds (0 to disable)
+     *                           Common values: 86400 (24h), 604800 (7d), 7776000 (90d)
      */
     public function toggleEphemeral(string $groupJid, int $expiration): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("group/toggleEphemeral/{instance}", [
+        return $this->post('group/toggleEphemeral/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'expiration' => $expiration,
         ]);
@@ -311,7 +311,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->delete("group/leaveGroup/{instance}", [
+        return $this->delete('group/leaveGroup/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -323,7 +323,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("group/isAdmin/{instance}", [
+        return $this->get('group/isAdmin/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -335,7 +335,7 @@ class Group extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("group/pendingParticipants/{instance}", [
+        return $this->get('group/pendingParticipants/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
         ]);
     }
@@ -343,13 +343,13 @@ class Group extends Resource
     /**
      * Accept join requests.
      *
-     * @param array<string> $participants Participant JIDs to accept
+     * @param  array<string>  $participants  Participant JIDs to accept
      */
     public function acceptJoinRequests(string $groupJid, array $participants): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("group/acceptPendingParticipant/{instance}", [
+        return $this->post('group/acceptPendingParticipant/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'participants' => $participants,
         ]);
@@ -358,13 +358,13 @@ class Group extends Resource
     /**
      * Reject join requests.
      *
-     * @param array<string> $participants Participant JIDs to reject
+     * @param  array<string>  $participants  Participant JIDs to reject
      */
     public function rejectJoinRequests(string $groupJid, array $participants): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("group/rejectPendingParticipant/{instance}", [
+        return $this->post('group/rejectPendingParticipant/{instance}', [
             'groupJid' => $this->formatGroupJid($groupJid),
             'participants' => $participants,
         ]);

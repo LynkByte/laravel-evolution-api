@@ -325,7 +325,7 @@ describe('EvolutionClient', function () {
                 ], 401),
             ]);
 
-            expect(fn() => $this->client->get('/test'))
+            expect(fn () => $this->client->get('/test'))
                 ->toThrow(AuthenticationException::class);
         });
 
@@ -336,7 +336,7 @@ describe('EvolutionClient', function () {
                 ], 404),
             ]);
 
-            expect(fn() => $this->client->get('/instance/unknown'))
+            expect(fn () => $this->client->get('/instance/unknown'))
                 ->toThrow(InstanceNotFoundException::class);
         });
 
@@ -347,7 +347,7 @@ describe('EvolutionClient', function () {
                 ], 429, ['Retry-After' => '60']),
             ]);
 
-            expect(fn() => $this->client->get('/test'))
+            expect(fn () => $this->client->get('/test'))
                 ->toThrow(RateLimitException::class);
         });
 
@@ -358,7 +358,7 @@ describe('EvolutionClient', function () {
                 ], 500),
             ]);
 
-            expect(fn() => $this->client->get('/test'))
+            expect(fn () => $this->client->get('/test'))
                 ->toThrow(EvolutionApiException::class);
         });
 
@@ -369,7 +369,7 @@ describe('EvolutionClient', function () {
                 },
             ]);
 
-            expect(fn() => $this->client->get('/test'))
+            expect(fn () => $this->client->get('/test'))
                 ->toThrow(ConnectionException::class);
         });
     });
@@ -390,7 +390,7 @@ describe('EvolutionClient', function () {
         });
 
         it('throws when instance placeholder used without instance set', function () {
-            expect(fn() => $this->client->get('/message/{instance}'))
+            expect(fn () => $this->client->get('/message/{instance}'))
                 ->toThrow(InstanceNotFoundException::class, 'Instance name is required');
         });
     });
@@ -548,17 +548,54 @@ describe('EvolutionClient', function () {
 
     describe('logger integration', function () {
         it('can set logger', function () {
-            $logger = new class implements \Psr\Log\LoggerInterface {
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
                 public array $logs = [];
-                public function emergency(\Stringable|string $message, array $context = []): void { $this->logs[] = ['emergency', $message]; }
-                public function alert(\Stringable|string $message, array $context = []): void { $this->logs[] = ['alert', $message]; }
-                public function critical(\Stringable|string $message, array $context = []): void { $this->logs[] = ['critical', $message]; }
-                public function error(\Stringable|string $message, array $context = []): void { $this->logs[] = ['error', $message]; }
-                public function warning(\Stringable|string $message, array $context = []): void { $this->logs[] = ['warning', $message]; }
-                public function notice(\Stringable|string $message, array $context = []): void { $this->logs[] = ['notice', $message]; }
-                public function info(\Stringable|string $message, array $context = []): void { $this->logs[] = ['info', $message]; }
-                public function debug(\Stringable|string $message, array $context = []): void { $this->logs[] = ['debug', $message]; }
-                public function log($level, \Stringable|string $message, array $context = []): void { $this->logs[] = [$level, $message]; }
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message];
+                }
             };
 
             $result = $this->client->setLogger($logger);

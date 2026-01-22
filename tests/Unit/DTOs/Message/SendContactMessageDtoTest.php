@@ -8,9 +8,9 @@ describe('SendContactMessageDto', function () {
     describe('constructor', function () {
         it('creates a contact message DTO', function () {
             $contact = [
-                ['fullName' => 'John Doe', 'wuid' => '5511999999999', 'phoneNumber' => '+5511999999999']
+                ['fullName' => 'John Doe', 'wuid' => '5511999999999', 'phoneNumber' => '+5511999999999'],
             ];
-            
+
             $dto = new SendContactMessageDto(
                 number: '5511888888888',
                 contact: $contact
@@ -89,7 +89,7 @@ describe('SendContactMessageDto', function () {
                 ['fullName' => 'John Doe', 'wuid' => '5511999999999', 'phoneNumber' => '+5511999999999'],
                 ['fullName' => 'Jane Doe', 'wuid' => '5511888888888', 'phoneNumber' => '+5511888888888'],
             ];
-            
+
             $dto = SendContactMessageDto::multiple('5511777777777', $contacts);
 
             expect($dto->number)->toBe('5511777777777');

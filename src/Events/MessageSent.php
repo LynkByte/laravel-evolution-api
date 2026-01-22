@@ -12,8 +12,8 @@ class MessageSent extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $message
-     * @param array<string, mixed> $response
+     * @param  array<string, mixed>  $message
+     * @param  array<string, mixed>  $response
      */
     public function __construct(
         string $instanceName,

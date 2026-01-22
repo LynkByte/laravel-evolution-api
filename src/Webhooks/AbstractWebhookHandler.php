@@ -10,10 +10,10 @@ use Lynkbyte\EvolutionApi\Enums\WebhookEvent;
 
 /**
  * Abstract base class for webhook handlers.
- * 
+ *
  * Developers should extend this class to create custom webhook handlers
  * for specific events or instances.
- * 
+ *
  * Example:
  * ```php
  * class MyWebhookHandler extends AbstractWebhookHandler
@@ -49,13 +49,13 @@ abstract class AbstractWebhookHandler implements WebhookHandlerInterface
     public function shouldHandle(WebhookPayloadDto $payload): bool
     {
         // Check instance filter
-        if (!empty($this->allowedInstances) && !in_array($payload->instanceName, $this->allowedInstances, true)) {
+        if (! empty($this->allowedInstances) && ! in_array($payload->instanceName, $this->allowedInstances, true)) {
             return false;
         }
 
         // Check event filter
-        if (!empty($this->allowedEvents) && $payload->webhookEvent !== null) {
-            if (!in_array($payload->webhookEvent, $this->allowedEvents, true)) {
+        if (! empty($this->allowedEvents) && $payload->webhookEvent !== null) {
+            if (! in_array($payload->webhookEvent, $this->allowedEvents, true)) {
                 return false;
             }
         }
@@ -68,7 +68,7 @@ abstract class AbstractWebhookHandler implements WebhookHandlerInterface
      */
     public function handle(WebhookPayloadDto $payload): void
     {
-        if (!$this->shouldHandle($payload)) {
+        if (! $this->shouldHandle($payload)) {
             return;
         }
 
@@ -271,22 +271,24 @@ abstract class AbstractWebhookHandler implements WebhookHandlerInterface
     /**
      * Set the allowed instances for this handler.
      *
-     * @param array<string> $instances
+     * @param  array<string>  $instances
      */
     public function forInstances(array $instances): static
     {
         $this->allowedInstances = $instances;
+
         return $this;
     }
 
     /**
      * Set the allowed events for this handler.
      *
-     * @param array<WebhookEvent> $events
+     * @param  array<WebhookEvent>  $events
      */
     public function forEvents(array $events): static
     {
         $this->allowedEvents = $events;
+
         return $this;
     }
 

@@ -89,7 +89,7 @@ describe('SendPollMessageDto', function () {
                 delay: 1000,
                 quoted: ['key' => ['id' => 'msg-123']]
             );
-            
+
             $newDto = $dto->multipleChoice(2);
 
             expect($newDto->delay)->toBe(1000);

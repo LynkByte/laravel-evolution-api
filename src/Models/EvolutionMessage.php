@@ -196,6 +196,7 @@ class EvolutionMessage extends Model
     public function incrementRetry(): bool
     {
         $this->retry_count++;
+
         return $this->save();
     }
 

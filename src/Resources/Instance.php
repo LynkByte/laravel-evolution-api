@@ -17,7 +17,7 @@ class Instance extends Resource
     /**
      * Create a new WhatsApp instance.
      *
-     * @param array<string, mixed> $options Additional options
+     * @param  array<string, mixed>  $options  Additional options
      */
     public function create(
         string $instanceName,
@@ -49,7 +49,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->get("instance/connect/{instance}");
+        return $this->get('instance/connect/{instance}');
     }
 
     /**
@@ -60,7 +60,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->get("instance/connectionState/{instance}");
+        return $this->get('instance/connectionState/{instance}');
     }
 
     /**
@@ -78,7 +78,7 @@ class Instance extends Resource
     {
         $this->client->instance($instanceName);
 
-        return $this->get("instance/fetchInstances", ['instanceName' => $instanceName]);
+        return $this->get('instance/fetchInstances', ['instanceName' => $instanceName]);
     }
 
     /**
@@ -89,7 +89,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->post("instance/setPresence/{instance}", [
+        return $this->post('instance/setPresence/{instance}', [
             'presence' => $presence,
         ]);
     }
@@ -102,7 +102,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->put("instance/restart/{instance}");
+        return $this->put('instance/restart/{instance}');
     }
 
     /**
@@ -113,7 +113,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->delete("instance/logout/{instance}");
+        return $this->delete('instance/logout/{instance}');
     }
 
     /**
@@ -124,7 +124,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->delete("instance/delete/{instance}");
+        return $this->delete('instance/delete/{instance}');
     }
 
     /**
@@ -135,7 +135,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->get("instance/qrcode/{instance}");
+        return $this->get('instance/qrcode/{instance}');
     }
 
     /**
@@ -146,7 +146,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->get("instance/qrcode-base64/{instance}");
+        return $this->get('instance/qrcode-base64/{instance}');
     }
 
     /**
@@ -172,8 +172,8 @@ class Instance extends Resource
     /**
      * Wait for connection (poll until connected or timeout).
      *
-     * @param int $timeout Timeout in seconds
-     * @param int $interval Polling interval in seconds
+     * @param  int  $timeout  Timeout in seconds
+     * @param  int  $interval  Polling interval in seconds
      */
     public function waitForConnection(
         ?string $instanceName = null,
@@ -216,14 +216,14 @@ class Instance extends Resource
     /**
      * Update instance settings.
      *
-     * @param array<string, mixed> $settings
+     * @param  array<string, mixed>  $settings
      */
     public function updateSettings(array $settings, ?string $instanceName = null): ApiResponse
     {
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->put("instance/settings/{instance}", $settings);
+        return $this->put('instance/settings/{instance}', $settings);
     }
 
     /**
@@ -234,7 +234,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->get("instance/settings/{instance}");
+        return $this->get('instance/settings/{instance}');
     }
 
     /**
@@ -245,7 +245,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->post("instance/refreshQrCode/{instance}");
+        return $this->post('instance/refreshQrCode/{instance}');
     }
 
     /**
@@ -258,7 +258,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->post("instance/connect/{instance}", [
+        return $this->post('instance/connect/{instance}', [
             'number' => $phoneNumber,
         ]);
     }
@@ -271,7 +271,7 @@ class Instance extends Resource
         $instance = $instanceName ?? $this->getInstanceName();
         $this->client->instance($instance);
 
-        return $this->post("instance/verifyCode/{instance}", [
+        return $this->post('instance/verifyCode/{instance}', [
             'code' => $code,
         ]);
     }

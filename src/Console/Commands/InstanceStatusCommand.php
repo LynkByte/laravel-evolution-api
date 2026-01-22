@@ -57,8 +57,9 @@ class InstanceStatusCommand extends Command
         try {
             $response = $evolution->instance()->fetchAll();
 
-            if (!$response->isSuccess()) {
-                $this->error('Failed to fetch instances: ' . ($response->getError() ?? 'Unknown error'));
+            if (! $response->isSuccess()) {
+                $this->error('Failed to fetch instances: '.($response->getError() ?? 'Unknown error'));
+
                 return self::FAILURE;
             }
 
@@ -66,6 +67,7 @@ class InstanceStatusCommand extends Command
 
             if (empty($instances)) {
                 $this->warn('No instances found.');
+
                 return self::SUCCESS;
             }
 
@@ -98,7 +100,8 @@ class InstanceStatusCommand extends Command
             return self::SUCCESS;
 
         } catch (\Throwable $e) {
-            $this->error('Error: ' . $e->getMessage());
+            $this->error('Error: '.$e->getMessage());
+
             return self::FAILURE;
         }
     }
@@ -113,8 +116,9 @@ class InstanceStatusCommand extends Command
         try {
             $response = $evolution->instance()->fetchAll();
 
-            if (!$response->isSuccess()) {
-                $this->error('Failed to fetch instances: ' . ($response->getError() ?? 'Unknown error'));
+            if (! $response->isSuccess()) {
+                $this->error('Failed to fetch instances: '.($response->getError() ?? 'Unknown error'));
+
                 return self::FAILURE;
             }
 
@@ -123,8 +127,8 @@ class InstanceStatusCommand extends Command
 
             foreach ($instances as $instanceData) {
                 $name = $instanceData['instance']['instanceName'] ?? $instanceData['name'] ?? null;
-                
-                if (!$name) {
+
+                if (! $name) {
                     continue;
                 }
 
@@ -154,7 +158,8 @@ class InstanceStatusCommand extends Command
             return self::SUCCESS;
 
         } catch (\Throwable $e) {
-            $this->error('Error: ' . $e->getMessage());
+            $this->error('Error: '.$e->getMessage());
+
             return self::FAILURE;
         }
     }
@@ -166,8 +171,9 @@ class InstanceStatusCommand extends Command
     {
         $instanceName = $this->argument('instance');
 
-        if (!$instanceName) {
+        if (! $instanceName) {
             $this->error('Instance name is required for connect action.');
+
             return self::FAILURE;
         }
 
@@ -176,8 +182,9 @@ class InstanceStatusCommand extends Command
         try {
             $response = $evolution->for($instanceName)->instance()->connect();
 
-            if (!$response->isSuccess()) {
-                $this->error('Failed to connect: ' . ($response->getError() ?? 'Unknown error'));
+            if (! $response->isSuccess()) {
+                $this->error('Failed to connect: '.($response->getError() ?? 'Unknown error'));
+
                 return self::FAILURE;
             }
 
@@ -191,7 +198,7 @@ class InstanceStatusCommand extends Command
 
                 if (isset($data['pairingCode'])) {
                     $this->newLine();
-                    $this->info('Pairing Code: ' . $data['pairingCode']);
+                    $this->info('Pairing Code: '.$data['pairingCode']);
                 }
             } else {
                 $this->info('Instance connected successfully!');
@@ -200,7 +207,8 @@ class InstanceStatusCommand extends Command
             return self::SUCCESS;
 
         } catch (\Throwable $e) {
-            $this->error('Error: ' . $e->getMessage());
+            $this->error('Error: '.$e->getMessage());
+
             return self::FAILURE;
         }
     }
@@ -212,13 +220,15 @@ class InstanceStatusCommand extends Command
     {
         $instanceName = $this->argument('instance');
 
-        if (!$instanceName) {
+        if (! $instanceName) {
             $this->error('Instance name is required for disconnect action.');
+
             return self::FAILURE;
         }
 
-        if (!$this->confirm("Are you sure you want to disconnect instance '{$instanceName}'?")) {
+        if (! $this->confirm("Are you sure you want to disconnect instance '{$instanceName}'?")) {
             $this->info('Operation cancelled.');
+
             return self::SUCCESS;
         }
 
@@ -227,8 +237,9 @@ class InstanceStatusCommand extends Command
         try {
             $response = $evolution->for($instanceName)->instance()->logout();
 
-            if (!$response->isSuccess()) {
-                $this->error('Failed to disconnect: ' . ($response->getError() ?? 'Unknown error'));
+            if (! $response->isSuccess()) {
+                $this->error('Failed to disconnect: '.($response->getError() ?? 'Unknown error'));
+
                 return self::FAILURE;
             }
 
@@ -237,7 +248,8 @@ class InstanceStatusCommand extends Command
             return self::SUCCESS;
 
         } catch (\Throwable $e) {
-            $this->error('Error: ' . $e->getMessage());
+            $this->error('Error: '.$e->getMessage());
+
             return self::FAILURE;
         }
     }
@@ -249,6 +261,7 @@ class InstanceStatusCommand extends Command
     {
         $this->error("Invalid action: {$action}");
         $this->line('Available actions: list, sync, connect, disconnect');
+
         return self::FAILURE;
     }
 }

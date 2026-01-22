@@ -12,7 +12,7 @@ use Lynkbyte\EvolutionApi\DTOs\BaseDto;
 final class SendPollMessageDto extends BaseDto
 {
     /**
-     * @param array<string> $values Poll options
+     * @param  array<string>  $values  Poll options
      */
     public function __construct(
         public readonly string $number,
@@ -28,7 +28,7 @@ final class SendPollMessageDto extends BaseDto
     /**
      * Create a poll message.
      *
-     * @param array<string> $options
+     * @param  array<string>  $options
      */
     public static function create(string $number, string $question, array $options): self
     {

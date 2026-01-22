@@ -33,7 +33,7 @@ describe('EvolutionApiException', function () {
         });
 
         it('creates exception with default values', function () {
-            $exception = new EvolutionApiException();
+            $exception = new EvolutionApiException;
 
             expect($exception->getMessage())->toBe('');
             expect($exception->getCode())->toBe(0);
@@ -250,7 +250,7 @@ describe('InstanceNotFoundException', function () {
         });
 
         it('creates exception with default message', function () {
-            $exception = new InstanceNotFoundException();
+            $exception = new InstanceNotFoundException;
 
             expect($exception->getMessage())->toBe('Instance not found');
         });
@@ -290,7 +290,7 @@ describe('MessageException', function () {
         });
 
         it('creates exception with default values', function () {
-            $exception = new MessageException();
+            $exception = new MessageException;
 
             expect($exception->getMessage())->toBe('Message operation failed');
             expect($exception->getMessageId())->toBeNull();
@@ -385,7 +385,7 @@ describe('RateLimitException', function () {
         });
 
         it('creates exception with default values', function () {
-            $exception = new RateLimitException();
+            $exception = new RateLimitException;
 
             expect($exception->getMessage())->toBe('Rate limit exceeded');
             expect($exception->getRetryAfter())->toBe(60);
@@ -528,7 +528,7 @@ describe('WebhookException', function () {
         });
 
         it('creates exception with default values', function () {
-            $exception = new WebhookException();
+            $exception = new WebhookException;
 
             expect($exception->getMessage())->toBe('Webhook processing failed');
             expect($exception->getEventType())->toBeNull();
@@ -618,15 +618,15 @@ describe('Exception Hierarchy', function () {
     it('all exceptions extend EvolutionApiException', function () {
         expect(new AuthenticationException('test'))->toBeInstanceOf(EvolutionApiException::class);
         expect(new ConnectionException('test'))->toBeInstanceOf(EvolutionApiException::class);
-        expect(new InstanceNotFoundException())->toBeInstanceOf(EvolutionApiException::class);
-        expect(new MessageException())->toBeInstanceOf(EvolutionApiException::class);
-        expect(new RateLimitException())->toBeInstanceOf(EvolutionApiException::class);
+        expect(new InstanceNotFoundException)->toBeInstanceOf(EvolutionApiException::class);
+        expect(new MessageException)->toBeInstanceOf(EvolutionApiException::class);
+        expect(new RateLimitException)->toBeInstanceOf(EvolutionApiException::class);
         expect(new ValidationException([]))->toBeInstanceOf(EvolutionApiException::class);
-        expect(new WebhookException())->toBeInstanceOf(EvolutionApiException::class);
+        expect(new WebhookException)->toBeInstanceOf(EvolutionApiException::class);
     });
 
     it('all exceptions extend base Exception', function () {
-        expect(new EvolutionApiException())->toBeInstanceOf(Exception::class);
+        expect(new EvolutionApiException)->toBeInstanceOf(Exception::class);
         expect(new AuthenticationException('test'))->toBeInstanceOf(Exception::class);
         expect(new ConnectionException('test'))->toBeInstanceOf(Exception::class);
     });

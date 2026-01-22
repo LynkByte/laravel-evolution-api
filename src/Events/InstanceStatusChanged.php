@@ -14,7 +14,7 @@ class InstanceStatusChanged extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $data Additional instance data
+     * @param  array<string, mixed>  $data  Additional instance data
      */
     public function __construct(
         string $instanceName,
@@ -31,7 +31,7 @@ class InstanceStatusChanged extends BaseEvent
      */
     public function isReady(): bool
     {
-        return $this->status === InstanceStatus::OPEN 
+        return $this->status === InstanceStatus::OPEN
             || $this->status === InstanceStatus::CONNECTED;
     }
 

@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Lynkbyte\EvolutionApi\Testing\Fakes;
 
 use PHPUnit\Framework\Assert;
-use Lynkbyte\EvolutionApi\DTOs\ApiResponse;
-use Lynkbyte\EvolutionApi\Enums\MessageType;
-use Lynkbyte\EvolutionApi\Enums\InstanceStatus;
 
 /**
  * Fake Evolution API service for testing.
- * 
+ *
  * Provides a test double that records all interactions and allows
  * custom response stubbing for isolated testing.
  */
@@ -58,7 +55,7 @@ class EvolutionApiFake
     /**
      * Create a new fake instance.
      *
-     * @param array<string, mixed> $responses Initial stubbed responses
+     * @param  array<string, mixed>  $responses  Initial stubbed responses
      */
     public function __construct(array $responses = [])
     {
@@ -76,7 +73,7 @@ class EvolutionApiFake
                 'key' => [
                     'remoteJid' => '5511999999999@s.whatsapp.net',
                     'fromMe' => true,
-                    'id' => 'FAKE_MESSAGE_' . uniqid(),
+                    'id' => 'FAKE_MESSAGE_'.uniqid(),
                 ],
                 'message' => [
                     'conversation' => 'Test message',
@@ -88,7 +85,7 @@ class EvolutionApiFake
                 'key' => [
                     'remoteJid' => '5511999999999@s.whatsapp.net',
                     'fromMe' => true,
-                    'id' => 'FAKE_MEDIA_' . uniqid(),
+                    'id' => 'FAKE_MEDIA_'.uniqid(),
                 ],
                 'messageTimestamp' => time(),
                 'status' => 'PENDING',
@@ -127,22 +124,23 @@ class EvolutionApiFake
     /**
      * Set the current instance for chained operations.
      *
-     * @param string $name Instance name
+     * @param  string  $name  Instance name
      * @return $this
      */
     public function connection(string $name): static
     {
         $this->currentInstance = $name;
+
         return $this;
     }
 
     /**
      * Send a text message.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Recipient phone number
-     * @param string $text Message text
-     * @param array<string, mixed> $options Additional options
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient phone number
+     * @param  string  $text  Message text
+     * @param  array<string, mixed>  $options  Additional options
      * @return array<string, mixed>
      */
     public function sendText(
@@ -160,7 +158,7 @@ class EvolutionApiFake
             'key' => [
                 'remoteJid' => $this->formatJid($number),
                 'fromMe' => true,
-                'id' => 'FAKE_MSG_' . uniqid(),
+                'id' => 'FAKE_MSG_'.uniqid(),
             ],
             'message' => ['conversation' => $text],
             'messageTimestamp' => time(),
@@ -170,9 +168,9 @@ class EvolutionApiFake
     /**
      * Send media message.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Recipient phone number
-     * @param array<string, mixed> $media Media data
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient phone number
+     * @param  array<string, mixed>  $media  Media data
      * @return array<string, mixed>
      */
     public function sendMedia(
@@ -190,10 +188,10 @@ class EvolutionApiFake
     /**
      * Send audio message.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Recipient phone number
-     * @param string $audio Audio URL or base64
-     * @param array<string, mixed> $options Additional options
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient phone number
+     * @param  string  $audio  Audio URL or base64
+     * @param  array<string, mixed>  $options  Additional options
      * @return array<string, mixed>
      */
     public function sendAudio(
@@ -213,11 +211,11 @@ class EvolutionApiFake
     /**
      * Send location message.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Recipient phone number
-     * @param float $latitude Latitude
-     * @param float $longitude Longitude
-     * @param array<string, mixed> $options Additional options
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient phone number
+     * @param  float  $latitude  Latitude
+     * @param  float  $longitude  Longitude
+     * @param  array<string, mixed>  $options  Additional options
      * @return array<string, mixed>
      */
     public function sendLocation(
@@ -239,9 +237,9 @@ class EvolutionApiFake
     /**
      * Send contact message.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Recipient phone number
-     * @param array<string, mixed> $contact Contact data
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient phone number
+     * @param  array<string, mixed>  $contact  Contact data
      * @return array<string, mixed>
      */
     public function sendContact(
@@ -259,9 +257,9 @@ class EvolutionApiFake
     /**
      * Send reaction message.
      *
-     * @param string $instanceName Instance name
-     * @param string $messageId Message ID to react to
-     * @param string $reaction Reaction emoji
+     * @param  string  $instanceName  Instance name
+     * @param  string  $messageId  Message ID to react to
+     * @param  string  $reaction  Reaction emoji
      * @return array<string, mixed>
      */
     public function sendReaction(
@@ -281,11 +279,11 @@ class EvolutionApiFake
     /**
      * Send poll message.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Recipient phone number
-     * @param string $name Poll question
-     * @param array<string> $values Poll options
-     * @param array<string, mixed> $options Additional options
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient phone number
+     * @param  string  $name  Poll question
+     * @param  array<string>  $values  Poll options
+     * @param  array<string, mixed>  $options  Additional options
      * @return array<string, mixed>
      */
     public function sendPoll(
@@ -307,9 +305,9 @@ class EvolutionApiFake
     /**
      * Send list message.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Recipient phone number
-     * @param array<string, mixed> $list List data
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient phone number
+     * @param  array<string, mixed>  $list  List data
      * @return array<string, mixed>
      */
     public function sendList(
@@ -327,7 +325,7 @@ class EvolutionApiFake
     /**
      * Create a new instance.
      *
-     * @param array<string, mixed> $data Instance data
+     * @param  array<string, mixed>  $data  Instance data
      * @return array<string, mixed>
      */
     public function createInstance(array $data): array
@@ -340,7 +338,7 @@ class EvolutionApiFake
     /**
      * Fetch instances.
      *
-     * @param string|null $instanceName Optional instance name filter
+     * @param  string|null  $instanceName  Optional instance name filter
      * @return array<string, mixed>
      */
     public function fetchInstances(?string $instanceName = null): array
@@ -355,7 +353,7 @@ class EvolutionApiFake
     /**
      * Get QR code.
      *
-     * @param string $instanceName Instance name
+     * @param  string  $instanceName  Instance name
      * @return array<string, mixed>
      */
     public function getQrCode(string $instanceName): array
@@ -370,7 +368,7 @@ class EvolutionApiFake
     /**
      * Get connection state.
      *
-     * @param string $instanceName Instance name
+     * @param  string  $instanceName  Instance name
      * @return array<string, mixed>
      */
     public function connectionState(string $instanceName): array
@@ -385,9 +383,8 @@ class EvolutionApiFake
     /**
      * Check if number is on WhatsApp.
      *
-     * @param string $instanceName Instance name
-     * @param string $number Phone number
-     * @return bool
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Phone number
      */
     public function isWhatsApp(string $instanceName, string $number): bool
     {
@@ -404,33 +401,35 @@ class EvolutionApiFake
     /**
      * Stub a response for a specific operation.
      *
-     * @param string $operation Operation name
-     * @param mixed $response Response to return
+     * @param  string  $operation  Operation name
+     * @param  mixed  $response  Response to return
      * @return $this
      */
     public function stubResponse(string $operation, mixed $response): static
     {
         $this->responses[$operation] = $response;
+
         return $this;
     }
 
     /**
      * Stub responses using a callback.
      *
-     * @param callable $callback Callback that receives operation name and returns response
+     * @param  callable  $callback  Callback that receives operation name and returns response
      * @return $this
      */
     public function stubUsing(callable $callback): static
     {
         $this->responses['_callback'] = $callback;
+
         return $this;
     }
 
     /**
      * Get a response for an operation.
      *
-     * @param string $operation Operation name
-     * @param array<string, mixed>|null $default Default response
+     * @param  string  $operation  Operation name
+     * @param  array<string, mixed>|null  $default  Default response
      * @return array<string, mixed>
      */
     protected function getResponse(string $operation, ?array $default = null): array
@@ -443,6 +442,7 @@ class EvolutionApiFake
         // Check for specific stub
         if (isset($this->responses[$operation])) {
             $response = $this->responses[$operation];
+
             return is_callable($response) ? $response() : $response;
         }
 
@@ -453,10 +453,10 @@ class EvolutionApiFake
     /**
      * Record a message being sent.
      *
-     * @param string $type Message type
-     * @param string $instanceName Instance name
-     * @param string $number Recipient number
-     * @param array<string, mixed> $data Message data
+     * @param  string  $type  Message type
+     * @param  string  $instanceName  Instance name
+     * @param  string  $number  Recipient number
+     * @param  array<string, mixed>  $data  Message data
      */
     protected function recordMessage(
         string $type,
@@ -464,7 +464,7 @@ class EvolutionApiFake
         string $number,
         array $data
     ): void {
-        if (!$this->recording) {
+        if (! $this->recording) {
             return;
         }
 
@@ -480,12 +480,12 @@ class EvolutionApiFake
     /**
      * Record an API call.
      *
-     * @param string $operation Operation name
-     * @param array<string, mixed> $data Operation data
+     * @param  string  $operation  Operation name
+     * @param  array<string, mixed>  $data  Operation data
      */
     protected function recordApiCall(string $operation, array $data): void
     {
-        if (!$this->recording) {
+        if (! $this->recording) {
             return;
         }
 
@@ -502,7 +502,8 @@ class EvolutionApiFake
     protected function formatJid(string $number): string
     {
         $cleaned = preg_replace('/[^0-9]/', '', $number);
-        return $cleaned . '@s.whatsapp.net';
+
+        return $cleaned.'@s.whatsapp.net';
     }
 
     // =========================================================================
@@ -512,8 +513,8 @@ class EvolutionApiFake
     /**
      * Assert that a message was sent to the given number.
      *
-     * @param string $number Phone number
-     * @param callable|null $callback Optional callback for additional assertions
+     * @param  string  $number  Phone number
+     * @param  callable|null  $callback  Optional callback for additional assertions
      */
     public function assertMessageSent(string $number, ?callable $callback = null): void
     {
@@ -536,7 +537,7 @@ class EvolutionApiFake
     /**
      * Assert that no message was sent to the given number.
      *
-     * @param string $number Phone number
+     * @param  string  $number  Phone number
      */
     public function assertMessageNotSent(string $number): void
     {
@@ -553,7 +554,7 @@ class EvolutionApiFake
     /**
      * Assert that messages were sent a specific number of times.
      *
-     * @param int $times Expected count
+     * @param  int  $times  Expected count
      */
     public function assertMessageSentTimes(int $times): void
     {
@@ -573,14 +574,14 @@ class EvolutionApiFake
     {
         Assert::assertEmpty(
             $this->sentMessages,
-            'Failed asserting that no messages were sent. Messages sent: ' . count($this->sentMessages)
+            'Failed asserting that no messages were sent. Messages sent: '.count($this->sentMessages)
         );
     }
 
     /**
      * Assert that a message contains specific text.
      *
-     * @param string $text Text to search for
+     * @param  string  $text  Text to search for
      */
     public function assertMessageContains(string $text): void
     {
@@ -602,11 +603,11 @@ class EvolutionApiFake
     /**
      * Assert that a message of specific type was sent.
      *
-     * @param string $type Message type
+     * @param  string  $type  Message type
      */
     public function assertMessageTypeWas(string $type): void
     {
-        $found = array_filter($this->sentMessages, fn($m) => $m['type'] === $type);
+        $found = array_filter($this->sentMessages, fn ($m) => $m['type'] === $type);
 
         Assert::assertNotEmpty(
             $found,
@@ -617,12 +618,12 @@ class EvolutionApiFake
     /**
      * Assert that an API call was made.
      *
-     * @param string $operation Operation name
-     * @param callable|null $callback Optional callback for additional assertions
+     * @param  string  $operation  Operation name
+     * @param  callable|null  $callback  Optional callback for additional assertions
      */
     public function assertApiCalled(string $operation, ?callable $callback = null): void
     {
-        $found = array_filter($this->apiCalls, fn($c) => $c['operation'] === $operation);
+        $found = array_filter($this->apiCalls, fn ($c) => $c['operation'] === $operation);
 
         Assert::assertNotEmpty(
             $found,
@@ -639,11 +640,11 @@ class EvolutionApiFake
     /**
      * Assert that an API call was not made.
      *
-     * @param string $operation Operation name
+     * @param  string  $operation  Operation name
      */
     public function assertApiNotCalled(string $operation): void
     {
-        $found = array_filter($this->apiCalls, fn($c) => $c['operation'] === $operation);
+        $found = array_filter($this->apiCalls, fn ($c) => $c['operation'] === $operation);
 
         Assert::assertEmpty(
             $found,
@@ -704,6 +705,7 @@ class EvolutionApiFake
     {
         $this->sentMessages = [];
         $this->apiCalls = [];
+
         return $this;
     }
 
@@ -715,6 +717,7 @@ class EvolutionApiFake
     public function disableRecording(): static
     {
         $this->recording = false;
+
         return $this;
     }
 
@@ -726,6 +729,7 @@ class EvolutionApiFake
     public function enableRecording(): static
     {
         $this->recording = true;
+
         return $this;
     }
 
@@ -753,8 +757,7 @@ class EvolutionApiFake
     /**
      * Get instance resource.
      *
-     * @param string|null $instanceName Instance name
-     * @return FakeInstanceResource
+     * @param  string|null  $instanceName  Instance name
      */
     public function instance(?string $instanceName = null): FakeInstanceResource
     {
@@ -764,8 +767,7 @@ class EvolutionApiFake
     /**
      * Get message resource.
      *
-     * @param string|null $instanceName Instance name
-     * @return FakeMessageResource
+     * @param  string|null  $instanceName  Instance name
      */
     public function message(?string $instanceName = null): FakeMessageResource
     {
@@ -775,8 +777,7 @@ class EvolutionApiFake
     /**
      * Get chat resource.
      *
-     * @param string|null $instanceName Instance name
-     * @return FakeChatResource
+     * @param  string|null  $instanceName  Instance name
      */
     public function chat(?string $instanceName = null): FakeChatResource
     {
@@ -786,8 +787,7 @@ class EvolutionApiFake
     /**
      * Get group resource.
      *
-     * @param string|null $instanceName Instance name
-     * @return FakeGroupResource
+     * @param  string|null  $instanceName  Instance name
      */
     public function group(?string $instanceName = null): FakeGroupResource
     {
@@ -797,8 +797,7 @@ class EvolutionApiFake
     /**
      * Get profile resource.
      *
-     * @param string|null $instanceName Instance name
-     * @return FakeProfileResource
+     * @param  string|null  $instanceName  Instance name
      */
     public function profile(?string $instanceName = null): FakeProfileResource
     {
@@ -808,8 +807,7 @@ class EvolutionApiFake
     /**
      * Get webhook resource.
      *
-     * @param string|null $instanceName Instance name
-     * @return FakeWebhookResource
+     * @param  string|null  $instanceName  Instance name
      */
     public function webhook(?string $instanceName = null): FakeWebhookResource
     {
@@ -819,8 +817,7 @@ class EvolutionApiFake
     /**
      * Get settings resource.
      *
-     * @param string|null $instanceName Instance name
-     * @return FakeSettingsResource
+     * @param  string|null  $instanceName  Instance name
      */
     public function settings(?string $instanceName = null): FakeSettingsResource
     {
@@ -834,6 +831,7 @@ class EvolutionApiFake
 abstract class FakeResource
 {
     protected EvolutionApiFake $fake;
+
     protected ?string $instanceName;
 
     public function __construct(EvolutionApiFake $fake, ?string $instanceName)
@@ -943,7 +941,7 @@ class FakeGroupResource extends FakeResource
 
     public function create(string $subject, array $participants): array
     {
-        return ['id' => 'fake-group-' . uniqid()];
+        return ['id' => 'fake-group-'.uniqid()];
     }
 }
 

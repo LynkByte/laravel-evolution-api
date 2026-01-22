@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Contracts\Events\Dispatcher;
 use Lynkbyte\EvolutionApi\Contracts\WebhookHandlerInterface;
 use Lynkbyte\EvolutionApi\DTOs\Webhook\WebhookPayloadDto;
-use Lynkbyte\EvolutionApi\Enums\WebhookEvent;
 use Lynkbyte\EvolutionApi\Events\ConnectionUpdated;
 use Lynkbyte\EvolutionApi\Events\InstanceStatusChanged;
 use Lynkbyte\EvolutionApi\Events\MessageDelivered;

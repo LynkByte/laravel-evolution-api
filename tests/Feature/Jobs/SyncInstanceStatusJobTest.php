@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
-use Lynkbyte\EvolutionApi\Events\InstanceStatusChanged;
 use Lynkbyte\EvolutionApi\Jobs\SyncInstanceStatusJob;
 
 describe('SyncInstanceStatusJob', function () {
@@ -18,7 +17,7 @@ describe('SyncInstanceStatusJob', function () {
 
     describe('constructor', function () {
         it('creates job without parameters', function () {
-            $job = new SyncInstanceStatusJob();
+            $job = new SyncInstanceStatusJob;
 
             expect($job->instanceName)->toBeNull();
             expect($job->connectionName)->toBeNull();
@@ -44,7 +43,7 @@ describe('SyncInstanceStatusJob', function () {
 
     describe('tags', function () {
         it('returns base tags without instance', function () {
-            $job = new SyncInstanceStatusJob();
+            $job = new SyncInstanceStatusJob;
 
             $tags = $job->tags();
 
@@ -93,7 +92,7 @@ describe('SyncInstanceStatusJob', function () {
 
     describe('job configuration', function () {
         it('has default tries', function () {
-            $job = new SyncInstanceStatusJob();
+            $job = new SyncInstanceStatusJob;
 
             expect($job->tries)->toBe(3);
         });

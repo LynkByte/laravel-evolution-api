@@ -103,8 +103,9 @@ class InstallCommand extends Command
 
         $envPath = base_path('.env');
 
-        if (!file_exists($envPath)) {
+        if (! file_exists($envPath)) {
             $this->warn('.env file not found. Please create one and add the Evolution API configuration.');
+
             return;
         }
 
@@ -113,6 +114,7 @@ class InstallCommand extends Command
         // Check if variables already exist
         if (str_contains($envContent, 'EVOLUTION_API_SERVER_URL')) {
             $this->info('Environment variables already configured.');
+
             return;
         }
 
@@ -132,14 +134,14 @@ class InstallCommand extends Command
         // Append to .env file
         $envAdditions = "\n# Evolution API Configuration\n";
         $envAdditions .= "EVOLUTION_API_SERVER_URL={$serverUrl}\n";
-        
+
         if ($apiKey) {
             $envAdditions .= "EVOLUTION_API_KEY={$apiKey}\n";
         }
-        
+
         $envAdditions .= "EVOLUTION_API_DEFAULT_INSTANCE={$defaultInstance}\n";
 
-        file_put_contents($envPath, $envContent . $envAdditions);
+        file_put_contents($envPath, $envContent.$envAdditions);
 
         $this->info('Environment variables added to .env file.');
     }
@@ -155,7 +157,7 @@ class InstallCommand extends Command
         $this->line('1. Review and update your <comment>config/evolution-api.php</comment> file');
         $this->line('2. Ensure your <comment>.env</comment> file has the correct Evolution API credentials');
         $this->line('3. Configure webhooks in Evolution API to point to:');
-        $this->line('   <comment>' . url('/api/evolution-api/webhook') . '</comment>');
+        $this->line('   <comment>'.url('/api/evolution-api/webhook').'</comment>');
         $this->line('4. Test the connection with: <comment>php artisan evolution-api:health</comment>');
 
         $this->newLine();

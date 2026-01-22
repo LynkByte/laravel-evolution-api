@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Lynkbyte\EvolutionApi\Enums\MessageStatus;
 use Lynkbyte\EvolutionApi\Enums\MessageType;
-use Lynkbyte\EvolutionApi\Models\EvolutionInstance;
 use Lynkbyte\EvolutionApi\Models\EvolutionMessage;
 
 describe('EvolutionMessage Model', function () {
@@ -50,21 +49,21 @@ describe('EvolutionMessage Model', function () {
         });
 
         it('casts media to array', function () {
-            $message = new EvolutionMessage();
+            $message = new EvolutionMessage;
             $message->media = ['url' => 'https://example.com'];
 
             expect($message->media)->toBeArray();
         });
 
         it('casts payload to array', function () {
-            $message = new EvolutionMessage();
+            $message = new EvolutionMessage;
             $message->payload = ['key' => 'value'];
 
             expect($message->payload)->toBeArray();
         });
 
         it('casts response to array', function () {
-            $message = new EvolutionMessage();
+            $message = new EvolutionMessage;
             $message->response = ['id' => 'msg-123'];
 
             expect($message->response)->toBeArray();
@@ -219,7 +218,7 @@ describe('EvolutionMessage Model', function () {
 
     describe('relationships', function () {
         it('defines instance relationship', function () {
-            $message = new EvolutionMessage();
+            $message = new EvolutionMessage;
 
             expect($message->instance())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class);
         });
@@ -272,7 +271,7 @@ describe('EvolutionMessage Model', function () {
 
     describe('table configuration', function () {
         it('uses correct table name', function () {
-            $message = new EvolutionMessage();
+            $message = new EvolutionMessage;
 
             expect($message->getTable())->toBe('evolution_messages');
         });

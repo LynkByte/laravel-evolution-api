@@ -16,7 +16,7 @@ final class SendReactionMessageDto extends BaseDto
         public readonly string $reaction,
         bool $skipValidation = false,
     ) {
-        if (!$skipValidation) {
+        if (! $skipValidation) {
             $this->validateRequired(['key', 'reaction']);
         }
     }

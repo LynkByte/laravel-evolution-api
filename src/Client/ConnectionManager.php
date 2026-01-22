@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Lynkbyte\EvolutionApi\Client;
 
-use InvalidArgumentException;
 use Lynkbyte\EvolutionApi\Exceptions\ConnectionException;
 
 /**
@@ -34,7 +33,7 @@ class ConnectionManager
     /**
      * Create a new connection manager instance.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(
         protected array $config
@@ -103,7 +102,7 @@ class ConnectionManager
     /**
      * Add a connection at runtime.
      *
-     * @param array{server_url: string, api_key: string} $config
+     * @param  array{server_url: string, api_key: string}  $config
      */
     public function addConnection(string $name, array $config): self
     {
@@ -157,7 +156,7 @@ class ConnectionManager
     /**
      * Get the server URL for a connection.
      */
-    public function getServerUrl(string $name = null): string
+    public function getServerUrl(?string $name = null): string
     {
         $name ??= $this->activeConnection;
 
@@ -167,7 +166,7 @@ class ConnectionManager
     /**
      * Get the API key for a connection.
      */
-    public function getApiKey(string $name = null): string
+    public function getApiKey(?string $name = null): string
     {
         $name ??= $this->activeConnection;
 
@@ -226,7 +225,7 @@ class ConnectionManager
     /**
      * Validate a connection configuration.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      *
      * @throws ConnectionException
      */
@@ -257,8 +256,7 @@ class ConnectionManager
     /**
      * Normalize a connection configuration.
      *
-     * @param array<string, mixed> $config
-     *
+     * @param  array<string, mixed>  $config
      * @return array{server_url: string, api_key: string}
      */
     protected function normalizeConnectionConfig(array $config): array

@@ -10,9 +10,9 @@ describe('SendReactionMessageDto', function () {
             $key = [
                 'remoteJid' => '5511999999999@s.whatsapp.net',
                 'fromMe' => false,
-                'id' => 'MESSAGE_ID_123'
+                'id' => 'MESSAGE_ID_123',
             ];
-            
+
             $dto = new SendReactionMessageDto(
                 key: $key,
                 reaction: '👍'
@@ -105,7 +105,7 @@ describe('SendReactionMessageDto', function () {
     describe('emoji reactions', function () {
         it('supports various emoji reactions', function () {
             $emojis = ['👍', '❤️', '😂', '😮', '😢', '🙏', '🔥', '🎉', '💯', '👏'];
-            
+
             foreach ($emojis as $emoji) {
                 $dto = SendReactionMessageDto::react(
                     remoteJid: 'test@s.whatsapp.net',
@@ -113,7 +113,7 @@ describe('SendReactionMessageDto', function () {
                     fromMe: false,
                     reaction: $emoji
                 );
-                
+
                 expect($dto->reaction)->toBe($emoji);
             }
         });

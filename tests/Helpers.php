@@ -15,10 +15,7 @@ class Helpers
     /**
      * Create a mock API response.
      *
-     * @param array<string, mixed> $data
-     * @param bool $success
-     * @param int $statusCode
-     * @return ApiResponse
+     * @param  array<string, mixed>  $data
      */
     public static function createApiResponse(
         array $data = [],
@@ -33,9 +30,7 @@ class Helpers
     /**
      * Create a sample text message payload.
      *
-     * @param string $number
-     * @param string $text
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      * @return array<string, mixed>
      */
     public static function textMessagePayload(
@@ -52,10 +47,7 @@ class Helpers
     /**
      * Create a sample media message payload.
      *
-     * @param string $number
-     * @param string $mediaType
-     * @param string $url
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      * @return array<string, mixed>
      */
     public static function mediaMessagePayload(
@@ -74,10 +66,7 @@ class Helpers
     /**
      * Create a sample location message payload.
      *
-     * @param string $number
-     * @param float $latitude
-     * @param float $longitude
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      * @return array<string, mixed>
      */
     public static function locationMessagePayload(
@@ -96,9 +85,6 @@ class Helpers
     /**
      * Create a sample contact message payload.
      *
-     * @param string $number
-     * @param string $contactName
-     * @param string $contactNumber
      * @return array<string, mixed>
      */
     public static function contactMessagePayload(
@@ -121,10 +107,8 @@ class Helpers
     /**
      * Create a sample poll message payload.
      *
-     * @param string $number
-     * @param string $name
-     * @param array<string> $values
-     * @param array<string, mixed> $options
+     * @param  array<string>  $values
+     * @param  array<string, mixed>  $options
      * @return array<string, mixed>
      */
     public static function pollMessagePayload(
@@ -144,9 +128,7 @@ class Helpers
     /**
      * Create a sample instance data.
      *
-     * @param string $name
-     * @param string $status
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      * @return array<string, mixed>
      */
     public static function instanceData(
@@ -165,9 +147,7 @@ class Helpers
     /**
      * Create a sample webhook event payload.
      *
-     * @param string $event
-     * @param string $instance
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     public static function webhookEvent(
@@ -180,7 +160,7 @@ class Helpers
                 'key' => [
                     'remoteJid' => '5511999999999@s.whatsapp.net',
                     'fromMe' => false,
-                    'id' => 'MSG_' . uniqid(),
+                    'id' => 'MSG_'.uniqid(),
                 ],
                 'message' => [
                     'conversation' => 'Hello!',
@@ -213,7 +193,7 @@ class Helpers
     /**
      * Mock multiple Evolution API endpoints.
      *
-     * @param array<string, array> $endpoints
+     * @param  array<string, array>  $endpoints
      */
     public static function mockEndpoints(array $endpoints): void
     {
@@ -232,7 +212,6 @@ class Helpers
     /**
      * Create a rate limit exceeded response.
      *
-     * @param int $retryAfter
      * @return array<string, mixed>
      */
     public static function rateLimitResponse(int $retryAfter = 60): array
@@ -266,7 +245,6 @@ class Helpers
     /**
      * Create a not found error response.
      *
-     * @param string $resource
      * @return array<string, mixed>
      */
     public static function notFoundResponse(string $resource = 'Instance'): array
@@ -283,7 +261,7 @@ class Helpers
     /**
      * Create a validation error response.
      *
-     * @param array<string, string> $errors
+     * @param  array<string, string>  $errors
      * @return array<string, mixed>
      */
     public static function validationErrorResponse(array $errors = []): array
@@ -300,30 +278,22 @@ class Helpers
 
     /**
      * Generate a random message ID.
-     *
-     * @param string $prefix
-     * @return string
      */
     public static function messageId(string $prefix = 'MSG'): string
     {
-        return $prefix . '_' . strtoupper(bin2hex(random_bytes(8)));
+        return $prefix.'_'.strtoupper(bin2hex(random_bytes(8)));
     }
 
     /**
      * Generate a random instance name.
-     *
-     * @return string
      */
     public static function instanceName(): string
     {
-        return 'instance_' . strtolower(bin2hex(random_bytes(4)));
+        return 'instance_'.strtolower(bin2hex(random_bytes(4)));
     }
 
     /**
      * Generate a random Brazilian phone number.
-     *
-     * @param bool $withCountryCode
-     * @return string
      */
     public static function phoneNumber(bool $withCountryCode = true): string
     {
@@ -335,16 +305,12 @@ class Helpers
 
     /**
      * Generate a WhatsApp JID from a phone number.
-     *
-     * @param string|null $number
-     * @param bool $isGroup
-     * @return string
      */
     public static function jid(?string $number = null, bool $isGroup = false): string
     {
         $number = $number ?? self::phoneNumber();
         $suffix = $isGroup ? '@g.us' : '@s.whatsapp.net';
 
-        return preg_replace('/[^0-9]/', '', $number) . $suffix;
+        return preg_replace('/[^0-9]/', '', $number).$suffix;
     }
 }

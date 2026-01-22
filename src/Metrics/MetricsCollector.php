@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Lynkbyte\EvolutionApi\Metrics;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Metrics collector for monitoring Evolution API usage and performance.
- * 
+ *
  * Tracks:
  * - Messages sent/received
  * - API calls and errors
@@ -43,7 +43,7 @@ class MetricsCollector
     /**
      * Create a new metrics collector instance.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(array $config = [])
     {
@@ -75,7 +75,7 @@ class MetricsCollector
      */
     public function isTracking(string $metric): bool
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return false;
         }
 
@@ -85,13 +85,13 @@ class MetricsCollector
     /**
      * Increment a counter metric.
      *
-     * @param string $metric Metric name
-     * @param int $value Value to increment by
-     * @param array<string, mixed> $tags Additional tags
+     * @param  string  $metric  Metric name
+     * @param  int  $value  Value to increment by
+     * @param  array<string, mixed>  $tags  Additional tags
      */
     public function increment(string $metric, int $value = 1, array $tags = []): void
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return;
         }
 
@@ -101,13 +101,13 @@ class MetricsCollector
     /**
      * Record a gauge metric (current value).
      *
-     * @param string $metric Metric name
-     * @param float|int $value Current value
-     * @param array<string, mixed> $tags Additional tags
+     * @param  string  $metric  Metric name
+     * @param  float|int  $value  Current value
+     * @param  array<string, mixed>  $tags  Additional tags
      */
     public function gauge(string $metric, float|int $value, array $tags = []): void
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return;
         }
 
@@ -117,13 +117,13 @@ class MetricsCollector
     /**
      * Record a timing metric.
      *
-     * @param string $metric Metric name
-     * @param float $milliseconds Duration in milliseconds
-     * @param array<string, mixed> $tags Additional tags
+     * @param  string  $metric  Metric name
+     * @param  float  $milliseconds  Duration in milliseconds
+     * @param  array<string, mixed>  $tags  Additional tags
      */
     public function timing(string $metric, float $milliseconds, array $tags = []): void
     {
-        if (!$this->isEnabled() || !$this->isTracking('response_times')) {
+        if (! $this->isEnabled() || ! $this->isTracking('response_times')) {
             return;
         }
 
@@ -133,13 +133,13 @@ class MetricsCollector
     /**
      * Record a histogram metric.
      *
-     * @param string $metric Metric name
-     * @param float $value Value to record
-     * @param array<string, mixed> $tags Additional tags
+     * @param  string  $metric  Metric name
+     * @param  float  $value  Value to record
+     * @param  array<string, mixed>  $tags  Additional tags
      */
     public function histogram(string $metric, float $value, array $tags = []): void
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return;
         }
 
@@ -149,10 +149,10 @@ class MetricsCollector
     /**
      * Track a message sent.
      *
-     * @param string $instanceName Instance name
-     * @param string $messageType Message type
-     * @param bool $success Whether send was successful
-     * @param float|null $duration Duration in milliseconds
+     * @param  string  $instanceName  Instance name
+     * @param  string  $messageType  Message type
+     * @param  bool  $success  Whether send was successful
+     * @param  float|null  $duration  Duration in milliseconds
      */
     public function trackMessageSent(
         string $instanceName,
@@ -160,7 +160,7 @@ class MetricsCollector
         bool $success,
         ?float $duration = null
     ): void {
-        if (!$this->isTracking('messages_sent')) {
+        if (! $this->isTracking('messages_sent')) {
             return;
         }
 
@@ -180,12 +180,12 @@ class MetricsCollector
     /**
      * Track a message received.
      *
-     * @param string $instanceName Instance name
-     * @param string $messageType Message type
+     * @param  string  $instanceName  Instance name
+     * @param  string  $messageType  Message type
      */
     public function trackMessageReceived(string $instanceName, string $messageType): void
     {
-        if (!$this->isTracking('messages_received')) {
+        if (! $this->isTracking('messages_received')) {
             return;
         }
 
@@ -198,10 +198,10 @@ class MetricsCollector
     /**
      * Track an API call.
      *
-     * @param string $endpoint API endpoint
-     * @param string $method HTTP method
-     * @param int $statusCode Response status code
-     * @param float|null $duration Duration in milliseconds
+     * @param  string  $endpoint  API endpoint
+     * @param  string  $method  HTTP method
+     * @param  int  $statusCode  Response status code
+     * @param  float|null  $duration  Duration in milliseconds
      */
     public function trackApiCall(
         string $endpoint,
@@ -209,7 +209,7 @@ class MetricsCollector
         int $statusCode,
         ?float $duration = null
     ): void {
-        if (!$this->isTracking('api_calls')) {
+        if (! $this->isTracking('api_calls')) {
             return;
         }
 
@@ -217,7 +217,7 @@ class MetricsCollector
             'endpoint' => $this->normalizeEndpoint($endpoint),
             'method' => $method,
             'status_code' => $statusCode,
-            'status_class' => (string) floor($statusCode / 100) . 'xx',
+            'status_class' => (string) floor($statusCode / 100).'xx',
         ];
 
         $this->increment('evolution.api.calls', 1, $tags);
@@ -235,10 +235,10 @@ class MetricsCollector
     /**
      * Track a webhook event.
      *
-     * @param string $eventType Webhook event type
-     * @param string $instanceName Instance name
-     * @param bool $processed Whether processing was successful
-     * @param float|null $duration Processing duration in milliseconds
+     * @param  string  $eventType  Webhook event type
+     * @param  string  $instanceName  Instance name
+     * @param  bool  $processed  Whether processing was successful
+     * @param  float|null  $duration  Processing duration in milliseconds
      */
     public function trackWebhookEvent(
         string $eventType,
@@ -246,7 +246,7 @@ class MetricsCollector
         bool $processed = true,
         ?float $duration = null
     ): void {
-        if (!$this->isTracking('webhook_events')) {
+        if (! $this->isTracking('webhook_events')) {
             return;
         }
 
@@ -266,16 +266,16 @@ class MetricsCollector
     /**
      * Track a queue job.
      *
-     * @param string $jobType Job class name
-     * @param string $status Job status (queued, processing, completed, failed)
-     * @param float|null $duration Processing duration in milliseconds
+     * @param  string  $jobType  Job class name
+     * @param  string  $status  Job status (queued, processing, completed, failed)
+     * @param  float|null  $duration  Processing duration in milliseconds
      */
     public function trackQueueJob(
         string $jobType,
         string $status,
         ?float $duration = null
     ): void {
-        if (!$this->isTracking('queue_jobs')) {
+        if (! $this->isTracking('queue_jobs')) {
             return;
         }
 
@@ -294,12 +294,12 @@ class MetricsCollector
     /**
      * Track instance connection status.
      *
-     * @param string $instanceName Instance name
-     * @param string $status Connection status
+     * @param  string  $instanceName  Instance name
+     * @param  string  $status  Connection status
      */
     public function trackInstanceStatus(string $instanceName, string $status): void
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return;
         }
 
@@ -312,13 +312,13 @@ class MetricsCollector
     /**
      * Track rate limit status.
      *
-     * @param string $operation Operation type
-     * @param int $remaining Remaining attempts
-     * @param int $limit Total limit
+     * @param  string  $operation  Operation type
+     * @param  int  $remaining  Remaining attempts
+     * @param  int  $limit  Total limit
      */
     public function trackRateLimit(string $operation, int $remaining, int $limit): void
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return;
         }
 
@@ -336,12 +336,12 @@ class MetricsCollector
     /**
      * Get current metrics.
      *
-     * @param string|null $prefix Optional prefix filter
+     * @param  string|null  $prefix  Optional prefix filter
      * @return array<string, mixed>
      */
     public function getMetrics(?string $prefix = null): array
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return [];
         }
 
@@ -357,7 +357,7 @@ class MetricsCollector
      */
     public function flush(): void
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return;
         }
 
@@ -378,7 +378,7 @@ class MetricsCollector
     {
         $this->buffer = [];
 
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return;
         }
 
@@ -392,10 +392,10 @@ class MetricsCollector
     /**
      * Record a metric.
      *
-     * @param string $metric Metric name
-     * @param float|int $value Value
-     * @param string $type Metric type
-     * @param array<string, mixed> $tags Tags
+     * @param  string  $metric  Metric name
+     * @param  float|int  $value  Value
+     * @param  string  $type  Metric type
+     * @param  array<string, mixed>  $tags  Tags
      */
     protected function record(
         string $metric,
@@ -436,7 +436,6 @@ class MetricsCollector
     /**
      * Get metrics from cache driver.
      *
-     * @param string|null $prefix
      * @return array<string, mixed>
      */
     protected function getMetricsFromCache(?string $prefix = null): array
@@ -455,17 +454,16 @@ class MetricsCollector
     /**
      * Get metrics from database driver.
      *
-     * @param string|null $prefix
      * @return array<string, mixed>
      */
     protected function getMetricsFromDatabase(?string $prefix = null): array
     {
-        $table = config('evolution-api.database.table_prefix', 'evolution_') . 'metrics';
+        $table = config('evolution-api.database.table_prefix', 'evolution_').'metrics';
 
         $query = DB::table($table);
 
         if ($prefix !== null) {
-            $query->where('metric', 'like', $prefix . '%');
+            $query->where('metric', 'like', $prefix.'%');
         }
 
         return $query->get()->keyBy('metric')->toArray();
@@ -481,7 +479,7 @@ class MetricsCollector
         foreach ($this->buffer as $entry) {
             $key = $this->buildMetricKey($entry);
 
-            if (!isset($existing[$key])) {
+            if (! isset($existing[$key])) {
                 $existing[$key] = [
                     'value' => 0,
                     'count' => 0,
@@ -517,7 +515,7 @@ class MetricsCollector
             return;
         }
 
-        $table = config('evolution-api.database.table_prefix', 'evolution_') . 'metrics';
+        $table = config('evolution-api.database.table_prefix', 'evolution_').'metrics';
 
         $records = [];
 
@@ -553,7 +551,7 @@ class MetricsCollector
      */
     protected function resetDatabase(): void
     {
-        $table = config('evolution-api.database.table_prefix', 'evolution_') . 'metrics';
+        $table = config('evolution-api.database.table_prefix', 'evolution_').'metrics';
 
         try {
             DB::table($table)->truncate();
@@ -569,9 +567,9 @@ class MetricsCollector
     {
         $key = $entry['metric'];
 
-        if (!empty($entry['tags'])) {
+        if (! empty($entry['tags'])) {
             ksort($entry['tags']);
-            $key .= ':' . http_build_query($entry['tags']);
+            $key .= ':'.http_build_query($entry['tags']);
         }
 
         return $key;
@@ -584,7 +582,7 @@ class MetricsCollector
      */
     public function summary(): array
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return ['enabled' => false];
         }
 
@@ -602,9 +600,9 @@ class MetricsCollector
     /**
      * Time a callback and record the duration.
      *
-     * @param string $metric Metric name
-     * @param callable $callback Callback to time
-     * @param array<string, mixed> $tags Additional tags
+     * @param  string  $metric  Metric name
+     * @param  callable  $callback  Callback to time
+     * @param  array<string, mixed>  $tags  Additional tags
      * @return mixed Callback result
      */
     public function measure(string $metric, callable $callback, array $tags = []): mixed
@@ -615,6 +613,7 @@ class MetricsCollector
             $result = $callback();
             $duration = (microtime(true) - $start) * 1000;
             $this->timing($metric, $duration, array_merge($tags, ['status' => 'success']));
+
             return $result;
         } catch (\Throwable $e) {
             $duration = (microtime(true) - $start) * 1000;

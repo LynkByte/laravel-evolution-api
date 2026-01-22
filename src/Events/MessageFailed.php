@@ -12,7 +12,7 @@ class MessageFailed extends BaseEvent
     /**
      * Create a new event instance.
      *
-     * @param array<string, mixed> $message
+     * @param  array<string, mixed>  $message
      */
     public function __construct(
         string $instanceName,

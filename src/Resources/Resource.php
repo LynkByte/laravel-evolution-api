@@ -30,7 +30,7 @@ abstract class Resource
     /**
      * Make a GET request.
      *
-     * @param array<string, mixed> $query
+     * @param  array<string, mixed>  $query
      */
     protected function get(string $endpoint, array $query = []): ApiResponse
     {
@@ -40,7 +40,7 @@ abstract class Resource
     /**
      * Make a POST request.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     protected function post(string $endpoint, array $data = []): ApiResponse
     {
@@ -50,7 +50,7 @@ abstract class Resource
     /**
      * Make a PUT request.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     protected function put(string $endpoint, array $data = []): ApiResponse
     {
@@ -60,7 +60,7 @@ abstract class Resource
     /**
      * Make a DELETE request.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     protected function delete(string $endpoint, array $data = []): ApiResponse
     {
@@ -70,7 +70,7 @@ abstract class Resource
     /**
      * Make a PATCH request.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     protected function patch(string $endpoint, array $data = []): ApiResponse
     {
@@ -90,10 +90,10 @@ abstract class Resource
      */
     protected function buildInstancePath(string $basePath, string $suffix = ''): string
     {
-        $path = $basePath . '/{instance}';
+        $path = $basePath.'/{instance}';
 
         if ($suffix) {
-            $path .= '/' . ltrim($suffix, '/');
+            $path .= '/'.ltrim($suffix, '/');
         }
 
         return $path;
@@ -122,8 +122,7 @@ abstract class Resource
     /**
      * Filter out null values from an array.
      *
-     * @param array<string, mixed> $data
-     *
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     protected function filterNull(array $data): array
@@ -134,9 +133,8 @@ abstract class Resource
     /**
      * Build options array from DTO.
      *
-     * @param array<string, mixed> $data
-     * @param array<string> $optionalFields
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string>  $optionalFields
      * @return array<string, mixed>
      */
     protected function buildPayload(array $data, array $optionalFields = []): array
@@ -185,7 +183,7 @@ abstract class Resource
         $cleaned = preg_replace('/[^0-9]/', '', $number);
 
         // Add WhatsApp suffix
-        return $cleaned . '@s.whatsapp.net';
+        return $cleaned.'@s.whatsapp.net';
     }
 
     /**
@@ -198,7 +196,7 @@ abstract class Resource
             return $groupId;
         }
 
-        return $groupId . '@g.us';
+        return $groupId.'@g.us';
     }
 
     /**

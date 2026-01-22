@@ -26,8 +26,6 @@ interface QueueableInterface
 
     /**
      * Delay the operation.
-     *
-     * @param \DateTimeInterface|\DateInterval|int $delay
      */
     public function delay(\DateTimeInterface|\DateInterval|int $delay): self;
 

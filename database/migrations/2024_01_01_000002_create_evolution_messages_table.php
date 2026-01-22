@@ -36,7 +36,7 @@ return new class extends Migration
             $table->index(['instance_name', 'remote_jid']);
             $table->index(['instance_name', 'status']);
             $table->index('created_at');
-            
+
             // Unique constraint to prevent duplicate messages
             $table->unique(['message_id', 'instance_name']);
         });

@@ -20,7 +20,7 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("profile/fetchProfile/{instance}");
+        return $this->get('profile/fetchProfile/{instance}');
     }
 
     /**
@@ -30,7 +30,7 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("profile/updateProfileName/{instance}", [
+        return $this->post('profile/updateProfileName/{instance}', [
             'name' => $name,
         ]);
     }
@@ -42,7 +42,7 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("profile/fetchProfile/{instance}");
+        return $this->get('profile/fetchProfile/{instance}');
     }
 
     /**
@@ -52,7 +52,7 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("profile/updateProfileStatus/{instance}", [
+        return $this->post('profile/updateProfileStatus/{instance}', [
             'status' => $status,
         ]);
     }
@@ -64,19 +64,19 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("profile/fetchProfilePicture/{instance}");
+        return $this->get('profile/fetchProfilePicture/{instance}');
     }
 
     /**
      * Update the profile picture.
      *
-     * @param string $image Base64 encoded image or URL
+     * @param  string  $image  Base64 encoded image or URL
      */
     public function updatePicture(string $image): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("profile/updateProfilePicture/{instance}", [
+        return $this->post('profile/updateProfilePicture/{instance}', [
             'picture' => $image,
         ]);
     }
@@ -88,7 +88,7 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->delete("profile/removeProfilePicture/{instance}");
+        return $this->delete('profile/removeProfilePicture/{instance}');
     }
 
     /**
@@ -98,27 +98,27 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("profile/fetchPrivacySettings/{instance}");
+        return $this->get('profile/fetchPrivacySettings/{instance}');
     }
 
     /**
      * Update privacy settings.
      *
-     * @param array<string, string> $settings Privacy settings
-     *                                         Keys: readreceipts, profile, status, online, last, groupadd
-     *                                         Values: all, contacts, contact_blacklist, none
+     * @param  array<string, string>  $settings  Privacy settings
+     *                                           Keys: readreceipts, profile, status, online, last, groupadd
+     *                                           Values: all, contacts, contact_blacklist, none
      */
     public function updatePrivacySettings(array $settings): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("profile/updatePrivacySettings/{instance}", $settings);
+        return $this->post('profile/updatePrivacySettings/{instance}', $settings);
     }
 
     /**
      * Set read receipts privacy.
      *
-     * @param string $value all, none
+     * @param  string  $value  all, none
      */
     public function setReadReceiptsPrivacy(string $value): ApiResponse
     {
@@ -128,7 +128,7 @@ class Profile extends Resource
     /**
      * Set profile picture privacy.
      *
-     * @param string $value all, contacts, contact_blacklist, none
+     * @param  string  $value  all, contacts, contact_blacklist, none
      */
     public function setProfilePicturePrivacy(string $value): ApiResponse
     {
@@ -138,7 +138,7 @@ class Profile extends Resource
     /**
      * Set status privacy.
      *
-     * @param string $value all, contacts, contact_blacklist, none
+     * @param  string  $value  all, contacts, contact_blacklist, none
      */
     public function setStatusPrivacy(string $value): ApiResponse
     {
@@ -148,7 +148,7 @@ class Profile extends Resource
     /**
      * Set online status privacy.
      *
-     * @param string $value all, match_last_seen
+     * @param  string  $value  all, match_last_seen
      */
     public function setOnlinePrivacy(string $value): ApiResponse
     {
@@ -158,7 +158,7 @@ class Profile extends Resource
     /**
      * Set last seen privacy.
      *
-     * @param string $value all, contacts, contact_blacklist, none
+     * @param  string  $value  all, contacts, contact_blacklist, none
      */
     public function setLastSeenPrivacy(string $value): ApiResponse
     {
@@ -168,7 +168,7 @@ class Profile extends Resource
     /**
      * Set group add privacy.
      *
-     * @param string $value all, contacts, contact_blacklist
+     * @param  string  $value  all, contacts, contact_blacklist
      */
     public function setGroupAddPrivacy(string $value): ApiResponse
     {
@@ -182,7 +182,7 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("profile/fetchProfile/{instance}");
+        return $this->get('profile/fetchProfile/{instance}');
     }
 
     /**
@@ -192,18 +192,18 @@ class Profile extends Resource
     {
         $this->ensureInstance();
 
-        return $this->get("profile/fetchBusinessProfile/{instance}");
+        return $this->get('profile/fetchBusinessProfile/{instance}');
     }
 
     /**
      * Update business profile.
      *
-     * @param array<string, mixed> $profile Business profile data
+     * @param  array<string, mixed>  $profile  Business profile data
      */
     public function updateBusinessProfile(array $profile): ApiResponse
     {
         $this->ensureInstance();
 
-        return $this->post("profile/updateBusinessProfile/{instance}", $profile);
+        return $this->post('profile/updateBusinessProfile/{instance}', $profile);
     }
 }

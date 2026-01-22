@@ -118,6 +118,7 @@ class EvolutionContact extends Model
     public function touchLastMessage(): bool
     {
         $this->last_message_at = now();
+
         return $this->save();
     }
 
@@ -127,6 +128,7 @@ class EvolutionContact extends Model
     public function block(): bool
     {
         $this->is_blocked = true;
+
         return $this->save();
     }
 
@@ -136,6 +138,7 @@ class EvolutionContact extends Model
     public function unblock(): bool
     {
         $this->is_blocked = false;
+
         return $this->save();
     }
 

@@ -20,7 +20,7 @@ describe('SendStickerMessageDto', function () {
 
         it('creates with all optional parameters', function () {
             $quoted = ['key' => ['id' => 'msg-123']];
-            
+
             $dto = new SendStickerMessageDto(
                 number: '5511999999999',
                 sticker: 'https://example.com/sticker.webp',

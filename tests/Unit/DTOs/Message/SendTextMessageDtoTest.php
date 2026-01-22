@@ -20,7 +20,7 @@ describe('SendTextMessageDto', function () {
 
         it('creates with all optional parameters', function () {
             $quoted = ['key' => ['remoteJid' => 'test@s.whatsapp.net', 'fromMe' => false, 'id' => 'msg-123']];
-            
+
             $dto = new SendTextMessageDto(
                 number: '5511999999999',
                 text: 'Hello World',
@@ -134,7 +134,7 @@ describe('SendTextMessageDto', function () {
 
         it('includes all set optional fields', function () {
             $quoted = ['key' => ['remoteJid' => 'test@s.whatsapp.net', 'fromMe' => false, 'id' => 'msg-123']];
-            
+
             $dto = new SendTextMessageDto(
                 number: '5511999999999',
                 text: 'Hello',

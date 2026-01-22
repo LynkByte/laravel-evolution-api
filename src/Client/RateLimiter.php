@@ -51,7 +51,7 @@ class RateLimiter implements RateLimiterInterface
     /**
      * Create a new rate limiter instance.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(
         protected CacheRepository $cache,
@@ -63,7 +63,7 @@ class RateLimiter implements RateLimiterInterface
     /**
      * Configure the rate limiter from config array.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     protected function configure(array $config): void
     {
@@ -150,7 +150,7 @@ class RateLimiter implements RateLimiterInterface
         if (method_exists($store, 'connection')) {
             $connection = $store->connection();
             if (method_exists($connection, 'ttl')) {
-                $ttl = $connection->ttl($this->getCachePrefix() . $cacheKey);
+                $ttl = $connection->ttl($this->getCachePrefix().$cacheKey);
 
                 return max(0, $ttl);
             }
@@ -263,7 +263,7 @@ class RateLimiter implements RateLimiterInterface
      */
     protected function getCacheKey(string $key, string $type): string
     {
-        return self::CACHE_PREFIX . "{$type}:{$key}";
+        return self::CACHE_PREFIX."{$type}:{$key}";
     }
 
     /**
@@ -328,7 +328,7 @@ class RateLimiter implements RateLimiterInterface
     /**
      * Set the action to take when limit is reached.
      *
-     * @param string $action One of: wait, throw, skip
+     * @param  string  $action  One of: wait, throw, skip
      */
     public function setOnLimitReached(string $action): self
     {
@@ -432,7 +432,8 @@ class NullCache implements CacheRepository
 
     public function getStore(): \Illuminate\Contracts\Cache\Store
     {
-        return new class implements \Illuminate\Contracts\Cache\Store {
+        return new class implements \Illuminate\Contracts\Cache\Store
+        {
             public function get($key): mixed
             {
                 return null;

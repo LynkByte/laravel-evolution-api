@@ -26,7 +26,7 @@ final class SendTextMessageDto extends BaseDto
         public readonly ?array $quoted = null,
         bool $skipValidation = false,
     ) {
-        if (!$skipValidation) {
+        if (! $skipValidation) {
             $this->validateRequired(['number', 'text']);
         }
         $this->isPartial = $skipValidation;
@@ -98,7 +98,7 @@ final class SendTextMessageDto extends BaseDto
     /**
      * Quote a message.
      *
-     * @param array{key: array{remoteJid: string, fromMe: bool, id: string}} $quoted
+     * @param  array{key: array{remoteJid: string, fromMe: bool, id: string}}  $quoted
      */
     public function quoting(array $quoted): self
     {

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Lynkbyte\EvolutionApi\Models\EvolutionInstance;
 use Lynkbyte\EvolutionApi\Models\EvolutionWebhookLog;
 
 describe('EvolutionWebhookLog Model', function () {
@@ -35,7 +34,7 @@ describe('EvolutionWebhookLog Model', function () {
 
     describe('casts', function () {
         it('casts payload to array', function () {
-            $log = new EvolutionWebhookLog();
+            $log = new EvolutionWebhookLog;
             $log->payload = ['key' => 'value'];
 
             expect($log->payload)->toBeArray();
@@ -92,7 +91,7 @@ describe('EvolutionWebhookLog Model', function () {
 
     describe('relationships', function () {
         it('defines instance relationship', function () {
-            $log = new EvolutionWebhookLog();
+            $log = new EvolutionWebhookLog;
 
             expect($log->instance())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class);
         });
@@ -126,7 +125,7 @@ describe('EvolutionWebhookLog Model', function () {
 
     describe('table configuration', function () {
         it('uses correct table name', function () {
-            $log = new EvolutionWebhookLog();
+            $log = new EvolutionWebhookLog;
 
             expect($log->getTable())->toBe('evolution_webhook_logs');
         });

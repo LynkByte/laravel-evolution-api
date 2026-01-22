@@ -58,6 +58,7 @@ class RetryFailedMessagesCommand extends Command
 
         if ($messages->isEmpty()) {
             $this->info('No failed messages found to retry.');
+
             return self::SUCCESS;
         }
 
@@ -75,9 +76,10 @@ class RetryFailedMessagesCommand extends Command
             $this->line("  Retry count: {$message->retry_count}");
 
             if ($dryRun) {
-                $this->line("  <comment>Would retry...</comment>");
+                $this->line('  <comment>Would retry...</comment>');
                 $successCount++;
                 $this->newLine();
+
                 continue;
             }
 
@@ -89,9 +91,10 @@ class RetryFailedMessagesCommand extends Command
                 $payload = $message->payload;
 
                 if (empty($payload)) {
-                    $this->line("  <fg=red>No payload found, skipping...</>");
+                    $this->line('  <fg=red>No payload found, skipping...</>');
                     $failCount++;
                     $this->newLine();
+
                     continue;
                 }
 
@@ -100,7 +103,7 @@ class RetryFailedMessagesCommand extends Command
 
                 if ($response && $response->isSuccess()) {
                     $message->markAsSent($response->getData());
-                    $this->line("  <fg=green>Success!</>");
+                    $this->line('  <fg=green>Success!</>');
                     $successCount++;
                 } else {
                     $errorMessage = $response?->getError() ?? 'Unknown error';

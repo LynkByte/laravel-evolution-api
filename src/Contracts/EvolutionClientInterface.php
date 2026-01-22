@@ -24,35 +24,35 @@ interface EvolutionClientInterface
     /**
      * Send a GET request to the API.
      *
-     * @param array<string, mixed> $query
+     * @param  array<string, mixed>  $query
      */
     public function get(string $endpoint, array $query = []): ApiResponse;
 
     /**
      * Send a POST request to the API.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function post(string $endpoint, array $data = []): ApiResponse;
 
     /**
      * Send a PUT request to the API.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function put(string $endpoint, array $data = []): ApiResponse;
 
     /**
      * Send a DELETE request to the API.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function delete(string $endpoint, array $data = []): ApiResponse;
 
     /**
      * Send a PATCH request to the API.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function patch(string $endpoint, array $data = []): ApiResponse;
 

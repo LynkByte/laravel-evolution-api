@@ -77,7 +77,7 @@ describe('WebhookPayloadDto', function () {
                 'event' => 'TEST',
                 'instance' => 'test',
                 'message' => 'Hello',
-                'extra' => 'data'
+                'extra' => 'data',
             ];
 
             $dto = WebhookPayloadDto::fromPayload($payload);
@@ -116,7 +116,7 @@ describe('WebhookPayloadDto', function () {
         it('returns true for known events', function () {
             $dto = WebhookPayloadDto::fromPayload([
                 'event' => 'MESSAGES_UPSERT',
-                'instance' => 'test'
+                'instance' => 'test',
             ]);
 
             expect($dto->isKnownEvent())->toBeTrue();
@@ -142,9 +142,9 @@ describe('WebhookPayloadDto', function () {
                 data: [
                     'data' => [
                         'key' => [
-                            'remoteJid' => '5511999999999@s.whatsapp.net'
-                        ]
-                    ]
+                            'remoteJid' => '5511999999999@s.whatsapp.net',
+                        ],
+                    ],
                 ]
             );
 
@@ -193,9 +193,9 @@ describe('WebhookPayloadDto', function () {
                 data: [
                     'data' => [
                         'key' => [
-                            'remoteJid' => '5511999999999@s.whatsapp.net'
-                        ]
-                    ]
+                            'remoteJid' => '5511999999999@s.whatsapp.net',
+                        ],
+                    ],
                 ]
             );
 
@@ -221,9 +221,9 @@ describe('WebhookPayloadDto', function () {
                 data: [
                     'data' => [
                         'key' => [
-                            'remoteJid' => '120363123456789012@g.us'
-                        ]
-                    ]
+                            'remoteJid' => '120363123456789012@g.us',
+                        ],
+                    ],
                 ]
             );
 
@@ -237,9 +237,9 @@ describe('WebhookPayloadDto', function () {
                 data: [
                     'data' => [
                         'key' => [
-                            'remoteJid' => '5511999999999@s.whatsapp.net'
-                        ]
-                    ]
+                            'remoteJid' => '5511999999999@s.whatsapp.net',
+                        ],
+                    ],
                 ]
             );
 
@@ -251,7 +251,7 @@ describe('WebhookPayloadDto', function () {
         it('isMessageEvent returns true for message events', function () {
             $dto = WebhookPayloadDto::fromPayload([
                 'event' => 'MESSAGES_UPSERT',
-                'instance' => 'test'
+                'instance' => 'test',
             ]);
 
             expect($dto->isMessageEvent())->toBeTrue();
@@ -260,7 +260,7 @@ describe('WebhookPayloadDto', function () {
         it('isConnectionEvent returns true for connection events', function () {
             $dto = WebhookPayloadDto::fromPayload([
                 'event' => 'CONNECTION_UPDATE',
-                'instance' => 'test'
+                'instance' => 'test',
             ]);
 
             expect($dto->isConnectionEvent())->toBeTrue();
@@ -269,7 +269,7 @@ describe('WebhookPayloadDto', function () {
         it('isGroupEvent returns true for group events', function () {
             $dto = WebhookPayloadDto::fromPayload([
                 'event' => 'GROUP_PARTICIPANTS_UPDATE',
-                'instance' => 'test'
+                'instance' => 'test',
             ]);
 
             expect($dto->isGroupEvent())->toBeTrue();
@@ -284,9 +284,9 @@ describe('WebhookPayloadDto', function () {
                 data: [
                     'data' => [
                         'qrcode' => [
-                            'base64' => 'base64-encoded-qr'
-                        ]
-                    ]
+                            'base64' => 'base64-encoded-qr',
+                        ],
+                    ],
                 ]
             );
 

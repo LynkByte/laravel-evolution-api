@@ -12,8 +12,10 @@ use Psr\Log\LogLevel;
  */
 function createMockLogManager(array &$logs = []): LogManager
 {
-    $mockLogger = new class($logs) implements LoggerInterface {
+    $mockLogger = new class($logs) implements LoggerInterface
+    {
         public array $logged = [];
+
         private array $logsRef;
 
         public function __construct(array &$logs)
@@ -69,7 +71,8 @@ function createMockLogManager(array &$logs = []): LogManager
     };
 
     // Create a mock LogManager
-    $mockManager = new class($mockLogger) extends LogManager {
+    $mockManager = new class($mockLogger) extends LogManager
+    {
         private LoggerInterface $mockLogger;
 
         public function __construct(LoggerInterface $mockLogger)

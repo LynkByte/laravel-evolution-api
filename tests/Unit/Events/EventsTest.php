@@ -811,7 +811,7 @@ describe('QrCodeReceived', function () {
                 qrCode: $base64
             );
 
-            expect($event->getQrCodeDataUri())->toBe('data:image/png;base64,' . $base64);
+            expect($event->getQrCodeDataUri())->toBe('data:image/png;base64,'.$base64);
         });
 
         it('returns raw QR string for generation libraries', function () {

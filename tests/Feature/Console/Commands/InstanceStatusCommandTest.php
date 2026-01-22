@@ -13,20 +13,20 @@ describe('InstanceStatusCommand', function () {
 
     describe('command signature', function () {
         it('has correct signature', function () {
-            $command = new InstanceStatusCommand();
+            $command = new InstanceStatusCommand;
 
             expect($command->getName())->toBe('evolution-api:instances');
         });
 
         it('has instance argument', function () {
-            $command = new InstanceStatusCommand();
+            $command = new InstanceStatusCommand;
             $definition = $command->getDefinition();
 
             expect($definition->hasArgument('instance'))->toBeTrue();
         });
 
         it('has connection option', function () {
-            $command = new InstanceStatusCommand();
+            $command = new InstanceStatusCommand;
             $definition = $command->getDefinition();
 
             expect($definition->hasOption('connection'))->toBeTrue();
@@ -35,7 +35,7 @@ describe('InstanceStatusCommand', function () {
 
     describe('command description', function () {
         it('has description', function () {
-            $command = new InstanceStatusCommand();
+            $command = new InstanceStatusCommand;
 
             expect($command->getDescription())->not->toBeEmpty();
         });

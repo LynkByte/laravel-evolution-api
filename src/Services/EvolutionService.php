@@ -62,7 +62,7 @@ class EvolutionService
     /**
      * Create service from config array.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public static function make(array $config): self
     {
@@ -130,8 +130,7 @@ class EvolutionService
      *
      * @template T
      *
-     * @param class-string<T> $class
-     *
+     * @param  class-string<T>  $class
      * @return T
      */
     protected function getResource(string $name, string $class): object
@@ -304,7 +303,7 @@ class EvolutionService
     /**
      * Create a new group (shortcut).
      *
-     * @param array<string> $participants
+     * @param  array<string>  $participants
      */
     public function createGroup(
         string $name,
@@ -321,8 +320,7 @@ class EvolutionService
     /**
      * Handle dynamic method calls.
      *
-     * @param array<mixed> $arguments
-     *
+     * @param  array<mixed>  $arguments
      * @return mixed
      */
     public function __call(string $method, array $arguments)
@@ -341,6 +339,6 @@ class EvolutionService
             return $this->{$resourceMap[$method]}();
         }
 
-        throw new \BadMethodCallException("Method [{$method}] does not exist on " . static::class);
+        throw new \BadMethodCallException("Method [{$method}] does not exist on ".static::class);
     }
 }

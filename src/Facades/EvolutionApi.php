@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Lynkbyte\EvolutionApi\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Lynkbyte\EvolutionApi\Services\EvolutionService;
-use Lynkbyte\EvolutionApi\Resources\Instance;
-use Lynkbyte\EvolutionApi\Resources\Message;
 use Lynkbyte\EvolutionApi\Resources\Chat;
 use Lynkbyte\EvolutionApi\Resources\Group;
+use Lynkbyte\EvolutionApi\Resources\Instance;
+use Lynkbyte\EvolutionApi\Resources\Message;
 use Lynkbyte\EvolutionApi\Resources\Profile;
-use Lynkbyte\EvolutionApi\Resources\Webhook;
 use Lynkbyte\EvolutionApi\Resources\Settings;
+use Lynkbyte\EvolutionApi\Resources\Webhook;
+use Lynkbyte\EvolutionApi\Services\EvolutionService;
 use Lynkbyte\EvolutionApi\Testing\Fakes\EvolutionApiFake;
 
 /**
@@ -62,7 +62,7 @@ class EvolutionApi extends Facade
     /**
      * Replace the bound instance with a fake.
      *
-     * @param array<string, mixed> $responses
+     * @param  array<string, mixed>  $responses
      */
     public static function fake(array $responses = []): EvolutionApiFake
     {

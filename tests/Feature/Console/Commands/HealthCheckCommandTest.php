@@ -13,13 +13,13 @@ describe('HealthCheckCommand', function () {
 
     describe('command signature', function () {
         it('has correct signature', function () {
-            $command = new HealthCheckCommand();
+            $command = new HealthCheckCommand;
 
             expect($command->getName())->toBe('evolution-api:health');
         });
 
         it('has connection option', function () {
-            $command = new HealthCheckCommand();
+            $command = new HealthCheckCommand;
             $definition = $command->getDefinition();
 
             expect($definition->hasOption('connection'))->toBeTrue();
@@ -28,7 +28,7 @@ describe('HealthCheckCommand', function () {
 
     describe('command description', function () {
         it('has description', function () {
-            $command = new HealthCheckCommand();
+            $command = new HealthCheckCommand;
 
             expect($command->getDescription())->not->toBeEmpty();
         });

@@ -19,7 +19,7 @@ class ValidationException extends EvolutionApiException
     /**
      * Create a new validation exception.
      *
-     * @param array<string, array<string>> $errors
+     * @param  array<string, array<string>>  $errors
      */
     public function __construct(array $errors, ?string $instanceName = null)
     {
@@ -48,7 +48,7 @@ class ValidationException extends EvolutionApiException
     /**
      * Build the error message from errors array.
      *
-     * @param array<string, array<string>> $errors
+     * @param  array<string, array<string>>  $errors
      */
     protected function buildMessage(array $errors): string
     {
@@ -60,13 +60,13 @@ class ValidationException extends EvolutionApiException
             }
         }
 
-        return 'Validation failed: ' . implode(', ', $messages);
+        return 'Validation failed: '.implode(', ', $messages);
     }
 
     /**
      * Create exception from errors array.
      *
-     * @param array<string, array<string>> $errors
+     * @param  array<string, array<string>>  $errors
      */
     public static function withErrors(array $errors, ?string $instanceName = null): static
     {

@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Lynkbyte\EvolutionApi\Enums\InstanceStatus;
-use Lynkbyte\EvolutionApi\Models\EvolutionContact;
 use Lynkbyte\EvolutionApi\Models\EvolutionInstance;
-use Lynkbyte\EvolutionApi\Models\EvolutionMessage;
-use Lynkbyte\EvolutionApi\Models\EvolutionWebhookLog;
 
 describe('EvolutionInstance Model', function () {
 
@@ -41,14 +38,14 @@ describe('EvolutionInstance Model', function () {
 
     describe('casts', function () {
         it('casts settings to array', function () {
-            $instance = new EvolutionInstance();
+            $instance = new EvolutionInstance;
             $instance->settings = ['key' => 'value'];
 
             expect($instance->settings)->toBeArray();
         });
 
         it('casts webhook_config to array', function () {
-            $instance = new EvolutionInstance();
+            $instance = new EvolutionInstance;
             $instance->webhook_config = ['url' => 'https://example.com'];
 
             expect($instance->webhook_config)->toBeArray();
@@ -143,19 +140,19 @@ describe('EvolutionInstance Model', function () {
 
     describe('relationships', function () {
         it('defines messages relationship', function () {
-            $instance = new EvolutionInstance();
+            $instance = new EvolutionInstance;
 
             expect($instance->messages())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class);
         });
 
         it('defines contacts relationship', function () {
-            $instance = new EvolutionInstance();
+            $instance = new EvolutionInstance;
 
             expect($instance->contacts())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class);
         });
 
         it('defines webhookLogs relationship', function () {
-            $instance = new EvolutionInstance();
+            $instance = new EvolutionInstance;
 
             expect($instance->webhookLogs())->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class);
         });
@@ -183,7 +180,7 @@ describe('EvolutionInstance Model', function () {
 
     describe('table configuration', function () {
         it('uses correct table name', function () {
-            $instance = new EvolutionInstance();
+            $instance = new EvolutionInstance;
 
             expect($instance->getTable())->toBe('evolution_instances');
         });
@@ -191,7 +188,7 @@ describe('EvolutionInstance Model', function () {
 
     describe('soft deletes', function () {
         it('uses soft deletes', function () {
-            $instance = new EvolutionInstance();
+            $instance = new EvolutionInstance;
 
             expect(method_exists($instance, 'trashed'))->toBeTrue();
             expect(method_exists($instance, 'restore'))->toBeTrue();

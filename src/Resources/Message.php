@@ -12,8 +12,8 @@ use Lynkbyte\EvolutionApi\DTOs\Message\SendLocationMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendMediaMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendPollMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendReactionMessageDto;
-use Lynkbyte\EvolutionApi\DTOs\Message\SendStickerMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendStatusMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendStickerMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendTemplateMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
 
@@ -35,7 +35,7 @@ class Message extends Resource
             $message = SendTextMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendText/{instance}", $message->toArray());
+        return $this->post('message/sendText/{instance}', $message->toArray());
     }
 
     /**
@@ -61,7 +61,7 @@ class Message extends Resource
             $message = SendMediaMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendMedia/{instance}", $message->toArray());
+        return $this->post('message/sendMedia/{instance}', $message->toArray());
     }
 
     /**
@@ -131,7 +131,7 @@ class Message extends Resource
             $message = SendAudioMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendWhatsAppAudio/{instance}", $message->toArray());
+        return $this->post('message/sendWhatsAppAudio/{instance}', $message->toArray());
     }
 
     /**
@@ -157,7 +157,7 @@ class Message extends Resource
             $message = SendLocationMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendLocation/{instance}", $message->toArray());
+        return $this->post('message/sendLocation/{instance}', $message->toArray());
     }
 
     /**
@@ -190,7 +190,7 @@ class Message extends Resource
             $message = SendContactMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendContact/{instance}", $message->toArray());
+        return $this->post('message/sendContact/{instance}', $message->toArray());
     }
 
     /**
@@ -204,13 +204,13 @@ class Message extends Resource
             $message = SendPollMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendPoll/{instance}", $message->toArray());
+        return $this->post('message/sendPoll/{instance}', $message->toArray());
     }
 
     /**
      * Send poll (simple helper).
      *
-     * @param array<string> $values Poll options
+     * @param  array<string>  $values  Poll options
      */
     public function poll(
         string $number,
@@ -237,7 +237,7 @@ class Message extends Resource
             $message = SendListMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendList/{instance}", $message->toArray());
+        return $this->post('message/sendList/{instance}', $message->toArray());
     }
 
     /**
@@ -251,7 +251,7 @@ class Message extends Resource
             $message = SendReactionMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendReaction/{instance}", $message->toArray());
+        return $this->post('message/sendReaction/{instance}', $message->toArray());
     }
 
     /**
@@ -290,7 +290,7 @@ class Message extends Resource
             $message = SendStickerMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendSticker/{instance}", $message->toArray());
+        return $this->post('message/sendSticker/{instance}', $message->toArray());
     }
 
     /**
@@ -315,7 +315,7 @@ class Message extends Resource
             $message = SendStatusMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendStatus/{instance}", $message->toArray());
+        return $this->post('message/sendStatus/{instance}', $message->toArray());
     }
 
     /**
@@ -329,13 +329,13 @@ class Message extends Resource
             $message = SendTemplateMessageDto::fromArray($message);
         }
 
-        return $this->post("message/sendTemplate/{instance}", $message->toArray());
+        return $this->post('message/sendTemplate/{instance}', $message->toArray());
     }
 
     /**
      * Send buttons message.
      *
-     * @param array<array{buttonId: string, buttonText: string}> $buttons
+     * @param  array<array{buttonId: string, buttonText: string}>  $buttons
      */
     public function sendButtons(
         string $number,
@@ -354,7 +354,7 @@ class Message extends Resource
             'footer' => $footer,
         ]);
 
-        return $this->post("message/sendButtons/{instance}", $data);
+        return $this->post('message/sendButtons/{instance}', $data);
     }
 
     /**
@@ -364,7 +364,7 @@ class Message extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("message/readMessage/{instance}", [
+        return $this->post('message/readMessage/{instance}', [
             'readMessages' => [
                 [
                     'remoteJid' => $this->formatRemoteJid($remoteJid),
@@ -377,7 +377,7 @@ class Message extends Resource
     /**
      * Mark multiple messages as read.
      *
-     * @param array<array{remoteJid: string, id: string}> $messages
+     * @param  array<array{remoteJid: string, id: string}>  $messages
      */
     public function markMultipleAsRead(array $messages): ApiResponse
     {
@@ -388,7 +388,7 @@ class Message extends Resource
             'id' => $msg['id'],
         ], $messages);
 
-        return $this->post("message/readMessage/{instance}", [
+        return $this->post('message/readMessage/{instance}', [
             'readMessages' => $formattedMessages,
         ]);
     }
@@ -400,7 +400,7 @@ class Message extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("message/archiveChat/{instance}", [
+        return $this->post('message/archiveChat/{instance}', [
             'lastMessage' => [
                 'key' => [
                     'remoteJid' => $this->formatRemoteJid($remoteJid),
@@ -428,7 +428,7 @@ class Message extends Resource
     ): ApiResponse {
         $this->ensureInstance();
 
-        return $this->delete("message/delete/{instance}", [
+        return $this->delete('message/delete/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
             'messageId' => $messageId,
             'onlyMe' => $onlyMe,
@@ -453,7 +453,7 @@ class Message extends Resource
     ): ApiResponse {
         $this->ensureInstance();
 
-        return $this->put("message/update/{instance}", [
+        return $this->put('message/update/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
             'messageId' => $messageId,
             'text' => $text,
@@ -470,7 +470,7 @@ class Message extends Resource
     ): ApiResponse {
         $this->ensureInstance();
 
-        return $this->post("message/star/{instance}", [
+        return $this->post('message/star/{instance}', [
             'remoteJid' => $this->formatRemoteJid($remoteJid),
             'messageId' => $messageId,
             'star' => $star,
@@ -492,7 +492,7 @@ class Message extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("message/getMessageById/{instance}", [
+        return $this->post('message/getMessageById/{instance}', [
             'key' => [
                 'remoteJid' => $this->formatRemoteJid($remoteJid),
                 'id' => $messageId,
@@ -505,7 +505,7 @@ class Message extends Resource
      *
      * Simulates typing before sending the message.
      *
-     * @param int $delay Delay in milliseconds to show typing
+     * @param  int  $delay  Delay in milliseconds to show typing
      */
     public function sendWithTyping(
         string $number,
@@ -514,7 +514,7 @@ class Message extends Resource
     ): ApiResponse {
         $this->ensureInstance();
 
-        return $this->post("message/sendText/{instance}", [
+        return $this->post('message/sendText/{instance}', [
             'number' => $number,
             'text' => $text,
             'options' => [
@@ -533,7 +533,7 @@ class Message extends Resource
     ): ApiResponse {
         $this->ensureInstance();
 
-        return $this->post("message/sendText/{instance}", [
+        return $this->post('message/sendText/{instance}', [
             'number' => $number,
             'text' => $text,
             'options' => [
@@ -556,7 +556,7 @@ class Message extends Resource
     ): ApiResponse {
         $this->ensureInstance();
 
-        return $this->post("message/forwardMessage/{instance}", [
+        return $this->post('message/forwardMessage/{instance}', [
             'number' => $number,
             'message' => [
                 'key' => [
@@ -574,7 +574,7 @@ class Message extends Resource
     {
         $this->ensureInstance();
 
-        return $this->post("message/sendPresence/{instance}", [
+        return $this->post('message/sendPresence/{instance}', [
             'number' => $number,
             'presence' => $presence,
         ]);

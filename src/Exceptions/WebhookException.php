@@ -24,7 +24,7 @@ class WebhookException extends EvolutionApiException
     /**
      * Create a new webhook exception.
      *
-     * @param array<string, mixed>|null $payload
+     * @param  array<string, mixed>|null  $payload
      */
     public function __construct(
         string $message = 'Webhook processing failed',
@@ -76,7 +76,7 @@ class WebhookException extends EvolutionApiException
     /**
      * Create exception for invalid payload.
      *
-     * @param array<string, mixed>|null $payload
+     * @param  array<string, mixed>|null  $payload
      */
     public static function invalidPayload(?array $payload = null, ?string $instanceName = null): static
     {
@@ -90,7 +90,7 @@ class WebhookException extends EvolutionApiException
     /**
      * Create exception for unknown event.
      *
-     * @param array<string, mixed>|null $payload
+     * @param  array<string, mixed>|null  $payload
      */
     public static function unknownEvent(string $eventType, ?array $payload = null, ?string $instanceName = null): static
     {
@@ -105,7 +105,7 @@ class WebhookException extends EvolutionApiException
     /**
      * Create exception for handler failure.
      *
-     * @param array<string, mixed>|null $payload
+     * @param  array<string, mixed>|null  $payload
      */
     public static function handlerFailed(
         string $eventType,

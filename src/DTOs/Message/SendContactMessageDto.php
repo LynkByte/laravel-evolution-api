@@ -12,7 +12,7 @@ use Lynkbyte\EvolutionApi\DTOs\BaseDto;
 final class SendContactMessageDto extends BaseDto
 {
     /**
-     * @param array<array{fullName: string, wuid: string, phoneNumber: string, organization?: string, email?: string, url?: string}> $contact
+     * @param  array<array{fullName: string, wuid: string, phoneNumber: string, organization?: string, email?: string, url?: string}>  $contact
      */
     public function __construct(
         public readonly string $number,
@@ -57,7 +57,7 @@ final class SendContactMessageDto extends BaseDto
     /**
      * Create multiple contacts message.
      *
-     * @param array<array{fullName: string, wuid: string, phoneNumber: string, organization?: string, email?: string, url?: string}> $contacts
+     * @param  array<array{fullName: string, wuid: string, phoneNumber: string, organization?: string, email?: string, url?: string}>  $contacts
      */
     public static function multiple(string $number, array $contacts): self
     {

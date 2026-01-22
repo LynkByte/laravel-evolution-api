@@ -9,12 +9,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
-use Lynkbyte\EvolutionApi\DTOs\Message\SendMediaMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendAudioMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendLocationMessageDto;
-use Lynkbyte\EvolutionApi\Events\MessageSent;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendMediaMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
 use Lynkbyte\EvolutionApi\Events\MessageFailed;
+use Lynkbyte\EvolutionApi\Events\MessageSent;
 use Lynkbyte\EvolutionApi\Facades\EvolutionApi;
 
 /**
@@ -47,7 +47,7 @@ class SendMessageJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param array<string, mixed> $message
+     * @param  array<string, mixed>  $message
      */
     public function __construct(
         public readonly string $instanceName,
@@ -155,7 +155,7 @@ class SendMessageJob implements ShouldQueue
     /**
      * Create a text message job.
      *
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      */
     public static function text(
         string $instanceName,
@@ -175,7 +175,7 @@ class SendMessageJob implements ShouldQueue
     /**
      * Create a media message job.
      *
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      */
     public static function media(
         string $instanceName,

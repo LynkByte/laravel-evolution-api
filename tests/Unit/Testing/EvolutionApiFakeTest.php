@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 use Lynkbyte\EvolutionApi\Testing\Fakes\EvolutionApiFake;
-use Lynkbyte\EvolutionApi\Testing\Fakes\FakeInstanceResource;
-use Lynkbyte\EvolutionApi\Testing\Fakes\FakeMessageResource;
 use Lynkbyte\EvolutionApi\Testing\Fakes\FakeChatResource;
 use Lynkbyte\EvolutionApi\Testing\Fakes\FakeGroupResource;
+use Lynkbyte\EvolutionApi\Testing\Fakes\FakeInstanceResource;
+use Lynkbyte\EvolutionApi\Testing\Fakes\FakeMessageResource;
 use Lynkbyte\EvolutionApi\Testing\Fakes\FakeProfileResource;
-use Lynkbyte\EvolutionApi\Testing\Fakes\FakeWebhookResource;
 use Lynkbyte\EvolutionApi\Testing\Fakes\FakeSettingsResource;
+use Lynkbyte\EvolutionApi\Testing\Fakes\FakeWebhookResource;
 
 describe('EvolutionApiFake', function () {
 
     beforeEach(function () {
-        $this->fake = new EvolutionApiFake();
+        $this->fake = new EvolutionApiFake;
     });
 
     describe('constructor', function () {
         it('creates instance with default responses', function () {
-            $fake = new EvolutionApiFake();
+            $fake = new EvolutionApiFake;
 
             expect($fake)->toBeInstanceOf(EvolutionApiFake::class);
             expect($fake->getSentMessages())->toBe([]);
@@ -382,7 +382,7 @@ describe('EvolutionApiFake', function () {
         });
 
         it('allows chaining', function () {
-            $result = $this->fake->stubUsing(fn($op) => ['op' => $op]);
+            $result = $this->fake->stubUsing(fn ($op) => ['op' => $op]);
 
             expect($result)->toBe($this->fake);
         });
