@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "illuminate/contracts": "^11.0|^12.0",
         "illuminate/http": "^11.0|^12.0",
         "illuminate/support": "^11.0|^12.0",
@@ -33,7 +33,7 @@
     "require-dev": {
         "laravel/pint": "^1.18",
         "orchestra/testbench": "^9.0|^10.0",
-        "pestphp/pest": "^3.0",
+        "pestphp/pest": "^3.0 | ^4.0",
         "phpstan/phpstan": "^2.0",
         "mockery/mockery": "^1.6"
     },
@@ -53,11 +53,11 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
-        "coverage": "php8.3 vendor/bin/pest --coverage",
-        "coverage-html": "php8.3 vendor/bin/pest --coverage-html build/coverage",
-        "coverage-text": "php8.3 vendor/bin/pest --coverage --coverage-text=build/coverage.txt",
-        "coverage-clover": "php8.3 vendor/bin/pest --coverage-clover build/logs/clover.xml",
-        "coverage-all": "php8.3 vendor/bin/pest --coverage --coverage-html build/coverage --coverage-clover build/logs/clover.xml",
+        "coverage": "php vendor/bin/pest --coverage",
+        "coverage-html": "php vendor/bin/pest --coverage-html build/coverage",
+        "coverage-text": "php vendor/bin/pest --coverage --coverage-text=build/coverage.txt",
+        "coverage-clover": "php vendor/bin/pest --coverage-clover build/logs/clover.xml",
+        "coverage-all": "php vendor/bin/pest --coverage --coverage-html build/coverage --coverage-clover build/logs/clover.xml",
         "format": "vendor/bin/pint"
     },
     "config": {

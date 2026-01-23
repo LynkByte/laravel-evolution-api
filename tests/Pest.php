@@ -63,7 +63,7 @@ expect()->extend('toBeSuccessfulApiResponse', function () {
 /**
  * Get a fixture file path.
  */
-function fixture(string $path): string
+function fixturePath(string $path): string
 {
     return __DIR__.'/Fixtures/'.ltrim($path, '/');
 }
@@ -73,7 +73,7 @@ function fixture(string $path): string
  */
 function fixtureArray(string $path): array
 {
-    $content = file_get_contents(fixture($path));
+    $content = file_get_contents(fixturePath($path));
 
     return json_decode($content, true);
 }
@@ -83,7 +83,7 @@ function fixtureArray(string $path): array
  */
 function fixtureJson(string $path): string
 {
-    return file_get_contents(fixture($path));
+    return file_get_contents(fixturePath($path));
 }
 
 /**
