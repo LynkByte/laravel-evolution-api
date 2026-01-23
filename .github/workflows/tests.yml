@@ -152,18 +152,34 @@ jobs:
           with open("composer-audit.json", "r", encoding="utf-8") as handle:
               payload = json.load(handle)
 
-          advisories = payload.get("advisories", {})
           entries = []
-          for package, items in advisories.items():
-              for item in items:
-                  entries.append({
-                      "package": package,
-                      "title": item.get("title", "Untitled advisory"),
-                      "cve": item.get("cve", "N/A"),
-                      "link": item.get("link", ""),
-                      "affected": ", ".join(item.get("affected_versions", []) or []),
-                      "source": item.get("source", "composer"),
-                  })
+
+          def normalize_item(package_name, item):
+              title = item.get("title") or item.get("advisory") or "Untitled advisory"
+              cve = item.get("cve") or item.get("cve_id") or "N/A"
+              link = item.get("link") or item.get("url") or ""
+              affected = item.get("affected_versions") or item.get("affectedVersions") or item.get("affected") or []
+              if isinstance(affected, str):
+                  affected = [affected]
+              source = item.get("source") or item.get("sources") or "composer"
+              entries.append({
+                  "package": package_name or "unknown",
+                  "title": title,
+                  "cve": cve,
+                  "link": link,
+                  "affected": ", ".join(affected or []),
+                  "source": source,
+              })
+
+          advisories = payload.get("advisories") if isinstance(payload, dict) else payload
+          if isinstance(advisories, dict):
+              for package, items in advisories.items():
+                  for item in items or []:
+                      normalize_item(package, item)
+          elif isinstance(advisories, list):
+              for item in advisories:
+                  package = item.get("package") or item.get("packageName") or item.get("name")
+                  normalize_item(package, item)
 
           entries.sort(key=lambda row: (row["package"], row["title"]))
           updated_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
