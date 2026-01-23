@@ -4,38 +4,65 @@ site_author: Lynkbyte
 site_url: https://lynkbyte.github.io/laravel-evolution-api/docs/
 repo_url: https://github.com/lynkbyte/laravel-evolution-api
 repo_name: lynkbyte/laravel-evolution-api
-copyright: Copyright &copy; 2024 Lynkbyte
+copyright: Copyright &copy; 2026 Lynkbyte
 
 theme:
   name: material
-  # Uncomment when logo is provided:
-  logo: dist/logo.png
-  favicon: dist/logo.png
+  custom_dir: docs/overrides
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  
+  # Custom fonts - Space Grotesk matches dashboard
+  font:
+    text: Space Grotesk
+    code: JetBrains Mono
+  
+  # Color palette with custom Lynkbyte scheme
   palette:
-    - scheme: default
-      primary: green
-      accent: light green
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: lynkbyte
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    - scheme: slate
-      primary: green
-      accent: light green
+    
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: lynkbyte-dark
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+  
   features:
+    # Instant navigation - SPA-like experience
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    
+    # Navigation structure
+    - navigation.tracking
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
+    - navigation.path
     - navigation.top
     - navigation.indexes
+    
+    # Table of contents
+    - toc.follow
+    
+    # Search enhancements
     - search.suggest
     - search.highlight
+    - search.share
+    
+    # Content features
     - content.code.copy
     - content.code.annotate
     - content.tabs.link
+    - content.tooltips
+  
   icon:
     repo: fontawesome/brands/github
 
@@ -72,8 +99,8 @@ plugins:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/lynkbyte
-      name: Lynkbyte on GitHub
+      link: https://github.com/lynkbyte/laravel-evolution-api
+      name: GitHub Repository
   generator: false
 
 extra_css:

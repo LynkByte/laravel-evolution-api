@@ -1,97 +1,442 @@
-/* Custom styles for Laravel Evolution API documentation */
+/* ==========================================================================
+   Laravel Evolution API - Custom Theme
+   Warm/Cream color scheme matching the main dashboard
+   ========================================================================== */
+
+/* ==========================================================================
+   Custom Color Scheme: Lynkbyte (Light Mode)
+   ========================================================================== */
+
+[data-md-color-scheme="lynkbyte"] {
+  /* Primary colors - Terracotta accent */
+  --md-primary-fg-color: #c75b39;
+  --md-primary-fg-color--light: #d4785c;
+  --md-primary-fg-color--dark: #a84a2d;
+  --md-primary-bg-color: #fff;
+  --md-primary-bg-color--light: #fef7ee;
+
+  /* Accent color */
+  --md-accent-fg-color: #c75b39;
+  --md-accent-fg-color--transparent: rgba(199, 91, 57, 0.1);
+  --md-accent-bg-color: #fff7ef;
+
+  /* Default/text colors */
+  --md-default-fg-color: #2b241d;
+  --md-default-fg-color--light: #6f6356;
+  --md-default-fg-color--lighter: #9a8d7f;
+  --md-default-fg-color--lightest: rgba(43, 36, 29, 0.12);
+  --md-default-bg-color: #faf8f5;
+  --md-default-bg-color--light: #fef7ee;
+  --md-default-bg-color--lighter: #fff7ef;
+  --md-default-bg-color--lightest: #fffbf7;
+
+  /* Code colors */
+  --md-code-bg-color: #fff7ef;
+  --md-code-fg-color: #2b241d;
+  --md-code-hl-color: rgba(199, 91, 57, 0.15);
+  --md-code-hl-number-color: #d35400;
+  --md-code-hl-special-color: #c75b39;
+  --md-code-hl-function-color: #a84a2d;
+  --md-code-hl-constant-color: #b35a00;
+  --md-code-hl-keyword-color: #c75b39;
+  --md-code-hl-string-color: #2e7d32;
+  --md-code-hl-name-color: #2b241d;
+  --md-code-hl-operator-color: #6f6356;
+  --md-code-hl-punctuation-color: #6f6356;
+  --md-code-hl-comment-color: #9a8d7f;
+  --md-code-hl-generic-color: #c75b39;
+  --md-code-hl-variable-color: #2b241d;
+
+  /* Typeset colors */
+  --md-typeset-color: #2b241d;
+  --md-typeset-a-color: #c75b39;
+
+  /* Admonition colors */
+  --md-admonition-fg-color: #2b241d;
+  --md-admonition-bg-color: #fff7ef;
+
+  /* Footer */
+  --md-footer-bg-color: #2b241d;
+  --md-footer-bg-color--dark: #1f1a15;
+  --md-footer-fg-color: #f6f2ed;
+  --md-footer-fg-color--light: #c9c0b5;
+  --md-footer-fg-color--lighter: #9a8d7f;
+}
+
+/* ==========================================================================
+   Custom Color Scheme: Lynkbyte Dark Mode
+   ========================================================================== */
+
+[data-md-color-scheme="lynkbyte-dark"] {
+  /* Use warm hue for slate base */
+  --md-hue: 30;
+
+  /* Primary colors - Lighter terracotta for dark mode */
+  --md-primary-fg-color: #d4785c;
+  --md-primary-fg-color--light: #e8a08a;
+  --md-primary-fg-color--dark: #c75b39;
+  --md-primary-bg-color: #2b241d;
+  --md-primary-bg-color--light: #3a3129;
+
+  /* Accent color */
+  --md-accent-fg-color: #d4785c;
+  --md-accent-fg-color--transparent: rgba(212, 120, 92, 0.1);
+  --md-accent-bg-color: #3a3129;
+
+  /* Default colors - Dark warm tones */
+  --md-default-fg-color: #f6f2ed;
+  --md-default-fg-color--light: #c9c0b5;
+  --md-default-fg-color--lighter: #9a8d7f;
+  --md-default-fg-color--lightest: rgba(246, 242, 237, 0.12);
+  --md-default-bg-color: #1f1a15;
+  --md-default-bg-color--light: #2b241d;
+  --md-default-bg-color--lighter: #3a3129;
+  --md-default-bg-color--lightest: #4a4038;
+
+  /* Code colors */
+  --md-code-bg-color: #2b241d;
+  --md-code-fg-color: #f6f2ed;
+  --md-code-hl-color: rgba(212, 120, 92, 0.15);
+  --md-code-hl-number-color: #e8a08a;
+  --md-code-hl-special-color: #d4785c;
+  --md-code-hl-function-color: #e8a08a;
+  --md-code-hl-constant-color: #e8a08a;
+  --md-code-hl-keyword-color: #d4785c;
+  --md-code-hl-string-color: #81c784;
+  --md-code-hl-name-color: #f6f2ed;
+  --md-code-hl-operator-color: #c9c0b5;
+  --md-code-hl-punctuation-color: #c9c0b5;
+  --md-code-hl-comment-color: #9a8d7f;
+  --md-code-hl-generic-color: #d4785c;
+  --md-code-hl-variable-color: #f6f2ed;
+
+  /* Typeset colors */
+  --md-typeset-color: #f6f2ed;
+  --md-typeset-a-color: #d4785c;
+
+  /* Admonition colors */
+  --md-admonition-fg-color: #f6f2ed;
+  --md-admonition-bg-color: #2b241d;
+
+  /* Footer */
+  --md-footer-bg-color: #1a1510;
+  --md-footer-bg-color--dark: #0f0d0a;
+  --md-footer-fg-color: #f6f2ed;
+  --md-footer-fg-color--light: #c9c0b5;
+  --md-footer-fg-color--lighter: #9a8d7f;
+}
+
+/* ==========================================================================
+   Header Enhancements
+   ========================================================================== */
+
+/* Subtle gradient on header */
+[data-md-color-scheme="lynkbyte"] .md-header {
+  background: linear-gradient(135deg, #c75b39 0%, #a84a2d 100%);
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .md-header {
+  background: linear-gradient(135deg, #3a3129 0%, #2b241d 100%);
+  border-bottom: 1px solid rgba(212, 120, 92, 0.2);
+}
+
+/* ==========================================================================
+   Navigation Enhancements
+   ========================================================================== */
+
+/* Active navigation item highlight */
+[data-md-color-scheme="lynkbyte"] .md-nav__link--active {
+  color: #c75b39;
+  font-weight: 600;
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .md-nav__link--active {
+  color: #d4785c;
+  font-weight: 600;
+}
+
+/* Navigation hover states */
+[data-md-color-scheme="lynkbyte"] .md-nav__link:hover {
+  color: #a84a2d;
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .md-nav__link:hover {
+  color: #e8a08a;
+}
+
+/* Tabs styling */
+[data-md-color-scheme="lynkbyte"] .md-tabs {
+  background: linear-gradient(135deg, #b35030 0%, #943f26 100%);
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .md-tabs {
+  background: #2b241d;
+  border-bottom: 1px solid rgba(212, 120, 92, 0.15);
+}
+
+/* ==========================================================================
+   Content Enhancements
+   ========================================================================== */
 
 /* Slightly larger code blocks */
 .md-typeset code {
-    font-size: 0.85em;
+  font-size: 0.85em;
 }
 
 /* Better table styling */
 .md-typeset table:not([class]) {
-    font-size: 0.85em;
+  font-size: 0.85em;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.md-typeset table:not([class]) th {
-    background-color: var(--md-primary-fg-color);
-    color: var(--md-primary-bg-color);
+[data-md-color-scheme="lynkbyte"] .md-typeset table:not([class]) th {
+  background-color: #c75b39;
+  color: #fff;
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .md-typeset table:not([class]) th {
+  background-color: #3a3129;
+  color: #f6f2ed;
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background-color: rgba(199, 91, 57, 0.05);
 }
 
 /* Method signature styling */
 .md-typeset .method-signature {
-    background-color: var(--md-code-bg-color);
-    padding: 0.5em 1em;
-    border-radius: 0.25em;
-    font-family: var(--md-code-font-family);
-    overflow-x: auto;
+  background-color: var(--md-code-bg-color);
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  font-family: var(--md-code-font-family);
+  overflow-x: auto;
 }
 
 /* Parameter tables */
 .md-typeset .param-table th:first-child {
-    width: 25%;
+  width: 25%;
 }
 
 .md-typeset .param-table th:nth-child(2) {
-    width: 20%;
+  width: 20%;
 }
 
-/* Hero section on home page */
+/* ==========================================================================
+   Hero Section (Home Page)
+   ========================================================================== */
+
 .md-typeset .hero {
-    text-align: center;
-    padding: 2rem 0;
+  text-align: center;
+  padding: 2rem 0;
 }
 
 .md-typeset .hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
-/* Feature grid */
+/* ==========================================================================
+   Feature Grid
+   ========================================================================== */
+
 .md-typeset .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
 }
 
 .md-typeset .feature-card {
-    padding: 1.5rem;
-    border: 1px solid var(--md-default-fg-color--lightest);
-    border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.md-typeset .feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(43, 36, 29, 0.12);
 }
 
 .md-typeset .feature-card h3 {
-    margin-top: 0;
-    color: var(--md-primary-fg-color);
+  margin-top: 0;
+  color: var(--md-primary-fg-color);
 }
 
-/* Badge styling */
+/* ==========================================================================
+   Badge Styling
+   ========================================================================== */
+
 .md-typeset .badges {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 1rem 0;
-}
-
-/* Mermaid diagram centering */
-.md-typeset .mermaid {
-    text-align: center;
-}
-
-/* Quick reference boxes */
-.md-typeset .quick-ref {
-    background-color: var(--md-code-bg-color);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin: 1rem 0;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 1rem 0;
 }
 
 /* Version badge */
 .md-typeset .version-badge {
-    display: inline-block;
-    padding: 0.25em 0.75em;
-    background-color: var(--md-primary-fg-color);
-    color: white;
-    border-radius: 1em;
-    font-size: 0.85em;
-    font-weight: bold;
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  background-color: var(--md-primary-fg-color);
+  color: white;
+  border-radius: 1em;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   Mermaid Diagrams
+   ========================================================================== */
+
+.md-typeset .mermaid {
+  text-align: center;
+}
+
+/* ==========================================================================
+   Quick Reference Boxes
+   ========================================================================== */
+
+.md-typeset .quick-ref {
+  background-color: var(--md-code-bg-color);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 4px solid var(--md-primary-fg-color);
+}
+
+/* ==========================================================================
+   Admonition Enhancements
+   ========================================================================== */
+
+/* Custom admonition styling for better visual hierarchy */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(43, 36, 29, 0.08);
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  border-radius: 8px 8px 0 0;
+}
+
+/* ==========================================================================
+   Code Block Enhancements
+   ========================================================================== */
+
+/* Better code block styling */
+.md-typeset pre > code {
+  border-radius: 8px;
+}
+
+/* Copy button styling */
+.md-typeset .md-clipboard {
+  color: var(--md-default-fg-color--lighter);
+}
+
+.md-typeset .md-clipboard:hover {
+  color: var(--md-accent-fg-color);
+}
+
+/* ==========================================================================
+   Search Enhancements
+   ========================================================================== */
+
+[data-md-color-scheme="lynkbyte"] .md-search__form {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-md-color-scheme="lynkbyte"] .md-search__form:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .md-search__form {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .md-search__form:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================================================
+   Button Styling
+   ========================================================================== */
+
+.md-typeset .md-button {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.md-typeset .md-button--primary {
+  background-color: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
+}
+
+.md-typeset .md-button--primary:hover {
+  background-color: var(--md-primary-fg-color--dark);
+  border-color: var(--md-primary-fg-color--dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(199, 91, 57, 0.3);
+}
+
+/* ==========================================================================
+   Scrollbar Styling (Webkit)
+   ========================================================================== */
+
+[data-md-color-scheme="lynkbyte"] ::-webkit-scrollbar-thumb {
+  background-color: rgba(199, 91, 57, 0.3);
+}
+
+[data-md-color-scheme="lynkbyte"] ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(199, 91, 57, 0.5);
+}
+
+[data-md-color-scheme="lynkbyte-dark"] ::-webkit-scrollbar-thumb {
+  background-color: rgba(212, 120, 92, 0.3);
+}
+
+[data-md-color-scheme="lynkbyte-dark"] ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(212, 120, 92, 0.5);
+}
+
+/* ==========================================================================
+   Instant Loading Progress Bar
+   ========================================================================== */
+
+.md-progress {
+  background-color: var(--md-accent-fg-color);
+}
+
+/* ==========================================================================
+   Breadcrumb / Navigation Path
+   ========================================================================== */
+
+.md-path {
+  margin-bottom: 0.5rem;
+}
+
+.md-path__link {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-path__link:hover {
+  color: var(--md-accent-fg-color);
+}
+
+/* ==========================================================================
+   Back to Top Button
+   ========================================================================== */
+
+.md-top {
+  background-color: var(--md-primary-fg-color);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(43, 36, 29, 0.2);
+}
+
+.md-top:hover {
+  background-color: var(--md-primary-fg-color--dark);
+  transform: translateY(-2px);
 }
