@@ -128,6 +128,63 @@ describe('SendListMessageDto', function () {
             expect($payload)->toHaveKey('delay');
             expect($payload['delay'])->toBe(1000);
         });
+
+        it('includes quoted when set', function () {
+            $quoted = ['key' => ['id' => 'msg-123']];
+
+            $dto = new SendListMessageDto(
+                number: '5511999999999',
+                title: 'Title',
+                description: 'Desc',
+                buttonText: 'Button',
+                footerText: 'Footer',
+                sections: [['title' => 'Sect', 'rows' => [['title' => 'Row', 'rowId' => 'r1']]]],
+                quoted: $quoted
+            );
+
+            $payload = $dto->toApiPayload();
+
+            expect($payload)->toHaveKey('quoted');
+            expect($payload['quoted'])->toBe($quoted);
+        });
+
+        it('includes both delay and quoted when both are set', function () {
+            $quoted = ['key' => ['id' => 'msg-456']];
+
+            $dto = new SendListMessageDto(
+                number: '5511999999999',
+                title: 'Title',
+                description: 'Desc',
+                buttonText: 'Button',
+                footerText: 'Footer',
+                sections: [['title' => 'Sect', 'rows' => [['title' => 'Row', 'rowId' => 'r1']]]],
+                delay: 1500,
+                quoted: $quoted
+            );
+
+            $payload = $dto->toApiPayload();
+
+            expect($payload)->toHaveKey('delay');
+            expect($payload)->toHaveKey('quoted');
+            expect($payload['delay'])->toBe(1500);
+            expect($payload['quoted'])->toBe($quoted);
+        });
+
+        it('excludes delay and quoted when not set', function () {
+            $dto = new SendListMessageDto(
+                number: '5511999999999',
+                title: 'Title',
+                description: 'Desc',
+                buttonText: 'Button',
+                footerText: 'Footer',
+                sections: [['title' => 'Sect', 'rows' => [['title' => 'Row', 'rowId' => 'r1']]]]
+            );
+
+            $payload = $dto->toApiPayload();
+
+            expect($payload)->not->toHaveKey('delay');
+            expect($payload)->not->toHaveKey('quoted');
+        });
     });
 });
 
@@ -200,5 +257,25 @@ describe('ListMessageBuilder', function () {
             ->build();
 
         expect($dto->buttonText)->toBe('Options');
+    });
+
+    it('sets footer text correctly', function () {
+        $dto = SendListMessageDto::create('5511999999999', 'Menu')
+            ->buttonText('Open')
+            ->footerText('Custom Footer')
+            ->addSection('Opts', [['title' => 'A', 'rowId' => 'a']])
+            ->build();
+
+        expect($dto->footerText)->toBe('Custom Footer');
+    });
+
+    it('uses empty string as default for description and footerText', function () {
+        $dto = SendListMessageDto::create('5511999999999', 'Menu')
+            ->buttonText('Open')
+            ->addSection('Opts', [['title' => 'A', 'rowId' => 'a']])
+            ->build();
+
+        expect($dto->description)->toBe('');
+        expect($dto->footerText)->toBe('');
     });
 });
