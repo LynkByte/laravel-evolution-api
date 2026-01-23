@@ -2,6 +2,121 @@
 
 This page documents known limitations of the Laravel Evolution API package and the underlying Evolution API/Baileys infrastructure.
 
+## Legal & Compliance Considerations
+
+!!! warning "Unofficial WhatsApp Integration"
+    Evolution API uses the unofficial [Baileys library](https://github.com/WhiskeySockets/Baileys) to connect to WhatsApp. This is **not** the official WhatsApp Business API provided by Meta.
+
+### Terms of Service
+
+Using unofficial WhatsApp APIs may violate [WhatsApp's Terms of Service](https://www.whatsapp.com/legal/terms-of-service). Relevant sections include:
+
+- **Automated messaging** - WhatsApp prohibits automated or bulk messaging without their approval
+- **Reverse engineering** - The Baileys library reverse-engineers the WhatsApp Web protocol
+- **Third-party clients** - WhatsApp only permits use of their official applications
+
+!!! info "WhatsApp's Position"
+    WhatsApp actively works to detect and block unofficial API usage. They do not provide support for or endorse any unofficial integration methods.
+
+### Account Ban Risks
+
+Using unofficial APIs can result in account restrictions:
+
+| Ban Type | Duration | Trigger |
+|----------|----------|---------|
+| Temporary soft ban | Hours to days | Unusual activity patterns |
+| Temporary hard ban | Days to weeks | Repeated violations, spam reports |
+| Permanent ban | Indefinite | Severe abuse, malware distribution |
+
+**Common triggers for bans:**
+
+- :material-message-alert: Sending bulk unsolicited messages (spam)
+- :material-robot: Bot-like behavior patterns
+- :material-account-multiple: Mass account creation
+- :material-speedometer: Sending too many messages too quickly
+- :material-flag: Multiple users reporting your messages
+- :material-new-box: New numbers sending high volumes immediately
+
+### How to Minimize Ban Risk
+
+Follow these best practices to reduce the risk of account restrictions:
+
+**Account Setup:**
+
+- [x] Use a **dedicated phone number** - never your personal number
+- [x] Use a number with **some history** - aged SIM cards are better
+- [x] Complete **WhatsApp profile setup** - name, photo, about
+- [x] **Verify the number** properly during WhatsApp setup
+
+**Messaging Behavior:**
+
+- [x] Start with **low volumes** - 10-20 messages/day initially
+- [x] **Gradually increase** volume over 2-4 weeks
+- [x] Add **delays between messages** - 1-5 seconds minimum
+- [x] Only message users who **expect to hear from you**
+- [x] **Personalize messages** - avoid identical bulk content
+- [x] Respect **opt-out requests** immediately
+
+**Technical Practices:**
+
+- [x] Keep **consistent connection** - avoid frequent reconnects
+- [x] Use **reasonable timeouts** - don't hammer the API
+- [x] Implement **proper error handling** - back off on errors
+- [x] Monitor for **warning signs** - increased failures, captchas
+
+### Warning Signs of Impending Ban
+
+Watch for these indicators:
+
+| Warning Sign | What It Means | Action |
+|--------------|---------------|--------|
+| Frequent disconnects | WhatsApp may be flagging the connection | Reduce activity, check logs |
+| CAPTCHA challenges | Suspicious activity detected | Complete CAPTCHA, reduce volume |
+| Message delivery failures | Account may be restricted | Stop sending, wait 24-48 hours |
+| "This account cannot use WhatsApp" | Temporary or permanent ban | Contact WhatsApp support, use backup |
+
+### Official Alternative: WhatsApp Business Platform
+
+For mission-critical applications, consider the official [WhatsApp Business Platform](https://business.whatsapp.com/products/business-platform):
+
+| Feature | Evolution API (Unofficial) | WhatsApp Business API (Official) |
+|---------|---------------------------|----------------------------------|
+| **Cost** | Free (self-hosted) | Per-conversation pricing |
+| **Setup** | Install Evolution API server | Apply through Meta, business verification |
+| **Approval** | None required | Business verification required |
+| **Templates** | Not required | Required for outbound messages |
+| **Rate Limits** | Self-managed (ban risk) | Meta-enforced (predictable) |
+| **Support** | Community only | Official Meta support |
+| **Reliability** | Variable | Guaranteed SLA |
+| **Ban Risk** | High | None (compliant) |
+| **Best For** | Testing, low-volume, non-critical | Production, high-volume, business-critical |
+
+### Data Privacy Responsibilities
+
+When using this package, you are responsible for:
+
+- **GDPR Compliance** - If processing EU user data
+- **Data Storage** - Messages and contacts stored in your database
+- **User Consent** - Obtaining proper consent for messaging
+- **Data Retention** - Implementing appropriate retention policies
+- **Security** - Protecting stored messages and credentials
+
+!!! danger "You Are Responsible"
+    This package and Evolution API are tools. How you use them is your responsibility. The package authors and Evolution API maintainers are not liable for how you use the software or any consequences that result from your usage.
+
+### Acknowledgment
+
+By using this package, you acknowledge that:
+
+1. You understand this is an **unofficial integration** method
+2. You accept the **risk of account bans** and service disruption
+3. You will use the package **responsibly and ethically**
+4. You are **solely responsible** for compliance with all applicable laws
+5. You will **not use this for spam** or unsolicited bulk messaging
+6. You have read and understood [WhatsApp's Terms of Service](https://www.whatsapp.com/legal/terms-of-service)
+
+---
+
 ## Pre-Key Upload Timeout Issue
 
 !!! warning "Upstream Issue"

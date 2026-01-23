@@ -16,6 +16,26 @@ description: Laravel Evolution API - A production-ready Laravel package for What
 A production-ready Laravel package for seamless integration with <a href="https://github.com/EvolutionAPI/evolution-api">Evolution API</a> - the powerful WhatsApp messaging solution.
 </p>
 
+!!! warning "Unofficial WhatsApp Integration"
+    This package uses **Evolution API**, which connects to WhatsApp through the unofficial [Baileys library](https://github.com/WhiskeySockets/Baileys). This is **not** the official WhatsApp Business API.
+    
+    **Potential Consequences:**
+    
+    - :material-gavel: **Terms of Service** - May violate [WhatsApp's ToS](https://www.whatsapp.com/legal/terms-of-service)
+    - :material-account-cancel: **Account Ban** - Your number could be temporarily or permanently banned
+    - :material-close-circle: **Service Disruption** - WhatsApp can block unofficial methods at any time
+    - :material-headset-off: **No Official Support** - Meta/WhatsApp does not support this method
+    
+    **Recommendations:**
+    
+    - Use a **dedicated phone number** (never your personal number)
+    - Start with **low message volumes** and scale gradually
+    - **Avoid spammy behavior** - no bulk unsolicited messages
+    - Have a **backup communication channel**
+    - Consider the official [WhatsApp Business Platform](https://business.whatsapp.com/products/business-platform) for critical applications
+    
+    By using this package, you acknowledge these risks and accept full responsibility.
+
 ---
 
 ## Why Laravel Evolution API?

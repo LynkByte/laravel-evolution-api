@@ -7,6 +7,18 @@ description: How to install and set up the Laravel Evolution API package
 
 This guide walks you through installing and setting up the Laravel Evolution API package in your Laravel application.
 
+!!! warning "Unofficial WhatsApp Integration"
+    This package uses **Evolution API**, which connects to WhatsApp through the unofficial [Baileys library](https://github.com/WhiskeySockets/Baileys). This is **not** the official WhatsApp Business API and may violate [WhatsApp's Terms of Service](https://www.whatsapp.com/legal/terms-of-service).
+    
+    **Before proceeding, please be aware:**
+    
+    - Your WhatsApp number could be **temporarily or permanently banned**
+    - WhatsApp can **block unofficial methods at any time** without notice
+    - There is **no official support** from Meta/WhatsApp
+    - Use a **dedicated phone number** - never your personal number
+    
+    Consider the official [WhatsApp Business Platform](https://business.whatsapp.com/products/business-platform) for mission-critical applications. By installing this package, you acknowledge these risks and accept full responsibility.
+
 ## Requirements
 
 Before installing, ensure your environment meets these requirements:

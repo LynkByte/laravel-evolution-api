@@ -5,6 +5,14 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/lynkbyte/laravel-evolution-api.svg)](https://packagist.org/packages/lynkbyte/laravel-evolution-api)
 [![License](https://img.shields.io/packagist/l/lynkbyte/laravel-evolution-api.svg)](https://packagist.org/packages/lynkbyte/laravel-evolution-api)
 
+> ⚠️ **Important Disclaimer**
+> 
+> This package uses [Evolution API](https://github.com/EvolutionAPI/evolution-api), which connects to WhatsApp through the unofficial [Baileys library](https://github.com/WhiskeySockets/Baileys). This is **not** the official WhatsApp Business API and may violate [WhatsApp's Terms of Service](https://www.whatsapp.com/legal/terms-of-service).
+>
+> **Risks include:** Account bans, service discontinuation, and no official support. Use a dedicated phone number and consider the official [WhatsApp Business Platform](https://business.whatsapp.com/products/business-platform) for mission-critical applications.
+>
+> By using this package, you acknowledge these risks and accept full responsibility.
+
 A production-ready Laravel package for seamless integration with [Evolution API](https://github.com/EvolutionAPI/evolution-api) - the powerful WhatsApp messaging solution. This package provides a clean, fluent API with queue support, webhook handling, rate limiting, metrics, and comprehensive logging.
 
 ## Features
