@@ -331,4 +331,188 @@ describe('Group Resource', function () {
         });
     });
 
+    describe('updatePicture', function () {
+        it('updates group picture', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'updated'], 200),
+            ]);
+
+            $this->resource->updatePicture('120363123456789@g.us', 'https://example.com/image.jpg');
+
+            Http::assertSent(function (Request $request) {
+                return $request->method() === 'PUT' &&
+                    str_contains($request->url(), 'group/updatePicture') &&
+                    $request['image'] === 'https://example.com/image.jpg';
+            });
+        });
+    });
+
+    describe('removePicture', function () {
+        it('removes group picture', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'removed'], 200),
+            ]);
+
+            $this->resource->removePicture('120363123456789@g.us');
+
+            Http::assertSent(function (Request $request) {
+                return $request->method() === 'DELETE' &&
+                    str_contains($request->url(), 'group/removePicture');
+            });
+        });
+    });
+
+    describe('inviteInfo', function () {
+        it('gets group info by invite code', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'groupJid' => '120363123456789@g.us',
+                    'subject' => 'Group Name',
+                ], 200),
+            ]);
+
+            $response = $this->resource->inviteInfo('ABC123XYZ');
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'group/inviteInfo') &&
+                    str_contains($request->url(), 'inviteCode=ABC123XYZ');
+            });
+        });
+    });
+
+    describe('sendInvite', function () {
+        it('sends group invite to numbers', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'sent'], 200),
+            ]);
+
+            $this->resource->sendInvite(
+                '120363123456789@g.us',
+                ['5511999999999', '5511888888888'],
+                'Join our group!'
+            );
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'group/sendInvite') &&
+                    $request['groupJid'] === '120363123456789@g.us' &&
+                    count($request['numbers']) === 2 &&
+                    $request['description'] === 'Join our group!';
+            });
+        });
+
+        it('sends invite without description', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'sent'], 200),
+            ]);
+
+            $this->resource->sendInvite('120363123456789@g.us', ['5511999999999']);
+
+            Http::assertSent(function (Request $request) {
+                return ! isset($request['description']);
+            });
+        });
+    });
+
+    describe('setLockedMode', function () {
+        it('enables locked mode', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'updated'], 200),
+            ]);
+
+            $this->resource->setLockedMode('120363123456789@g.us', true);
+
+            Http::assertSent(function (Request $request) {
+                return $request['action'] === 'locked';
+            });
+        });
+
+        it('disables locked mode', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'updated'], 200),
+            ]);
+
+            $this->resource->setLockedMode('120363123456789@g.us', false);
+
+            Http::assertSent(function (Request $request) {
+                return $request['action'] === 'unlocked';
+            });
+        });
+    });
+
+    describe('isAdmin', function () {
+        it('checks if user is admin', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['isAdmin' => true], 200),
+            ]);
+
+            $response = $this->resource->isAdmin('120363123456789@g.us');
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'group/isAdmin') &&
+                    $request->method() === 'GET';
+            });
+        });
+    });
+
+    describe('pendingParticipants', function () {
+        it('gets pending join requests', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    ['jid' => '5511999999999@s.whatsapp.net'],
+                ], 200),
+            ]);
+
+            $response = $this->resource->pendingParticipants('120363123456789@g.us');
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'group/pendingParticipants') &&
+                    $request->method() === 'GET';
+            });
+        });
+    });
+
+    describe('acceptJoinRequests', function () {
+        it('accepts pending participants', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'accepted'], 200),
+            ]);
+
+            $this->resource->acceptJoinRequests(
+                '120363123456789@g.us',
+                ['5511999999999@s.whatsapp.net']
+            );
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'group/acceptPendingParticipant') &&
+                    $request['groupJid'] === '120363123456789@g.us' &&
+                    count($request['participants']) === 1;
+            });
+        });
+    });
+
+    describe('rejectJoinRequests', function () {
+        it('rejects pending participants', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'rejected'], 200),
+            ]);
+
+            $this->resource->rejectJoinRequests(
+                '120363123456789@g.us',
+                ['5511999999999@s.whatsapp.net']
+            );
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'group/rejectPendingParticipant') &&
+                    $request['groupJid'] === '120363123456789@g.us' &&
+                    count($request['participants']) === 1;
+            });
+        });
+    });
+
 });

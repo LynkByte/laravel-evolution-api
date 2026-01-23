@@ -535,4 +535,180 @@ describe('EvolutionApiLogger', function () {
             expect($logger->getLogger())->toBeInstanceOf(LoggerInterface::class);
         });
     });
+
+    describe('debug mode', function () {
+        it('includes payload in webhook logs when debug is enabled', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager, [
+                'debug' => true,
+            ]);
+
+            $logger->logWebhook('MESSAGES_UPSERT', 'test-instance', [
+                'message' => 'test data',
+            ]);
+
+            expect($logs[0]['context'])->toHaveKey('payload');
+            expect($logs[0]['context']['payload']['message'])->toBe('test data');
+        });
+
+        it('includes response body in debug mode for successful responses', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager, [
+                'debug' => true,
+            ]);
+
+            $logger->logResponse('GET', 'http://api.example.com', 200, ['data' => 'value']);
+
+            expect($logs[0]['context'])->toHaveKey('body');
+        });
+
+        it('does not include response body for successful responses without debug', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager, [
+                'debug' => false,
+            ]);
+
+            $logger->logResponse('GET', 'http://api.example.com', 200, ['data' => 'value']);
+
+            expect($logs[0]['context'])->not->toHaveKey('body');
+        });
+
+        it('includes exception trace in debug mode', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager, [
+                'debug' => true,
+            ]);
+
+            $exception = new RuntimeException('Test error');
+            $logger->logError('Error occurred', [], $exception);
+
+            expect($logs[0]['context']['exception'])->toHaveKey('trace');
+        });
+
+        it('does not include exception trace without debug mode', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager, [
+                'debug' => false,
+            ]);
+
+            $exception = new RuntimeException('Test error');
+            $logger->logError('Error occurred', [], $exception);
+
+            expect($logs[0]['context']['exception'])->not->toHaveKey('trace');
+        });
+    });
+
+    describe('URL redaction edge cases', function () {
+        it('handles URLs without query strings', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager);
+
+            $logger->logRequest('GET', 'http://api.example.com/path/to/resource');
+
+            expect($logs[0]['context']['url'])->toBe('http://api.example.com/path/to/resource');
+        });
+
+        it('handles URLs with port numbers', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager);
+
+            $logger->logRequest('GET', 'http://api.example.com:8080/test');
+
+            expect($logs[0]['context']['url'])->toContain(':8080');
+        });
+
+        it('handles URLs with fragments', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager);
+
+            $logger->logRequest('GET', 'http://api.example.com/test#section');
+
+            expect($logs[0]['context']['url'])->toContain('#section');
+        });
+    });
+
+    describe('phone number masking edge cases', function () {
+        it('handles short phone numbers', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager);
+
+            $logger->logMessageSend('test-instance', '1234', 'text', true);
+
+            // Short numbers should not be masked heavily
+            expect($logs[0]['context']['recipient'])->toBe('1234');
+        });
+
+        it('handles phone numbers with special characters', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager);
+
+            $logger->logMessageSend('test-instance', '+55 (11) 99999-9999', 'text', true);
+
+            // Should be cleaned and masked
+            expect($logs[0]['context']['recipient'])->toContain('****');
+            expect($logs[0]['context']['recipient'])->not->toContain('(');
+            expect($logs[0]['context']['recipient'])->not->toContain(')');
+        });
+
+        it('handles medium length phone numbers', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager);
+
+            $logger->logMessageSend('test-instance', '123456', 'text', true);
+
+            // 6 digits: 4 visible + 0 masked + 2 visible = no masking needed
+            expect($logs[0]['context']['recipient'])->toBe('123456');
+        });
+    });
+
+    describe('response body handling', function () {
+        it('includes body for error responses regardless of debug mode', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager, [
+                'debug' => false,
+            ]);
+
+            $logger->logResponse('POST', 'http://api.example.com', 400, ['error' => 'Bad request']);
+
+            expect($logs[0]['context'])->toHaveKey('body');
+            expect($logs[0]['context']['body']['error'])->toBe('Bad request');
+        });
+
+        it('handles string body in response', function () {
+            $logs = [];
+            $logManager = createMockLogManager($logs);
+
+            $logger = new EvolutionApiLogger($logManager, [
+                'debug' => true,
+            ]);
+
+            $logger->logResponse('GET', 'http://api.example.com', 200, 'plain text response');
+
+            expect($logs[0]['context']['body'])->toBe('plain text response');
+        });
+    });
 });

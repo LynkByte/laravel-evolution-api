@@ -334,4 +334,162 @@ describe('Chat Resource', function () {
         });
     });
 
+    describe('isOnWhatsApp', function () {
+        it('is an alias for checkNumber', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    ['exists' => true, 'jid' => '5511999999999@s.whatsapp.net'],
+                ], 200),
+            ]);
+
+            $response = $this->resource->isOnWhatsApp('5511999999999');
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'chat/whatsappNumbers/test-instance') &&
+                    $request['numbers'] === ['5511999999999'];
+            });
+        });
+    });
+
+    describe('findAllMessages', function () {
+        it('fetches all messages without filter', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['messages' => []], 200),
+            ]);
+
+            $response = $this->resource->findAllMessages();
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'chat/findMessages/test-instance') &&
+                    $request['limit'] === 100;
+            });
+        });
+
+        it('fetches messages with filter and custom limit', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['messages' => []], 200),
+            ]);
+
+            $this->resource->findAllMessages(['key' => ['remoteJid' => '5511999999999']], 50);
+
+            Http::assertSent(function (Request $request) {
+                return $request['limit'] === 50 &&
+                    isset($request['where']);
+            });
+        });
+    });
+
+    describe('findMessagesByDate', function () {
+        it('fetches messages within date range', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['messages' => []], 200),
+            ]);
+
+            $startTimestamp = 1700000000;
+            $endTimestamp = 1700086400;
+
+            $this->resource->findMessagesByDate(
+                '5511999999999@s.whatsapp.net',
+                $startTimestamp,
+                $endTimestamp,
+                50
+            );
+
+            Http::assertSent(function (Request $request) use ($startTimestamp, $endTimestamp) {
+                return str_contains($request->url(), 'chat/findMessages/test-instance') &&
+                    $request['where']['messageTimestamp']['gte'] === $startTimestamp &&
+                    $request['where']['messageTimestamp']['lte'] === $endTimestamp &&
+                    $request['limit'] === 50;
+            });
+        });
+    });
+
+    describe('findStatusMessages', function () {
+        it('fetches status/story messages', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['statuses' => []], 200),
+            ]);
+
+            $response = $this->resource->findStatusMessages();
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'chat/findStatusMessages/test-instance') &&
+                    $request->method() === 'GET';
+            });
+        });
+    });
+
+    describe('findLabels', function () {
+        it('fetches all labels', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['labels' => []], 200),
+            ]);
+
+            $response = $this->resource->findLabels();
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'chat/findLabels/test-instance') &&
+                    $request->method() === 'GET';
+            });
+        });
+    });
+
+    describe('markChatUnread', function () {
+        it('marks chat as unread', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'success'], 200),
+            ]);
+
+            $this->resource->markChatUnread('5511999999999@s.whatsapp.net');
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'chat/markChatUnread/test-instance') &&
+                    $request['chat'] === '5511999999999@s.whatsapp.net';
+            });
+        });
+    });
+
+    describe('clearMessages', function () {
+        it('clears all messages in a chat', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'cleared'], 200),
+            ]);
+
+            $this->resource->clearMessages('5511999999999@s.whatsapp.net');
+
+            Http::assertSent(function (Request $request) {
+                return $request->method() === 'DELETE' &&
+                    str_contains($request->url(), 'chat/clearMessages/test-instance') &&
+                    $request['remoteJid'] === '5511999999999@s.whatsapp.net';
+            });
+        });
+    });
+
+    describe('getBusinessProfile', function () {
+        it('fetches business profile', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response([
+                    'businessProfile' => ['description' => 'Business'],
+                ], 200),
+            ]);
+
+            $response = $this->resource->getBusinessProfile('5511999999999');
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'chat/fetchBusinessProfile/test-instance') &&
+                    $request['number'] === '5511999999999';
+            });
+        });
+    });
+
 });

@@ -521,4 +521,715 @@ describe('WebhookProcessor', function () {
         });
     });
 
+    describe('constructor', function () {
+        it('creates processor with null logger (uses NullLogger)', function () {
+            $events = Mockery::mock(Dispatcher::class);
+            $processor = new WebhookProcessor($events, null);
+
+            $events->shouldReceive('dispatch')->byDefault();
+
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [],
+            ];
+
+            // Should not throw - NullLogger silently ignores logs
+            $processor->process($payload);
+
+            expect($processor)->toBeInstanceOf(WebhookProcessor::class);
+        });
+    });
+
+    describe('additional message type detection', function () {
+        it('detects video message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['videoMessage' => ['url' => 'https://example.com/video.mp4']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'video';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects sticker message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['stickerMessage' => ['url' => 'https://example.com/sticker.webp']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'sticker';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects contact message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['contactMessage' => ['displayName' => 'John Doe']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'contact';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects contacts array message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['contactsArrayMessage' => ['contacts' => []]],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'contact';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects reaction message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['reactionMessage' => ['text' => '👍']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'reaction';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects poll message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['pollCreationMessage' => ['name' => 'Poll Question']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'poll';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects list message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['listMessage' => ['title' => 'Options']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'list';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects list response message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['listResponseMessage' => ['selectedRowId' => '1']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'list';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects button message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['buttonsMessage' => ['contentText' => 'Choose']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'button';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects button response message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['buttonsResponseMessage' => ['selectedButtonId' => 'btn1']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'button';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects template message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['templateMessage' => ['hydratedTemplate' => []]],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'template';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('detects extended text message', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['extendedTextMessage' => ['text' => 'Hello with link']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType->value === 'text';
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('returns null for unknown message type', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'message' => ['unknownMessage' => ['data' => 'test']],
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof MessageReceived &&
+                        $event->messageType === null;
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+    });
+
+    describe('additional connection state mapping', function () {
+        it('maps connecting state to CONNECTING status', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'connecting'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof ConnectionUpdated &&
+                        $event->status->value === 'connecting';
+                }))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(InstanceStatusChanged::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('maps qrcode state to QRCODE status', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'qrcode'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof ConnectionUpdated &&
+                        $event->status->value === 'qrcode';
+                }))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(InstanceStatusChanged::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('maps qr state to QRCODE status', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'qr'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof ConnectionUpdated &&
+                        $event->status->value === 'qrcode';
+                }))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(InstanceStatusChanged::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('maps connected state to OPEN status', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'connected'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof ConnectionUpdated &&
+                        $event->status->value === 'open';
+                }))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(InstanceStatusChanged::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('maps disconnected state to CLOSE status', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'disconnected'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof ConnectionUpdated &&
+                        $event->status->value === 'close';
+                }))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(InstanceStatusChanged::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('maps closed state to CLOSE status', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'closed'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof ConnectionUpdated &&
+                        $event->status->value === 'close';
+                }))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(InstanceStatusChanged::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('maps unknown state to UNKNOWN status', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => ['state' => 'some_unknown_state'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof ConnectionUpdated &&
+                        $event->status->value === 'unknown';
+                }))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(InstanceStatusChanged::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('does not dispatch events when connection state is null', function () {
+            $payload = [
+                'event' => 'CONNECTION_UPDATE',
+                'instance' => 'test-instance',
+                'data' => [],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            // ConnectionUpdated and InstanceStatusChanged should NOT be dispatched
+            $this->events->shouldNotReceive('dispatch')
+                ->with(Mockery::type(ConnectionUpdated::class));
+
+            $this->processor->process($payload);
+        });
+    });
+
+    describe('message update edge cases', function () {
+        it('handles DELIVERY_ACK string status', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPDATE',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'status' => 'DELIVERY_ACK',
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(MessageDelivered::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('handles READ string status', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPDATE',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123', 'remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'status' => 'READ',
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(MessageRead::class))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+
+        it('does not dispatch events when messageId is null', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPDATE',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['remoteJid' => '5511999999999@s.whatsapp.net'],
+                    'status' => 3,
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            // MessageDelivered should NOT be dispatched when messageId is null
+            $this->events->shouldNotReceive('dispatch')
+                ->with(Mockery::type(MessageDelivered::class));
+
+            $this->processor->process($payload);
+        });
+
+        it('does not dispatch events when remoteJid is null', function () {
+            $payload = [
+                'event' => 'MESSAGES_UPDATE',
+                'instance' => 'test-instance',
+                'data' => [
+                    'key' => ['id' => 'msg-123'],
+                    'status' => 4,
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            // MessageRead should NOT be dispatched when remoteJid is null
+            $this->events->shouldNotReceive('dispatch')
+                ->with(Mockery::type(MessageRead::class));
+
+            $this->processor->process($payload);
+        });
+    });
+
+    describe('QR code edge cases', function () {
+        it('does not dispatch event when qrCode is null', function () {
+            $payload = [
+                'event' => 'QRCODE_UPDATED',
+                'instance' => 'test-instance',
+                'data' => [
+                    'count' => 1,
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            // QrCodeReceived should NOT be dispatched when qrCode is null
+            $this->events->shouldNotReceive('dispatch')
+                ->with(Mockery::type(QrCodeReceived::class));
+
+            $this->processor->process($payload);
+        });
+
+        it('handles pairing code in QR code event', function () {
+            $payload = [
+                'event' => 'QRCODE_UPDATED',
+                'instance' => 'test-instance',
+                'data' => [
+                    'qrcode' => [
+                        'base64' => 'data:image/png;base64,ABC123',
+                    ],
+                    'pairingCode' => '12345678',
+                    'count' => 2,
+                ],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::on(function ($event) {
+                    return $event instanceof QrCodeReceived &&
+                        $event->pairingCode === '12345678' &&
+                        $event->attempt === 2;
+                }))
+                ->once();
+
+            $this->processor->process($payload);
+        });
+    });
+
+    describe('handler combinations', function () {
+        it('calls both event-specific and wildcard handlers', function () {
+            $specificHandler = Mockery::mock(WebhookHandlerInterface::class);
+            $specificHandler->shouldReceive('handle')
+                ->with(Mockery::type(WebhookPayloadDto::class))
+                ->once();
+
+            $wildcardHandler = Mockery::mock(WebhookHandlerInterface::class);
+            $wildcardHandler->shouldReceive('handle')
+                ->with(Mockery::type(WebhookPayloadDto::class))
+                ->once();
+
+            $this->processor->registerHandler('MESSAGES_UPSERT', $specificHandler);
+            $this->processor->registerWildcardHandler($wildcardHandler);
+
+            $payload = [
+                'event' => 'MESSAGES_UPSERT',
+                'instance' => 'test-instance',
+                'data' => [],
+            ];
+
+            $this->events->shouldReceive('dispatch')->byDefault();
+
+            $this->processor->process($payload);
+        });
+    });
+
+    describe('unhandled events', function () {
+        it('processes unhandled event types without error', function () {
+            $payload = [
+                'event' => 'UNKNOWN_EVENT',
+                'instance' => 'test-instance',
+                'data' => ['some' => 'data'],
+            ];
+
+            $this->events->shouldReceive('dispatch')
+                ->with(Mockery::type(WebhookReceived::class))
+                ->once();
+
+            // Should complete without throwing
+            $this->processor->process($payload);
+
+            expect(true)->toBeTrue();
+        });
+    });
+
 });

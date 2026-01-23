@@ -8,9 +8,13 @@ use Lynkbyte\EvolutionApi\Client\ConnectionManager;
 use Lynkbyte\EvolutionApi\Client\EvolutionClient;
 use Lynkbyte\EvolutionApi\DTOs\ApiResponse;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendAudioMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendContactMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendListMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendLocationMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendMediaMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendPollMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendStatusMessageDto;
+use Lynkbyte\EvolutionApi\DTOs\Message\SendTemplateMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
 use Lynkbyte\EvolutionApi\Resources\Message;
 
@@ -661,6 +665,212 @@ describe('Message Resource', function () {
                     $request['title'] === 'Choose an option' &&
                     count($request['buttons']) === 2 &&
                     $request['footer'] === 'Thank you!';
+            });
+        });
+    });
+
+    describe('sendContact', function () {
+        it('sends contact message with DTO', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $dto = new SendContactMessageDto(
+                number: '5511999999999',
+                contact: [
+                    ['fullName' => 'John Doe', 'wuid' => '5511888888888@s.whatsapp.net', 'phoneNumber' => '+55 11 88888-8888'],
+                ]
+            );
+
+            $response = $this->resource->sendContact($dto);
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'message/sendContact/test-instance') &&
+                    $request['number'] === '5511999999999' &&
+                    count($request['contact']) === 1;
+            });
+        });
+
+        it('sends contact message with array', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $this->resource->sendContact([
+                'number' => '5511999999999',
+                'contact' => [
+                    ['fullName' => 'Jane Doe', 'phoneNumber' => '+55 11 77777-7777'],
+                ],
+            ]);
+
+            Http::assertSent(function (Request $request) {
+                return $request['contact'][0]['fullName'] === 'Jane Doe';
+            });
+        });
+    });
+
+    describe('sendList', function () {
+        it('sends list message with DTO', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $dto = new SendListMessageDto(
+                number: '5511999999999',
+                title: 'Menu',
+                description: 'Choose from our menu',
+                buttonText: 'View Options',
+                footerText: 'Footer text',
+                sections: [
+                    [
+                        'title' => 'Section 1',
+                        'rows' => [
+                            ['title' => 'Option 1', 'rowId' => 'opt1'],
+                            ['title' => 'Option 2', 'rowId' => 'opt2'],
+                        ],
+                    ],
+                ]
+            );
+
+            $response = $this->resource->sendList($dto);
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'message/sendList/test-instance') &&
+                    $request['title'] === 'Menu' &&
+                    $request['buttonText'] === 'View Options' &&
+                    count($request['sections']) === 1;
+            });
+        });
+
+        it('sends list message with array', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $this->resource->sendList([
+                'number' => '5511999999999',
+                'title' => 'Menu',
+                'description' => 'Choose from our menu',
+                'buttonText' => 'View Options',
+                'footerText' => '',
+                'sections' => [
+                    ['title' => 'Section 1', 'rows' => [['title' => 'Item 1', 'rowId' => 'item1']]],
+                ],
+            ]);
+
+            Http::assertSent(function (Request $request) {
+                return $request['title'] === 'Menu';
+            });
+        });
+    });
+
+    describe('sendStatus', function () {
+        it('sends status/story message with DTO', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $dto = new SendStatusMessageDto(
+                type: 'text',
+                content: 'Hello from my status!',
+                backgroundColor: '#FF5733',
+                font: 1
+            );
+
+            $response = $this->resource->sendStatus($dto);
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'message/sendStatus/test-instance') &&
+                    $request['type'] === 'text' &&
+                    $request['content'] === 'Hello from my status!';
+            });
+        });
+
+        it('sends status message with array', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $this->resource->sendStatus([
+                'type' => 'image',
+                'content' => 'https://example.com/image.jpg',
+                'caption' => 'My status image',
+            ]);
+
+            Http::assertSent(function (Request $request) {
+                return $request['type'] === 'image' &&
+                    $request['caption'] === 'My status image';
+            });
+        });
+    });
+
+    describe('sendTemplate', function () {
+        it('sends template message with DTO', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $dto = new SendTemplateMessageDto(
+                number: '5511999999999',
+                name: 'welcome_template',
+                language: 'en',
+                components: [
+                    [
+                        'type' => 'body',
+                        'parameters' => [
+                            ['type' => 'text', 'text' => 'John'],
+                        ],
+                    ],
+                ]
+            );
+
+            $response = $this->resource->sendTemplate($dto);
+
+            expect($response->isSuccessful())->toBeTrue();
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'message/sendTemplate/test-instance') &&
+                    $request['name'] === 'welcome_template' &&
+                    $request['language'] === 'en';
+            });
+        });
+
+        it('sends template message with array', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['key' => []], 200),
+            ]);
+
+            $this->resource->sendTemplate([
+                'number' => '5511999999999',
+                'name' => 'order_update',
+                'language' => 'pt_BR',
+                'components' => [],
+            ]);
+
+            Http::assertSent(function (Request $request) {
+                return $request['name'] === 'order_update' &&
+                    $request['language'] === 'pt_BR';
+            });
+        });
+    });
+
+    describe('sendPresence', function () {
+        it('sends custom presence update', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['status' => 'success'], 200),
+            ]);
+
+            $this->resource->sendPresence('5511999999999', 'available');
+
+            Http::assertSent(function (Request $request) {
+                return str_contains($request->url(), 'message/sendPresence/test-instance') &&
+                    $request['presence'] === 'available';
             });
         });
     });

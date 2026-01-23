@@ -740,3 +740,151 @@ describe('configuration edge cases', function () {
         expect($limiter->remaining('key', 'custom'))->toBe(25);
     });
 });
+
+describe('availableIn() with TTL support', function () {
+    it('returns decay_seconds as fallback when store does not support TTL', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache, [
+            'limits' => [
+                'test' => ['max_attempts' => 5, 'decay_seconds' => 120],
+            ],
+        ]);
+
+        // Make an attempt to create the cache key
+        $limiter->attempt('user-1', 'test');
+
+        // ArrayStore doesn't support TTL, so it should return decay_seconds
+        $availableIn = $limiter->availableIn('user-1', 'test');
+
+        expect($availableIn)->toBe(120);
+    });
+
+    it('returns 0 when cache key does not exist', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        // No attempts made, key doesn't exist
+        $availableIn = $limiter->availableIn('non-existent-key', 'default');
+
+        expect($availableIn)->toBe(0);
+    });
+});
+
+describe('attempt() with cache increment', function () {
+    it('initializes counter on first attempt', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        // First attempt should initialize to 1
+        $limiter->attempt('user-1', 'default');
+
+        // 60 - 1 = 59
+        expect($limiter->remaining('user-1', 'default'))->toBe(59);
+    });
+
+    it('increments counter on subsequent attempts', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        // Multiple attempts
+        $limiter->attempt('user-1', 'default');
+        $limiter->attempt('user-1', 'default');
+        $limiter->attempt('user-1', 'default');
+
+        // 60 - 3 = 57
+        expect($limiter->remaining('user-1', 'default'))->toBe(57);
+    });
+});
+
+describe('method chaining', function () {
+    it('enable() returns self', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache, ['enabled' => false]);
+
+        $result = $limiter->enable();
+
+        expect($result)->toBe($limiter);
+        expect($limiter->isEnabled())->toBeTrue();
+    });
+
+    it('disable() returns self', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        $result = $limiter->disable();
+
+        expect($result)->toBe($limiter);
+        expect($limiter->isEnabled())->toBeFalse();
+    });
+
+    it('setOnLimitReached() returns self', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        $result = $limiter->setOnLimitReached('skip');
+
+        expect($result)->toBe($limiter);
+    });
+
+    it('supports fluent chaining', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        $result = $limiter
+            ->setLimits('custom', 100, 60)
+            ->setOnLimitReached('throw')
+            ->enable();
+
+        expect($result)->toBe($limiter);
+        expect($limiter->remaining('key', 'custom'))->toBe(100);
+    });
+});
+
+describe('getLimits() fallback', function () {
+    it('falls back to default limits for unknown type', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        // Unknown type should use 'default' limits (60 max_attempts)
+        expect($limiter->remaining('key', 'completely-unknown-type'))->toBe(60);
+    });
+});
+
+describe('clear() behavior', function () {
+    it('clears only specified type', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        // Make attempts on multiple types
+        $limiter->attempt('user-1', 'default');
+        $limiter->attempt('user-1', 'messages');
+        $limiter->attempt('user-1', 'media');
+
+        // Clear only 'default'
+        $limiter->clear('user-1', 'default');
+
+        // 'default' should be reset
+        expect($limiter->remaining('user-1', 'default'))->toBe(60);
+        // Others should remain
+        expect($limiter->remaining('user-1', 'messages'))->toBe(29);
+        expect($limiter->remaining('user-1', 'media'))->toBe(9);
+    });
+
+    it('clears all types when type is null', function () {
+        $cache = new CacheRepository(new ArrayStore);
+        $limiter = new RateLimiter($cache);
+
+        // Make attempts on multiple types
+        $limiter->attempt('user-1', 'default');
+        $limiter->attempt('user-1', 'messages');
+        $limiter->attempt('user-1', 'media');
+
+        // Clear all types
+        $limiter->clear('user-1', null);
+
+        // All should be reset
+        expect($limiter->remaining('user-1', 'default'))->toBe(60);
+        expect($limiter->remaining('user-1', 'messages'))->toBe(30);
+        expect($limiter->remaining('user-1', 'media'))->toBe(10);
+    });
+});
