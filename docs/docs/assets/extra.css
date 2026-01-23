@@ -440,3 +440,83 @@
   background-color: var(--md-primary-fg-color--dark);
   transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   Mermaid Diagram Zoom
+   ========================================================================== */
+
+.mermaid-zoom-container {
+  position: relative;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--md-code-bg-color);
+  min-height: 200px;
+  margin: 1rem 0;
+}
+
+.mermaid-zoom-container svg {
+  display: block;
+  margin: 0 auto;
+  cursor: grab;
+}
+
+.mermaid-zoom-container svg:active {
+  cursor: grabbing;
+}
+
+/* SVG pan-zoom control styling */
+.mermaid-zoom-container #svg-pan-zoom-controls {
+  transform: translate(10px, 10px);
+}
+
+[data-md-color-scheme="lynkbyte"] .mermaid-zoom-container #svg-pan-zoom-controls polygon {
+  fill: var(--md-primary-fg-color) !important;
+  fill-opacity: 0.9;
+}
+
+[data-md-color-scheme="lynkbyte"] .mermaid-zoom-container #svg-pan-zoom-controls polygon:hover {
+  fill: var(--md-primary-fg-color--dark) !important;
+  fill-opacity: 1;
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .mermaid-zoom-container #svg-pan-zoom-controls polygon {
+  fill: var(--md-primary-fg-color) !important;
+  fill-opacity: 0.9;
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .mermaid-zoom-container #svg-pan-zoom-controls polygon:hover {
+  fill: var(--md-primary-fg-color--light) !important;
+  fill-opacity: 1;
+}
+
+/* Hint text */
+.mermaid-zoom-container::after {
+  content: "Scroll to zoom \2022 Drag to pan \2022 Double-click to reset";
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.7rem;
+  color: var(--md-default-fg-color--lighter);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  background: var(--md-code-bg-color);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.mermaid-zoom-container:hover::after {
+  opacity: 1;
+}
+
+/* Ensure Mermaid text is readable in both themes */
+[data-md-color-scheme="lynkbyte"] .mermaid-zoom-container .nodeLabel,
+[data-md-color-scheme="lynkbyte"] .mermaid-zoom-container .edgeLabel {
+  color: var(--md-default-fg-color);
+}
+
+[data-md-color-scheme="lynkbyte-dark"] .mermaid-zoom-container .nodeLabel,
+[data-md-color-scheme="lynkbyte-dark"] .mermaid-zoom-container .edgeLabel {
+  color: var(--md-default-fg-color);
+}

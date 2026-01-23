@@ -106,6 +106,9 @@ extra:
 extra_css:
   - assets/extra.css
 
+extra_javascript:
+  - javascripts/mermaid-zoom.js
+
 nav:
   - Home: index.md
   - Getting Started:
