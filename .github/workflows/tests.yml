@@ -134,15 +134,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: php
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v4
 
       - name: Analyze
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           output: sarif-results
           upload: true
@@ -155,7 +155,8 @@ jobs:
       - name: Generate CodeQL HTML report
         run: |
           mkdir -p codeql-report
-          npx -y sarif-to-html -i sarif-results/php.sarif -o codeql-report/index.html
+          sarif_file=$(ls sarif-results/*.sarif | head -n 1)
+          npx -y sarif-to-html -i "$sarif_file" -o codeql-report/index.html
 
       - name: Upload CodeQL report
         uses: actions/upload-artifact@v4
