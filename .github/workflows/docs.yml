@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     # Skip if workflow_run triggered but tests failed
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -49,7 +49,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('docs/requirements.txt') }}
+          key: ${{ runner.os }}-pip-mkdocs
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -61,49 +61,44 @@ jobs:
       - name: Build documentation
         run: |
           cd docs
-          mkdocs build --strict
+          mkdocs build --strict --site-dir ../site/docs
 
-      - name: Download coverage report
+      - name: Download all artifacts
         if: github.event_name == 'workflow_run'
         uses: dawidd6/action-download-artifact@v6
         with:
           workflow: tests.yml
           run_id: ${{ github.event.workflow_run.id }}
-          name: coverage-report
-          path: docs/site/reports/coverage
+          path: site/reports
 
-      - name: Download audit report
-        if: github.event_name == 'workflow_run'
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          workflow: tests.yml
-          run_id: ${{ github.event.workflow_run.id }}
-          name: audit-report
-          path: docs/site/reports/audit
-
-      - name: Verify artifacts exist
+      - name: Verify and rename artifacts
         if: github.event_name == 'workflow_run'
         run: |
-          if [ ! -f "docs/site/reports/coverage/index.html" ]; then
+          if [ ! -f "site/reports/coverage-report/index.html" ]; then
             echo "::error::Coverage report artifact missing"
             exit 1
           fi
-          if [ ! -f "docs/site/reports/audit/index.html" ]; then
+          if [ ! -f "site/reports/audit-report/index.html" ]; then
             echo "::error::Audit report artifact missing"
             exit 1
           fi
-          echo "All report artifacts verified successfully"
+          # Rename to cleaner directory names
+          mv site/reports/coverage-report site/reports/coverage
+          mv site/reports/audit-report site/reports/audit
+          echo "All report artifacts verified and renamed successfully"
 
-      - name: Generate reports dashboard
-        if: github.event_name == 'workflow_run'
+      - name: Generate main dashboard
         run: |
-          cat <<'EOF' > docs/site/reports/index.html
+          cat <<'EOF' > site/index.html
           <!doctype html>
           <html lang="en">
             <head>
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1">
-              <title>Reports Dashboard - Laravel Evolution API</title>
+              <title>Laravel Evolution API</title>
+              <link rel="preconnect" href="https://fonts.googleapis.com">
+              <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+              <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
               <style>
                 :root {
                   color-scheme: light;
@@ -112,6 +107,7 @@ jobs:
                   --text: #2b241d;
                   --muted: #6f6356;
                   --accent: #c75b39;
+                  --accent-hover: #a84a2d;
                   --shadow: 0 18px 40px rgba(28, 23, 17, 0.18);
                   --border: 1px solid rgba(111, 99, 86, 0.18);
                 }
@@ -135,36 +131,61 @@ jobs:
                 }
 
                 main {
-                  width: min(980px, 100%);
+                  width: min(1080px, 100%);
                   display: grid;
-                  gap: 24px;
+                  gap: 32px;
                 }
 
                 header {
                   display: grid;
-                  gap: 12px;
-                  padding: 28px;
+                  gap: 16px;
+                  padding: 36px;
                   background: var(--card);
                   border-radius: 24px;
                   border: var(--border);
                   box-shadow: var(--shadow);
+                  text-align: center;
+                }
+
+                .logo {
+                  width: 72px;
+                  height: 72px;
+                  margin: 0 auto 8px;
+                  border-radius: 16px;
                 }
 
                 h1 {
                   margin: 0;
-                  font-size: clamp(2rem, 3vw, 2.8rem);
+                  font-size: clamp(2rem, 4vw, 3rem);
                   letter-spacing: -0.02em;
+                  font-weight: 700;
                 }
 
-                p {
+                .tagline {
                   margin: 0;
                   color: var(--muted);
-                  font-size: 1.05rem;
+                  font-size: 1.15rem;
+                  max-width: 600px;
+                  margin: 0 auto;
+                }
+
+                .badge {
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 6px;
+                  background: rgba(199, 91, 57, 0.12);
+                  color: var(--accent);
+                  padding: 6px 14px;
+                  border-radius: 20px;
+                  font-size: 0.85rem;
+                  font-weight: 500;
+                  width: fit-content;
+                  margin: 0 auto;
                 }
 
                 .grid {
                   display: grid;
-                  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                   gap: 20px;
                 }
 
@@ -177,9 +198,9 @@ jobs:
                   background: var(--card);
                   border-radius: 20px;
                   border: var(--border);
-                  padding: 22px;
+                  padding: 28px;
                   display: grid;
-                  gap: 12px;
+                  gap: 14px;
                   box-shadow: 0 8px 20px rgba(28, 23, 17, 0.12);
                   transition: transform 0.25s ease, box-shadow 0.25s ease;
                 }
@@ -189,32 +210,59 @@ jobs:
                   box-shadow: var(--shadow);
                 }
 
+                .card-icon {
+                  width: 48px;
+                  height: 48px;
+                  background: rgba(199, 91, 57, 0.12);
+                  border-radius: 12px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+
+                .card-icon svg {
+                  width: 24px;
+                  height: 24px;
+                  color: var(--accent);
+                }
+
                 .eyebrow {
                   text-transform: uppercase;
-                  font-size: 0.75rem;
+                  font-size: 0.72rem;
                   letter-spacing: 0.16em;
                   color: var(--muted);
+                  font-weight: 500;
                 }
 
                 .title {
-                  font-size: 1.35rem;
+                  font-size: 1.4rem;
+                  margin: 0;
+                  font-weight: 600;
+                }
+
+                .description {
+                  color: var(--muted);
+                  font-size: 0.95rem;
+                  line-height: 1.5;
                   margin: 0;
                 }
 
                 .cta {
                   font-weight: 600;
                   color: var(--accent);
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 6px;
                 }
 
-                .back-link {
-                  display: inline-block;
-                  margin-bottom: 16px;
-                  color: var(--accent);
-                  font-weight: 500;
+                .cta svg {
+                  width: 16px;
+                  height: 16px;
+                  transition: transform 0.2s ease;
                 }
 
-                .back-link:hover {
-                  text-decoration: underline;
+                .card:hover .cta svg {
+                  transform: translateX(4px);
                 }
 
                 footer {
@@ -222,34 +270,73 @@ jobs:
                   color: var(--muted);
                   font-size: 0.9rem;
                 }
+
+                footer a {
+                  color: var(--accent);
+                }
+
+                footer a:hover {
+                  text-decoration: underline;
+                }
               </style>
             </head>
             <body>
               <main>
-                <a class="back-link" href="../">&larr; Back to Documentation</a>
-
                 <header>
-                  <h1>Engineering Reports</h1>
-                  <p>Quick access to the latest quality and security insights for Laravel Evolution API.</p>
+                  <img src="docs/dist/logo.png" alt="Laravel Evolution API" class="logo" onerror="this.style.display='none'">
+                  <h1>Laravel Evolution API</h1>
+                  <p class="tagline">Production-ready Laravel package for Evolution API — build powerful WhatsApp messaging integrations with ease.</p>
+                  <span class="badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    PHP 8.2+ &middot; Laravel 11/12
+                  </span>
                 </header>
 
                 <section class="grid">
-                  <a class="card" href="coverage/">
-                    <span class="eyebrow">Quality</span>
-                    <h2 class="title">Code Coverage</h2>
-                    <p>Explore test coverage trends and untested areas.</p>
-                    <span class="cta">View coverage report &rarr;</span>
+                  <a class="card" href="docs/">
+                    <div class="card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                    </div>
+                    <span class="eyebrow">Getting Started</span>
+                    <h2 class="title">Documentation</h2>
+                    <p class="description">Comprehensive guides, API reference, and examples to help you integrate WhatsApp messaging into your Laravel application.</p>
+                    <span class="cta">
+                      Read the docs
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </span>
                   </a>
 
-                  <a class="card" href="audit/">
+                  <a class="card" href="reports/coverage/">
+                    <div class="card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                    </div>
+                    <span class="eyebrow">Quality</span>
+                    <h2 class="title">Code Coverage</h2>
+                    <p class="description">Explore test coverage metrics, identify untested areas, and track quality trends across the codebase.</p>
+                    <span class="cta">
+                      View coverage report
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </span>
+                  </a>
+
+                  <a class="card" href="reports/audit/">
+                    <div class="card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
                     <span class="eyebrow">Security</span>
                     <h2 class="title">Dependency Audit</h2>
-                    <p>Review composer advisory findings and affected versions.</p>
-                    <span class="cta">View audit report &rarr;</span>
+                    <p class="description">Review Composer security advisories, CVE findings, and affected package versions.</p>
+                    <span class="cta">
+                      View audit report
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </span>
                   </a>
                 </section>
 
-                <footer>Generated automatically on successful main branch runs.</footer>
+                <footer>
+                  <a href="https://github.com/lynkbyte/laravel-evolution-api" target="_blank" rel="noopener">GitHub</a>
+                  &middot; Built with care by <a href="https://github.com/lynkbyte" target="_blank" rel="noopener">Lynkbyte</a>
+                </footer>
               </main>
             </body>
           </html>
@@ -263,17 +350,17 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/site
+          path: site
 
   deploy:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

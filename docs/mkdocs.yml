@@ -1,7 +1,7 @@
 site_name: Laravel Evolution API
 site_description: Production-ready Laravel package for Evolution API (WhatsApp messaging)
 site_author: Lynkbyte
-site_url: https://lynkbyte.github.io/laravel-evolution-api/
+site_url: https://lynkbyte.github.io/laravel-evolution-api/docs/
 repo_url: https://github.com/lynkbyte/laravel-evolution-api
 repo_name: lynkbyte/laravel-evolution-api
 copyright: Copyright &copy; 2024 Lynkbyte
@@ -9,8 +9,8 @@ copyright: Copyright &copy; 2024 Lynkbyte
 theme:
   name: material
   # Uncomment when logo is provided:
-  # logo: assets/logo.png
-  # favicon: assets/favicon.png
+  logo: dist/logo.png
+  favicon: dist/logo.png
   palette:
     - scheme: default
       primary: green
@@ -85,7 +85,6 @@ nav:
       - Installation: getting-started/installation.md
       - Configuration: getting-started/configuration.md
       - Quick Start: getting-started/quick-start.md
-  - Reports: reports/
   - Core Concepts:
       - Architecture: core-concepts/architecture.md
       - HTTP Client: core-concepts/client.md
