@@ -1,0 +1,141 @@
+site_name: Laravel Evolution API
+site_description: Production-ready Laravel package for Evolution API (WhatsApp messaging)
+site_author: Lynkbyte
+site_url: https://lynkbyte.github.io/laravel-evolution-api/
+repo_url: https://github.com/lynkbyte/laravel-evolution-api
+repo_name: lynkbyte/laravel-evolution-api
+copyright: Copyright &copy; 2024 Lynkbyte
+
+theme:
+  name: material
+  # Uncomment when logo is provided:
+  # logo: assets/logo.png
+  # favicon: assets/favicon.png
+  palette:
+    - scheme: default
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - attr_list
+  - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/lynkbyte
+      name: Lynkbyte on GitHub
+  generator: false
+
+extra_css:
+  - assets/extra.css
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Configuration: getting-started/configuration.md
+      - Quick Start: getting-started/quick-start.md
+  - Core Concepts:
+      - Architecture: core-concepts/architecture.md
+      - HTTP Client: core-concepts/client.md
+      - Service Container: core-concepts/service-container.md
+  - Services:
+      - Instance Management: services/instances.md
+      - Messaging: services/messages.md
+      - Chat Operations: services/chats.md
+      - Group Management: services/groups.md
+      - Profile Management: services/profiles.md
+      - Webhook Configuration: services/webhooks.md
+      - Settings: services/settings.md
+  - Messaging:
+      - Text Messages: messaging/text-messages.md
+      - Media Messages: messaging/media-messages.md
+      - Audio Messages: messaging/audio-messages.md
+      - Interactive Messages: messaging/interactive.md
+      - Location & Contacts: messaging/location-contact.md
+      - Reactions & Status: messaging/reactions-status.md
+  - Webhooks:
+      - Overview: webhooks/overview.md
+      - Event Types: webhooks/events.md
+      - Processing: webhooks/processing.md
+      - Custom Handlers: webhooks/handlers.md
+      - Payload DTO: webhooks/payload-dto.md
+  - Queues:
+      - Overview: queues/overview.md
+      - SendMessageJob: queues/send-message-job.md
+      - ProcessWebhookJob: queues/webhook-job.md
+  - Advanced:
+      - Multi-Tenancy: advanced/multi-tenancy.md
+      - Rate Limiting: advanced/rate-limiting.md
+      - Error Handling: advanced/error-handling.md
+      - Logging: advanced/logging.md
+      - Metrics: advanced/metrics.md
+  - Database:
+      - Eloquent Models: database/models.md
+      - Migrations: database/migrations.md
+      - Data Retention: database/data-retention.md
+  - Testing:
+      - Test Fakes: testing/fakes.md
+      - Assertions: testing/assertions.md
+      - Examples: testing/examples.md
+  - CLI Commands: artisan/commands.md
+  - Reference:
+      - DTOs: reference/dtos.md
+      - Enums: reference/enums.md
+      - Events: reference/events.md
+      - Exceptions: reference/exceptions.md
+      - Configuration: reference/config.md
+  - Contributing:
+      - Development Setup: contributing/development.md
+      - Running Tests: contributing/testing.md
+      - Code Style: contributing/code-style.md
