@@ -78,6 +78,14 @@ describe('SendStatusMessageDto', function () {
             expect($dto->content)->toBe('https://example.com/video.mp4');
             expect($dto->caption)->toBe('Watch this!');
         });
+
+        it('creates a video status without caption', function () {
+            $dto = SendStatusMessageDto::video('https://example.com/video.mp4');
+
+            expect($dto->type)->toBe('video');
+            expect($dto->content)->toBe('https://example.com/video.mp4');
+            expect($dto->caption)->toBeNull();
+        });
     });
 
     describe('audio', function () {
@@ -147,6 +155,37 @@ describe('SendStatusMessageDto', function () {
             expect($payload)->not->toHaveKey('backgroundColor');
             expect($payload)->not->toHaveKey('font');
             expect($payload)->not->toHaveKey('statusJidList');
+        });
+
+        it('includes caption when set', function () {
+            $dto = SendStatusMessageDto::image('https://example.com/image.jpg', 'My caption');
+
+            $payload = $dto->toApiPayload();
+
+            expect($payload)->toHaveKey('caption');
+            expect($payload['caption'])->toBe('My caption');
+        });
+
+        it('returns complete payload with all optional fields', function () {
+            $dto = new SendStatusMessageDto(
+                type: 'image',
+                content: 'https://example.com/image.jpg',
+                caption: 'Image caption',
+                backgroundColor: '#FFFFFF',
+                font: 5,
+                allContacts: false,
+                statusJidList: ['5511999999999@s.whatsapp.net']
+            );
+
+            $payload = $dto->toApiPayload();
+
+            expect($payload['type'])->toBe('image');
+            expect($payload['content'])->toBe('https://example.com/image.jpg');
+            expect($payload['caption'])->toBe('Image caption');
+            expect($payload['backgroundColor'])->toBe('#FFFFFF');
+            expect($payload['font'])->toBe(5);
+            expect($payload['allContacts'])->toBeFalse();
+            expect($payload['statusJidList'])->toBe(['5511999999999@s.whatsapp.net']);
         });
     });
 });
