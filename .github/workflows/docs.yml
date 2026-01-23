@@ -1,6 +1,10 @@
 name: Documentation
 
 on:
+  workflow_run:
+    workflows: ["Tests"]
+    types: [completed]
+    branches: [main]
   push:
     branches:
       - main
@@ -18,6 +22,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
 
 concurrency:
   group: "pages"
@@ -26,6 +31,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Skip if workflow_run triggered but tests failed
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     
     steps:
       - name: Checkout repository
@@ -56,18 +63,210 @@ jobs:
           cd docs
           mkdocs build --strict
 
+      - name: Download coverage report
+        if: github.event_name == 'workflow_run'
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: tests.yml
+          run_id: ${{ github.event.workflow_run.id }}
+          name: coverage-report
+          path: docs/site/reports/coverage
+
+      - name: Download audit report
+        if: github.event_name == 'workflow_run'
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: tests.yml
+          run_id: ${{ github.event.workflow_run.id }}
+          name: audit-report
+          path: docs/site/reports/audit
+
+      - name: Verify artifacts exist
+        if: github.event_name == 'workflow_run'
+        run: |
+          if [ ! -f "docs/site/reports/coverage/index.html" ]; then
+            echo "::error::Coverage report artifact missing"
+            exit 1
+          fi
+          if [ ! -f "docs/site/reports/audit/index.html" ]; then
+            echo "::error::Audit report artifact missing"
+            exit 1
+          fi
+          echo "All report artifacts verified successfully"
+
+      - name: Generate reports dashboard
+        if: github.event_name == 'workflow_run'
+        run: |
+          cat <<'EOF' > docs/site/reports/index.html
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>Reports Dashboard - Laravel Evolution API</title>
+              <style>
+                :root {
+                  color-scheme: light;
+                  --bg: #f6f2ed;
+                  --card: #fff7ef;
+                  --text: #2b241d;
+                  --muted: #6f6356;
+                  --accent: #c75b39;
+                  --shadow: 0 18px 40px rgba(28, 23, 17, 0.18);
+                  --border: 1px solid rgba(111, 99, 86, 0.18);
+                }
+
+                * {
+                  box-sizing: border-box;
+                }
+
+                body {
+                  margin: 0;
+                  min-height: 100vh;
+                  font-family: "Space Grotesk", "Trebuchet MS", "Segoe UI", sans-serif;
+                  background:
+                    radial-gradient(circle at top, rgba(199, 91, 57, 0.18), transparent 55%),
+                    linear-gradient(135deg, #fef7ee 0%, #f1e8dd 50%, #efe7dc 100%);
+                  color: var(--text);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 40px 20px;
+                }
+
+                main {
+                  width: min(980px, 100%);
+                  display: grid;
+                  gap: 24px;
+                }
+
+                header {
+                  display: grid;
+                  gap: 12px;
+                  padding: 28px;
+                  background: var(--card);
+                  border-radius: 24px;
+                  border: var(--border);
+                  box-shadow: var(--shadow);
+                }
+
+                h1 {
+                  margin: 0;
+                  font-size: clamp(2rem, 3vw, 2.8rem);
+                  letter-spacing: -0.02em;
+                }
+
+                p {
+                  margin: 0;
+                  color: var(--muted);
+                  font-size: 1.05rem;
+                }
+
+                .grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                  gap: 20px;
+                }
+
+                a {
+                  text-decoration: none;
+                  color: inherit;
+                }
+
+                .card {
+                  background: var(--card);
+                  border-radius: 20px;
+                  border: var(--border);
+                  padding: 22px;
+                  display: grid;
+                  gap: 12px;
+                  box-shadow: 0 8px 20px rgba(28, 23, 17, 0.12);
+                  transition: transform 0.25s ease, box-shadow 0.25s ease;
+                }
+
+                .card:hover {
+                  transform: translateY(-4px);
+                  box-shadow: var(--shadow);
+                }
+
+                .eyebrow {
+                  text-transform: uppercase;
+                  font-size: 0.75rem;
+                  letter-spacing: 0.16em;
+                  color: var(--muted);
+                }
+
+                .title {
+                  font-size: 1.35rem;
+                  margin: 0;
+                }
+
+                .cta {
+                  font-weight: 600;
+                  color: var(--accent);
+                }
+
+                .back-link {
+                  display: inline-block;
+                  margin-bottom: 16px;
+                  color: var(--accent);
+                  font-weight: 500;
+                }
+
+                .back-link:hover {
+                  text-decoration: underline;
+                }
+
+                footer {
+                  text-align: center;
+                  color: var(--muted);
+                  font-size: 0.9rem;
+                }
+              </style>
+            </head>
+            <body>
+              <main>
+                <a class="back-link" href="../">&larr; Back to Documentation</a>
+
+                <header>
+                  <h1>Engineering Reports</h1>
+                  <p>Quick access to the latest quality and security insights for Laravel Evolution API.</p>
+                </header>
+
+                <section class="grid">
+                  <a class="card" href="coverage/">
+                    <span class="eyebrow">Quality</span>
+                    <h2 class="title">Code Coverage</h2>
+                    <p>Explore test coverage trends and untested areas.</p>
+                    <span class="cta">View coverage report &rarr;</span>
+                  </a>
+
+                  <a class="card" href="audit/">
+                    <span class="eyebrow">Security</span>
+                    <h2 class="title">Dependency Audit</h2>
+                    <p>Review composer advisory findings and affected versions.</p>
+                    <span class="cta">View audit report &rarr;</span>
+                  </a>
+                </section>
+
+                <footer>Generated automatically on successful main branch runs.</footer>
+              </main>
+            </body>
+          </html>
+          EOF
+
       - name: Setup Pages
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/site
 
   deploy:
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     
