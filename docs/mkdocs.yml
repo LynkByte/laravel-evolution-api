@@ -159,6 +159,10 @@ nav:
       - Assertions: testing/assertions.md
       - Examples: testing/examples.md
   - CLI Commands: artisan/commands.md
+  - Support:
+      - Known Limitations: support/known-limitations.md
+      - Troubleshooting: support/troubleshooting.md
+      - FAQ: support/faq.md
   - Reference:
       - DTOs: reference/dtos.md
       - Enums: reference/enums.md

@@ -833,6 +833,8 @@ $diagnostics = $instance->getConnectionDiagnostics();
 
 ## Known Limitations
 
+> **Full documentation:** See the [Known Limitations](https://lynkbyte.github.io/laravel-evolution-api/docs/support/known-limitations/) page for comprehensive details on all platform limitations.
+
 ### Pre-Key Upload Timeout Issue
 
 Evolution API (via the Baileys library) may experience "pre-key upload timeout" errors. This is a **known upstream issue** in the Baileys WhatsApp library, not a bug in this Laravel package.
@@ -895,6 +897,8 @@ try {
 **Recommendation:** Build Evolution API v2.3.7+ from source using the latest Baileys version for best results.
 
 ## Troubleshooting
+
+> **Full documentation:** See the [Troubleshooting Guide](https://lynkbyte.github.io/laravel-evolution-api/docs/support/troubleshooting/) and [FAQ](https://lynkbyte.github.io/laravel-evolution-api/docs/support/faq/) for comprehensive problem resolution and answers to common questions.
 
 ### Common Issues
 
