@@ -122,9 +122,9 @@ jobs:
       - name: Check code style
         run: vendor/bin/pint --test
 
-  codeql:
+  semgrep:
     runs-on: ubuntu-latest
-    name: Code Security (CodeQL)
+    name: Code Security (Semgrep)
     permissions:
       contents: read
       security-events: write
@@ -133,41 +133,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: php
+      - name: Run Semgrep
+        run: |
+          pipx install semgrep
+          semgrep --config p/php --config p/security-audit --config p/owasp-top-ten --sarif --output semgrep.sarif
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v4
-
-      - name: Analyze
-        uses: github/codeql-action/analyze@v4
+      - name: Upload Semgrep SARIF
+        uses: github/codeql-action/upload-sarif@v4
         with:
-          output: sarif-results
-          upload: true
+          sarif_file: semgrep.sarif
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Generate CodeQL HTML report
+      - name: Generate Semgrep HTML report
         run: |
-          mkdir -p codeql-report
-          sarif_file=$(ls sarif-results/*.sarif | head -n 1)
-          npx -y sarif-to-html -i "$sarif_file" -o codeql-report/index.html
+          mkdir -p semgrep-report
+          npx -y sarif-to-html -i semgrep.sarif -o semgrep-report/index.html
 
-      - name: Upload CodeQL report
+      - name: Upload Semgrep report
         uses: actions/upload-artifact@v4
         with:
-          name: codeql-report
-          path: codeql-report
+          name: semgrep-report
+          path: semgrep-report
 
   publish-reports:
     runs-on: ubuntu-latest
     name: Reports Dashboard
-    needs: [coverage, codeql]
+    needs: [coverage, semgrep]
     permissions:
       contents: write
       pages: write
@@ -179,11 +174,11 @@ jobs:
           name: coverage-report
           path: public/coverage
 
-      - name: Download CodeQL report
+      - name: Download Semgrep report
         uses: actions/download-artifact@v4
         with:
-          name: codeql-report
-          path: public/codeql
+          name: semgrep-report
+          path: public/semgrep
 
       - name: Generate reports dashboard
         run: |
@@ -318,11 +313,11 @@ jobs:
                     <span class="cta">View coverage report →</span>
                   </a>
 
-                  <a class="card" href="codeql/">
+                  <a class="card" href="semgrep/">
                     <span class="eyebrow">Security</span>
-                    <h2 class="title">CodeQL Findings</h2>
+                    <h2 class="title">Semgrep Findings</h2>
                     <p>Review static analysis alerts and recommended fixes.</p>
-                    <span class="cta">View CodeQL report →</span>
+                    <span class="cta">View Semgrep report →</span>
                   </a>
                 </section>
 
