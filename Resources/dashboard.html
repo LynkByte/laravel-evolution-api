@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <title>Dashboard for /home/runner/work/laravel-evolution-api/laravel-evolution-api/src/Resources</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../_css/bootstrap.min.css?v=11.0.12" rel="stylesheet" type="text/css">
-  <link href="../_css/nv.d3.min.css?v=11.0.12" rel="stylesheet" type="text/css">
-  <link href="../_css/style.css?v=11.0.12" rel="stylesheet" type="text/css">
+  <link href="../_css/bootstrap.min.css?v=12.5.2" rel="stylesheet" type="text/css">
+  <link href="../_css/billboard.min.css?v=12.5.2" rel="stylesheet" type="text/css">
+  <link href="../_css/style.css?v=12.5.2" rel="stylesheet" type="text/css">
   <link href="../_css/custom.css" rel="stylesheet" type="text/css">
  </head>
  <body>
@@ -35,7 +35,7 @@
    <div class="row">
     <div class="col-md-6">
      <h3>Coverage Distribution</h3>
-     <div id="classCoverageDistribution" style="height: 300px;">
+     <div id="classesCoverageDistribution" style="height: 300px;">
        <svg></svg>
      </div>
     </div>
@@ -48,7 +48,7 @@
    </div>
    <div class="row">
     <div class="col-md-6">
-     <h3>Insufficient Coverage</h3>
+     <h3 style="margin-top: 2rem;">Insufficient Coverage</h3>
      <div class="scrollbox">
       <table class="table">
        <thead>
@@ -65,17 +65,19 @@
      </div>
     </div>
     <div class="col-md-6">
-     <h3>Project Risks</h3>
+     <h3 style="margin-top: 2rem;">Project Risks</h3>
      <div class="scrollbox">
       <table class="table">
        <thead>
         <tr>
          <th>Class</th>
+         <th class="text-right">Coverage</th>
+         <th class="text-right">Complexity</th>
          <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Instance.php.html#15">Lynkbyte\EvolutionApi\Resources\Instance</a></td><td class="text-right">26</td></tr>
+       <tr><td><a href="Instance.php.html#15">Lynkbyte\EvolutionApi\Resources\Instance</a></td><td class="text-right">89.7%</td><td class="text-right">26</td><td class="text-right">26</td></tr>
 
        </tbody>
       </table>
@@ -84,13 +86,13 @@
    </div>
    <div class="row">
     <div class="col-md-12">
-     <h2>Methods</h2>
+     <h2 style="margin-top: 3rem;">Methods</h2>
     </div>
    </div>
    <div class="row">
     <div class="col-md-6">
      <h3>Coverage Distribution</h3>
-     <div id="methodCoverageDistribution" style="height: 300px;">
+     <div id="methodsCoverageDistribution" style="height: 300px;">
        <svg></svg>
      </div>
     </div>
@@ -103,7 +105,7 @@
    </div>
    <div class="row">
     <div class="col-md-6">
-     <h3>Insufficient Coverage</h3>
+     <h3 style="margin-top: 2rem;">Insufficient Coverage</h3>
      <div class="scrollbox">
       <table class="table">
        <thead>
@@ -128,24 +130,26 @@
      </div>
     </div>
     <div class="col-md-6">
-     <h3>Project Risks</h3>
+     <h3 style="margin-top: 2rem;">Project Risks</h3>
      <div class="scrollbox">
       <table class="table">
        <thead>
         <tr>
          <th>Method</th>
+         <th class="text-right">Coverage</th>
+         <th class="text-right">Complexity</th>
          <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Instance.php.html#178"><abbr title="Lynkbyte\EvolutionApi\Resources\Instance::waitForConnection">waitForConnection</abbr></a></td><td class="text-right">12</td></tr>
-       <tr><td><a href="Instance.php.html#155"><abbr title="Lynkbyte\EvolutionApi\Resources\Instance::isConnected">isConnected</abbr></a></td><td class="text-right">4</td></tr>
-       <tr><td><a href="Instance.php.html#199"><abbr title="Lynkbyte\EvolutionApi\Resources\Instance::getStatus">getStatus</abbr></a></td><td class="text-right">3</td></tr>
-       <tr><td><a href="Message.php.html#126"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendAudio">sendAudio</abbr></a></td><td class="text-right">2</td></tr>
-       <tr><td><a href="Message.php.html#152"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendLocation">sendLocation</abbr></a></td><td class="text-right">2</td></tr>
-       <tr><td><a href="Message.php.html#199"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendPoll">sendPoll</abbr></a></td><td class="text-right">2</td></tr>
-       <tr><td><a href="Message.php.html#246"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendReaction">sendReaction</abbr></a></td><td class="text-right">2</td></tr>
-       <tr><td><a href="Message.php.html#285"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendSticker">sendSticker</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Instance.php.html#178"><abbr title="Lynkbyte\EvolutionApi\Resources\Instance::waitForConnection">waitForConnection</abbr></a></td><td class="text-right">0.0%</td><td class="text-right">3</td><td class="text-right">12</td></tr>
+       <tr><td><a href="Instance.php.html#155"><abbr title="Lynkbyte\EvolutionApi\Resources\Instance::isConnected">isConnected</abbr></a></td><td class="text-right">85.7%</td><td class="text-right">4</td><td class="text-right">4</td></tr>
+       <tr><td><a href="Instance.php.html#199"><abbr title="Lynkbyte\EvolutionApi\Resources\Instance::getStatus">getStatus</abbr></a></td><td class="text-right">85.7%</td><td class="text-right">3</td><td class="text-right">3</td></tr>
+       <tr><td><a href="Message.php.html#126"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendAudio">sendAudio</abbr></a></td><td class="text-right">75.0%</td><td class="text-right">2</td><td class="text-right">2</td></tr>
+       <tr><td><a href="Message.php.html#152"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendLocation">sendLocation</abbr></a></td><td class="text-right">75.0%</td><td class="text-right">2</td><td class="text-right">2</td></tr>
+       <tr><td><a href="Message.php.html#199"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendPoll">sendPoll</abbr></a></td><td class="text-right">75.0%</td><td class="text-right">2</td><td class="text-right">2</td></tr>
+       <tr><td><a href="Message.php.html#246"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendReaction">sendReaction</abbr></a></td><td class="text-right">75.0%</td><td class="text-right">2</td><td class="text-right">2</td></tr>
+       <tr><td><a href="Message.php.html#285"><abbr title="Lynkbyte\EvolutionApi\Resources\Message::sendSticker">sendSticker</abbr></a></td><td class="text-right">75.0%</td><td class="text-right">2</td><td class="text-right">2</td></tr>
 
        </tbody>
       </table>
@@ -155,149 +159,163 @@
    <footer>
     <hr/>
     <p>
-     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 11.0.12</a> using <a href="https://www.php.net/" target="_top">PHP 8.3.29</a> and <a href="https://phpunit.de/">PHPUnit 11.5.33</a> at Fri Jan 23 9:05:29 UTC 2026.</small>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 12.5.2</a> using <a href="https://www.php.net/" target="_top">PHP 8.5.1</a> and <a href="https://phpunit.de/">PHPUnit 12.5.4</a> at Fri Jan 23 9:36:51 UTC 2026.</small>
     </p>
    </footer>
   </div>
-  <script src="../_js/jquery.min.js?v=11.0.12" type="text/javascript"></script>
-  <script src="../_js/d3.min.js?v=11.0.12" type="text/javascript"></script>
-  <script src="../_js/nv.d3.min.js?v=11.0.12" type="text/javascript"></script>
-  <script type="text/javascript">
-$(document).ready(function() {
-  nv.addGraph(function() {
-    var chart = nv.models.multiBarChart();
-    chart.tooltips(false)
-      .showControls(false)
-      .showLegend(false)
-      .reduceXTicks(false)
-      .staggerLabels(true)
-      .yAxis.tickFormat(d3.format('d'));
-
-    d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,1,2,5], "Class Coverage"))
-      .transition().duration(500).call(chart);
-
-    nv.utils.windowResize(chart.update);
-
-    return chart;
+  <script src="../_js/billboard.pkgd.min.js?v=12.5.2" type="text/javascript"></script>
+  <script type="application/json" id="complexity_class">[[89.74358974358975,26,"Instance.php.html#15","Lynkbyte\\EvolutionApi\\Resources\\Instance","26.73"],[94.44444444444444,18,"Profile.php.html#14","Lynkbyte\\EvolutionApi\\Resources\\Profile","18.06"],[97.5609756097561,50,"Message.php.html#25","Lynkbyte\\EvolutionApi\\Resources\\Message","50"],[100,30,"Chat.php.html#14","Lynkbyte\\EvolutionApi\\Resources\\Chat","30"],[100,31,"Group.php.html#14","Lynkbyte\\EvolutionApi\\Resources\\Group","31"],[100,25,"Resource.php.html#13","Lynkbyte\\EvolutionApi\\Resources\\Resource","25"],[100,18,"Settings.php.html#14","Lynkbyte\\EvolutionApi\\Resources\\Settings","18"],[100,12,"Webhook.php.html#15","Lynkbyte\\EvolutionApi\\Resources\\Webhook","12"]]</script>
+  <script type="application/json" id="complexity_method">[[0,3,"Instance.php.html#178","Lynkbyte\\EvolutionApi\\Resources\\Instance::waitForConnection","12"],[0,1,"Profile.php.html#41","Lynkbyte\\EvolutionApi\\Resources\\Profile::getStatus","2"],[75,2,"Message.php.html#126","Lynkbyte\\EvolutionApi\\Resources\\Message::sendAudio","2.06"],[75,2,"Message.php.html#152","Lynkbyte\\EvolutionApi\\Resources\\Message::sendLocation","2.06"],[75,2,"Message.php.html#199","Lynkbyte\\EvolutionApi\\Resources\\Message::sendPoll","2.06"],[75,2,"Message.php.html#246","Lynkbyte\\EvolutionApi\\Resources\\Message::sendReaction","2.06"],[75,2,"Message.php.html#285","Lynkbyte\\EvolutionApi\\Resources\\Message::sendSticker","2.06"],[85.71428571428571,4,"Instance.php.html#155","Lynkbyte\\EvolutionApi\\Resources\\Instance::isConnected","4.05"],[85.71428571428571,3,"Instance.php.html#199","Lynkbyte\\EvolutionApi\\Resources\\Instance::getStatus","3.03"],[100,2,"Chat.php.html#21","Lynkbyte\\EvolutionApi\\Resources\\Chat::checkNumber","2"],[100,1,"Chat.php.html#35","Lynkbyte\\EvolutionApi\\Resources\\Chat::isOnWhatsApp","1"],[100,1,"Chat.php.html#43","Lynkbyte\\EvolutionApi\\Resources\\Chat::findAll","1"],[100,1,"Chat.php.html#53","Lynkbyte\\EvolutionApi\\Resources\\Chat::findPaginated","1"],[100,1,"Chat.php.html#66","Lynkbyte\\EvolutionApi\\Resources\\Chat::find","1"],[100,1,"Chat.php.html#78","Lynkbyte\\EvolutionApi\\Resources\\Chat::findContacts","1"],[100,1,"Chat.php.html#88","Lynkbyte\\EvolutionApi\\Resources\\Chat::searchContacts","1"],[100,2,"Chat.php.html#104","Lynkbyte\\EvolutionApi\\Resources\\Chat::findMessages","2"],[100,2,"Chat.php.html#132","Lynkbyte\\EvolutionApi\\Resources\\Chat::findAllMessages","2"],[100,1,"Chat.php.html#148","Lynkbyte\\EvolutionApi\\Resources\\Chat::findMessagesByDate","1"],[100,1,"Chat.php.html#173","Lynkbyte\\EvolutionApi\\Resources\\Chat::findStatusMessages","1"],[100,1,"Chat.php.html#183","Lynkbyte\\EvolutionApi\\Resources\\Chat::findLabels","1"],[100,1,"Chat.php.html#193","Lynkbyte\\EvolutionApi\\Resources\\Chat::markChatUnread","1"],[100,1,"Chat.php.html#205","Lynkbyte\\EvolutionApi\\Resources\\Chat::archive","1"],[100,1,"Chat.php.html#222","Lynkbyte\\EvolutionApi\\Resources\\Chat::unarchive","1"],[100,1,"Chat.php.html#239","Lynkbyte\\EvolutionApi\\Resources\\Chat::deleteChat","1"],[100,1,"Chat.php.html#251","Lynkbyte\\EvolutionApi\\Resources\\Chat::clearMessages","1"],[100,1,"Chat.php.html#263","Lynkbyte\\EvolutionApi\\Resources\\Chat::fetchProfilePicture","1"],[100,1,"Chat.php.html#275","Lynkbyte\\EvolutionApi\\Resources\\Chat::getBusinessProfile","1"],[100,1,"Chat.php.html#289","Lynkbyte\\EvolutionApi\\Resources\\Chat::mute","1"],[100,1,"Chat.php.html#302","Lynkbyte\\EvolutionApi\\Resources\\Chat::unmute","1"],[100,1,"Chat.php.html#314","Lynkbyte\\EvolutionApi\\Resources\\Chat::pin","1"],[100,1,"Chat.php.html#327","Lynkbyte\\EvolutionApi\\Resources\\Chat::unpin","1"],[100,1,"Chat.php.html#340","Lynkbyte\\EvolutionApi\\Resources\\Chat::block","1"],[100,1,"Chat.php.html#353","Lynkbyte\\EvolutionApi\\Resources\\Chat::unblock","1"],[100,1,"Chat.php.html#366","Lynkbyte\\EvolutionApi\\Resources\\Chat::getPresence","1"],[100,1,"Chat.php.html#378","Lynkbyte\\EvolutionApi\\Resources\\Chat::updateContactName","1"],[100,2,"Group.php.html#21","Lynkbyte\\EvolutionApi\\Resources\\Group::create","2"],[100,1,"Group.php.html#40","Lynkbyte\\EvolutionApi\\Resources\\Group::updateSubject","1"],[100,1,"Group.php.html#53","Lynkbyte\\EvolutionApi\\Resources\\Group::updateDescription","1"],[100,1,"Group.php.html#68","Lynkbyte\\EvolutionApi\\Resources\\Group::updatePicture","1"],[100,1,"Group.php.html#81","Lynkbyte\\EvolutionApi\\Resources\\Group::removePicture","1"],[100,1,"Group.php.html#93","Lynkbyte\\EvolutionApi\\Resources\\Group::fetchOne","1"],[100,2,"Group.php.html#105","Lynkbyte\\EvolutionApi\\Resources\\Group::fetchAll","2"],[100,1,"Group.php.html#117","Lynkbyte\\EvolutionApi\\Resources\\Group::participants","1"],[100,1,"Group.php.html#129","Lynkbyte\\EvolutionApi\\Resources\\Group::inviteCode","1"],[100,1,"Group.php.html#141","Lynkbyte\\EvolutionApi\\Resources\\Group::revokeInviteCode","1"],[100,1,"Group.php.html#153","Lynkbyte\\EvolutionApi\\Resources\\Group::acceptInvite","1"],[100,1,"Group.php.html#165","Lynkbyte\\EvolutionApi\\Resources\\Group::inviteInfo","1"],[100,2,"Group.php.html#179","Lynkbyte\\EvolutionApi\\Resources\\Group::sendInvite","2"],[100,1,"Group.php.html#200","Lynkbyte\\EvolutionApi\\Resources\\Group::addParticipants","1"],[100,1,"Group.php.html#216","Lynkbyte\\EvolutionApi\\Resources\\Group::removeParticipants","1"],[100,1,"Group.php.html#232","Lynkbyte\\EvolutionApi\\Resources\\Group::promoteToAdmin","1"],[100,1,"Group.php.html#248","Lynkbyte\\EvolutionApi\\Resources\\Group::demoteFromAdmin","1"],[100,1,"Group.php.html#265","Lynkbyte\\EvolutionApi\\Resources\\Group::updateSettings","1"],[100,2,"Group.php.html#278","Lynkbyte\\EvolutionApi\\Resources\\Group::setAnnouncementMode","2"],[100,2,"Group.php.html#286","Lynkbyte\\EvolutionApi\\Resources\\Group::setLockedMode","2"],[100,1,"Group.php.html#297","Lynkbyte\\EvolutionApi\\Resources\\Group::toggleEphemeral","1"],[100,1,"Group.php.html#310","Lynkbyte\\EvolutionApi\\Resources\\Group::leave","1"],[100,1,"Group.php.html#322","Lynkbyte\\EvolutionApi\\Resources\\Group::isAdmin","1"],[100,1,"Group.php.html#334","Lynkbyte\\EvolutionApi\\Resources\\Group::pendingParticipants","1"],[100,1,"Group.php.html#348","Lynkbyte\\EvolutionApi\\Resources\\Group::acceptJoinRequests","1"],[100,1,"Group.php.html#363","Lynkbyte\\EvolutionApi\\Resources\\Group::rejectJoinRequests","1"],[100,1,"Instance.php.html#22","Lynkbyte\\EvolutionApi\\Resources\\Instance::create","1"],[100,1,"Instance.php.html#47","Lynkbyte\\EvolutionApi\\Resources\\Instance::connect","1"],[100,1,"Instance.php.html#58","Lynkbyte\\EvolutionApi\\Resources\\Instance::connectionState","1"],[100,1,"Instance.php.html#69","Lynkbyte\\EvolutionApi\\Resources\\Instance::fetchAll","1"],[100,1,"Instance.php.html#77","Lynkbyte\\EvolutionApi\\Resources\\Instance::fetch","1"],[100,1,"Instance.php.html#87","Lynkbyte\\EvolutionApi\\Resources\\Instance::setPresence","1"],[100,1,"Instance.php.html#100","Lynkbyte\\EvolutionApi\\Resources\\Instance::restart","1"],[100,1,"Instance.php.html#111","Lynkbyte\\EvolutionApi\\Resources\\Instance::logout","1"],[100,1,"Instance.php.html#122","Lynkbyte\\EvolutionApi\\Resources\\Instance::remove","1"],[100,1,"Instance.php.html#133","Lynkbyte\\EvolutionApi\\Resources\\Instance::getQrCode","1"],[100,1,"Instance.php.html#144","Lynkbyte\\EvolutionApi\\Resources\\Instance::getQrCodeBase64","1"],[100,1,"Instance.php.html#221","Lynkbyte\\EvolutionApi\\Resources\\Instance::updateSettings","1"],[100,1,"Instance.php.html#232","Lynkbyte\\EvolutionApi\\Resources\\Instance::getSettings","1"],[100,1,"Instance.php.html#243","Lynkbyte\\EvolutionApi\\Resources\\Instance::refreshQrCode","1"],[100,1,"Instance.php.html#254","Lynkbyte\\EvolutionApi\\Resources\\Instance::connectWithNumber","1"],[100,1,"Instance.php.html#269","Lynkbyte\\EvolutionApi\\Resources\\Instance::verifyCode","1"],[100,2,"Message.php.html#30","Lynkbyte\\EvolutionApi\\Resources\\Message::sendText","2"],[100,1,"Message.php.html#44","Lynkbyte\\EvolutionApi\\Resources\\Message::text","1"],[100,2,"Message.php.html#56","Lynkbyte\\EvolutionApi\\Resources\\Message::sendMedia","2"],[100,1,"Message.php.html#70","Lynkbyte\\EvolutionApi\\Resources\\Message::image","1"],[100,1,"Message.php.html#88","Lynkbyte\\EvolutionApi\\Resources\\Message::video","1"],[100,1,"Message.php.html#106","Lynkbyte\\EvolutionApi\\Resources\\Message::document","1"],[100,1,"Message.php.html#140","Lynkbyte\\EvolutionApi\\Resources\\Message::audio","1"],[100,1,"Message.php.html#166","Lynkbyte\\EvolutionApi\\Resources\\Message::location","1"],[100,2,"Message.php.html#185","Lynkbyte\\EvolutionApi\\Resources\\Message::sendContact","2"],[100,1,"Message.php.html#215","Lynkbyte\\EvolutionApi\\Resources\\Message::poll","1"],[100,2,"Message.php.html#232","Lynkbyte\\EvolutionApi\\Resources\\Message::sendList","2"],[100,1,"Message.php.html#260","Lynkbyte\\EvolutionApi\\Resources\\Message::react","1"],[100,1,"Message.php.html#273","Lynkbyte\\EvolutionApi\\Resources\\Message::unreact","1"],[100,1,"Message.php.html#299","Lynkbyte\\EvolutionApi\\Resources\\Message::sticker","1"],[100,2,"Message.php.html#310","Lynkbyte\\EvolutionApi\\Resources\\Message::sendStatus","2"],[100,2,"Message.php.html#324","Lynkbyte\\EvolutionApi\\Resources\\Message::sendTemplate","2"],[100,1,"Message.php.html#340","Lynkbyte\\EvolutionApi\\Resources\\Message::sendButtons","1"],[100,1,"Message.php.html#363","Lynkbyte\\EvolutionApi\\Resources\\Message::markAsRead","1"],[100,1,"Message.php.html#382","Lynkbyte\\EvolutionApi\\Resources\\Message::markMultipleAsRead","1"],[100,1,"Message.php.html#399","Lynkbyte\\EvolutionApi\\Resources\\Message::archiveChat","1"],[100,1,"Message.php.html#416","Lynkbyte\\EvolutionApi\\Resources\\Message::unarchiveChat","1"],[100,1,"Message.php.html#424","Lynkbyte\\EvolutionApi\\Resources\\Message::deleteMessage","1"],[100,1,"Message.php.html#441","Lynkbyte\\EvolutionApi\\Resources\\Message::deleteForMe","1"],[100,1,"Message.php.html#449","Lynkbyte\\EvolutionApi\\Resources\\Message::updateMessage","1"],[100,1,"Message.php.html#466","Lynkbyte\\EvolutionApi\\Resources\\Message::starMessage","1"],[100,1,"Message.php.html#483","Lynkbyte\\EvolutionApi\\Resources\\Message::unstarMessage","1"],[100,1,"Message.php.html#491","Lynkbyte\\EvolutionApi\\Resources\\Message::getMessageById","1"],[100,1,"Message.php.html#510","Lynkbyte\\EvolutionApi\\Resources\\Message::sendWithTyping","1"],[100,1,"Message.php.html#529","Lynkbyte\\EvolutionApi\\Resources\\Message::reply","1"],[100,1,"Message.php.html#552","Lynkbyte\\EvolutionApi\\Resources\\Message::forward","1"],[100,1,"Message.php.html#573","Lynkbyte\\EvolutionApi\\Resources\\Message::sendPresence","1"],[100,1,"Message.php.html#586","Lynkbyte\\EvolutionApi\\Resources\\Message::typing","1"],[100,1,"Message.php.html#594","Lynkbyte\\EvolutionApi\\Resources\\Message::recording","1"],[100,1,"Message.php.html#602","Lynkbyte\\EvolutionApi\\Resources\\Message::stopPresence","1"],[100,1,"Profile.php.html#19","Lynkbyte\\EvolutionApi\\Resources\\Profile::getName","1"],[100,1,"Profile.php.html#29","Lynkbyte\\EvolutionApi\\Resources\\Profile::updateName","1"],[100,1,"Profile.php.html#51","Lynkbyte\\EvolutionApi\\Resources\\Profile::updateStatus","1"],[100,1,"Profile.php.html#63","Lynkbyte\\EvolutionApi\\Resources\\Profile::getPicture","1"],[100,1,"Profile.php.html#75","Lynkbyte\\EvolutionApi\\Resources\\Profile::updatePicture","1"],[100,1,"Profile.php.html#87","Lynkbyte\\EvolutionApi\\Resources\\Profile::removePicture","1"],[100,1,"Profile.php.html#97","Lynkbyte\\EvolutionApi\\Resources\\Profile::getPrivacySettings","1"],[100,1,"Profile.php.html#111","Lynkbyte\\EvolutionApi\\Resources\\Profile::updatePrivacySettings","1"],[100,1,"Profile.php.html#123","Lynkbyte\\EvolutionApi\\Resources\\Profile::setReadReceiptsPrivacy","1"],[100,1,"Profile.php.html#133","Lynkbyte\\EvolutionApi\\Resources\\Profile::setProfilePicturePrivacy","1"],[100,1,"Profile.php.html#143","Lynkbyte\\EvolutionApi\\Resources\\Profile::setStatusPrivacy","1"],[100,1,"Profile.php.html#153","Lynkbyte\\EvolutionApi\\Resources\\Profile::setOnlinePrivacy","1"],[100,1,"Profile.php.html#163","Lynkbyte\\EvolutionApi\\Resources\\Profile::setLastSeenPrivacy","1"],[100,1,"Profile.php.html#173","Lynkbyte\\EvolutionApi\\Resources\\Profile::setGroupAddPrivacy","1"],[100,1,"Profile.php.html#181","Lynkbyte\\EvolutionApi\\Resources\\Profile::fetch","1"],[100,1,"Profile.php.html#191","Lynkbyte\\EvolutionApi\\Resources\\Profile::getBusinessProfile","1"],[100,1,"Profile.php.html#203","Lynkbyte\\EvolutionApi\\Resources\\Profile::updateBusinessProfile","1"],[100,1,"Resource.php.html#18","Lynkbyte\\EvolutionApi\\Resources\\Resource::__construct","1"],[100,1,"Resource.php.html#25","Lynkbyte\\EvolutionApi\\Resources\\Resource::getInstanceName","1"],[100,1,"Resource.php.html#35","Lynkbyte\\EvolutionApi\\Resources\\Resource::get","1"],[100,1,"Resource.php.html#45","Lynkbyte\\EvolutionApi\\Resources\\Resource::post","1"],[100,1,"Resource.php.html#55","Lynkbyte\\EvolutionApi\\Resources\\Resource::put","1"],[100,1,"Resource.php.html#65","Lynkbyte\\EvolutionApi\\Resources\\Resource::delete","1"],[100,1,"Resource.php.html#75","Lynkbyte\\EvolutionApi\\Resources\\Resource::patch","1"],[100,1,"Resource.php.html#83","Lynkbyte\\EvolutionApi\\Resources\\Resource::instanceEndpoint","1"],[100,2,"Resource.php.html#91","Lynkbyte\\EvolutionApi\\Resources\\Resource::buildInstancePath","2"],[100,1,"Resource.php.html#105","Lynkbyte\\EvolutionApi\\Resources\\Resource::getClient","1"],[100,1,"Resource.php.html#115","Lynkbyte\\EvolutionApi\\Resources\\Resource::instance","1"],[100,1,"Resource.php.html#128","Lynkbyte\\EvolutionApi\\Resources\\Resource::filterNull","1"],[100,4,"Resource.php.html#140","Lynkbyte\\EvolutionApi\\Resources\\Resource::buildPayload","4"],[100,2,"Resource.php.html#159","Lynkbyte\\EvolutionApi\\Resources\\Resource::formatPhoneNumber","2"],[100,2,"Resource.php.html#175","Lynkbyte\\EvolutionApi\\Resources\\Resource::formatRemoteJid","2"],[100,2,"Resource.php.html#192","Lynkbyte\\EvolutionApi\\Resources\\Resource::formatGroupJid","2"],[100,2,"Resource.php.html#207","Lynkbyte\\EvolutionApi\\Resources\\Resource::ensureInstance","2"],[100,1,"Settings.php.html#21","Lynkbyte\\EvolutionApi\\Resources\\Settings::set","1"],[100,1,"Settings.php.html#31","Lynkbyte\\EvolutionApi\\Resources\\Settings::find","1"],[100,2,"Settings.php.html#41","Lynkbyte\\EvolutionApi\\Resources\\Settings::setRejectCalls","2"],[100,1,"Settings.php.html#55","Lynkbyte\\EvolutionApi\\Resources\\Settings::rejectCallsWithMessage","1"],[100,1,"Settings.php.html#63","Lynkbyte\\EvolutionApi\\Resources\\Settings::allowCalls","1"],[100,1,"Settings.php.html#71","Lynkbyte\\EvolutionApi\\Resources\\Settings::setReadMessages","1"],[100,1,"Settings.php.html#79","Lynkbyte\\EvolutionApi\\Resources\\Settings::enableAutoRead","1"],[100,1,"Settings.php.html#87","Lynkbyte\\EvolutionApi\\Resources\\Settings::disableAutoRead","1"],[100,1,"Settings.php.html#95","Lynkbyte\\EvolutionApi\\Resources\\Settings::setReadStatus","1"],[100,1,"Settings.php.html#103","Lynkbyte\\EvolutionApi\\Resources\\Settings::setSyncFullHistory","1"],[100,1,"Settings.php.html#111","Lynkbyte\\EvolutionApi\\Resources\\Settings::setGroupsIgnore","1"],[100,1,"Settings.php.html#119","Lynkbyte\\EvolutionApi\\Resources\\Settings::ignoreGroups","1"],[100,1,"Settings.php.html#127","Lynkbyte\\EvolutionApi\\Resources\\Settings::processGroups","1"],[100,1,"Settings.php.html#135","Lynkbyte\\EvolutionApi\\Resources\\Settings::setAlwaysOnline","1"],[100,1,"Settings.php.html#143","Lynkbyte\\EvolutionApi\\Resources\\Settings::enableAlwaysOnline","1"],[100,1,"Settings.php.html#151","Lynkbyte\\EvolutionApi\\Resources\\Settings::disableAlwaysOnline","1"],[100,1,"Settings.php.html#169","Lynkbyte\\EvolutionApi\\Resources\\Settings::configure","1"],[100,1,"Webhook.php.html#22","Lynkbyte\\EvolutionApi\\Resources\\Webhook::set","1"],[100,1,"Webhook.php.html#45","Lynkbyte\\EvolutionApi\\Resources\\Webhook::find","1"],[100,1,"Webhook.php.html#55","Lynkbyte\\EvolutionApi\\Resources\\Webhook::enable","1"],[100,1,"Webhook.php.html#63","Lynkbyte\\EvolutionApi\\Resources\\Webhook::disable","1"],[100,1,"Webhook.php.html#71","Lynkbyte\\EvolutionApi\\Resources\\Webhook::updateUrl","1"],[100,3,"Webhook.php.html#85","Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToEvents","3"],[100,1,"Webhook.php.html#104","Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToAll","1"],[100,1,"Webhook.php.html#114","Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToMessages","1"],[100,1,"Webhook.php.html#130","Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToConnection","1"],[100,1,"Webhook.php.html#145","Lynkbyte\\EvolutionApi\\Resources\\Webhook::availableEvents","1"]]</script>
+  <script type="text/javascript" defer>
+  const barLabels = [
+    '0%',
+    '0-10%',
+    '10-20%',
+    '20-30%',
+    '30-40%',
+    '40-50%',
+    '50-60%',
+    '60-70%',
+    '70-80%',
+    '80-90%',
+    '90-100%',
+    '100%'
+  ];
+  const barConfig = (name, fullName, values) => ({
+    axis: {
+      x: {
+        type: "category",
+        categories: barLabels,
+      },
+      y: {
+        label: {
+          text: `#${name}`,
+          position: 'outer-top',
+        },
+      },
+    },
+    bindto: `#${name}CoverageDistribution`,
+    data: {
+      columns: [
+        [fullName].concat(values),
+      ],
+      colors: {
+        [fullName]: "rgba(69, 114, 167, 0.75)",
+      },
+      type: "bar",
+    },
+    bar: {
+      width: {
+        ratio: 0.9,
+      },
+    },
+    grid: {
+      focus: {
+        show: false,
+      },
+      x: {
+        show: true,
+      },
+      y: {
+        show: true,
+      },
+    },
+    legend: {
+      show: false,
+    },
+    tooltip: {
+      contents: function (data) {
+        return `<table class="bb-tooltip"><tbody>
+            <tr><th colspan="2">Coverage ${barLabels[data[0].x]}</th></tr>
+            <tr><td class="value">${data[0].value} ${name}</td></tr>
+          </tbody></table>`;
+      },
+      grouped: false,
+    },
   });
+  bb.generate(
+    barConfig('classes', "Class Coverage", [0,0,0,0,0,0,0,0,0,1,2,5])
+  );
+  bb.generate(
+    barConfig('methods', "Method Coverage", [2,0,0,0,0,0,0,0,5,2,0,164])
+  );
 
-  nv.addGraph(function() {
-    var chart = nv.models.multiBarChart();
-    chart.tooltips(false)
-      .showControls(false)
-      .showLegend(false)
-      .reduceXTicks(false)
-      .staggerLabels(true)
-      .yAxis.tickFormat(d3.format('d'));
-
-    d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([2,0,0,0,0,0,0,0,5,2,0,164], "Method Coverage"))
-      .transition().duration(500).call(chart);
-
-    nv.utils.windowResize(chart.update);
-
-    return chart;
+  const scatterConfig = (name, complexityData) => ({
+    axis: {
+      x: {
+        label: {
+          text: 'Code Coverage (in percent)',
+          position: 'outer-right',
+        },
+        tick: {
+          values: [0, 20, 40, 60, 80, 100],
+        },
+      },
+      y: {
+        label: {
+          text: 'Cyclomatic Complexity',
+          position: 'outer-top',
+        },
+        min: 0,
+        padding: {
+          bottom: 0,
+          top: 5,
+        },
+      },
+    },
+    bindto: `#${name}Complexity`,
+    data: {
+      columns: [
+        ["complexity_x"].concat(complexityData.map(d => d[0])),
+        ["complexity"].concat(complexityData.map(d => d[1])),
+      ],
+      onclick: function(data, element) {
+        window.location = complexityData[data.index][2];
+      },
+      type: "scatter",
+      xs: {
+        "complexity": "complexity_x",
+      },
+    },
+    grid: {
+      focus: {
+        show: true,
+        y: true,
+      },
+      x: {
+        show: true,
+      },
+      y: {
+        show: true,
+      },
+    },
+    legend: {
+      show: false,
+    },
+    tooltip: {
+      contents: function (data) {
+        const coverage = Math.round(data[0].x);
+        const complexity = data[0].value;
+        const targetName = complexityData[data[0].index][3];
+        const crap = complexityData[data[0].index][4];
+        return `<table class="bb-tooltip"><tbody>
+            <tr><th colspan="2">${targetName}</th></tr>
+            <tr class="bb-tooltip-name-complexity"><td>Coverage</td><td class="name">${coverage}%</td></tr>
+            <tr class="bb-tooltip-name-complexity"><td>Complexity</td><td class="value">${complexity}</td></tr>
+            <tr class="bb-tooltip-name-complexity"><td>Crap</td><td class="value">${crap}</td></tr>
+          </tbody></table>`;
+      },
+      grouped: false,
+    },
   });
-
-  function getCoverageDistributionData(data, label) {
-    var labels = [
-      '0%',
-      '0-10%',
-      '10-20%',
-      '20-30%',
-      '30-40%',
-      '40-50%',
-      '50-60%',
-      '60-70%',
-      '70-80%',
-      '80-90%',
-      '90-100%',
-      '100%'
-    ];
-    var values = [];
-    $.each(labels, function(key) {
-      values.push({x: labels[key], y: data[key]});
-    });
-
-    return [
-      {
-        key: label,
-        values: values,
-        color: "#4572A7"
-      }
-    ];
-  }
-  nv.addGraph(function() {
-    var chart = nv.models.scatterChart()
-      .showDistX(true)
-      .showDistY(true)
-      .showLegend(false)
-      .forceX([0, 100]);
-    chart.tooltipContent(function(graph) {
-      return '<p>' + graph.point.class + '</p>';
-    });
-
-    chart.xAxis.axisLabel('Code Coverage (in percent)');
-    chart.yAxis.axisLabel('Cyclomatic Complexity');
-
-    d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,30,"<a href=\"Chat.php.html#14\">Lynkbyte\\EvolutionApi\\Resources\\Chat<\/a>"],[100,31,"<a href=\"Group.php.html#14\">Lynkbyte\\EvolutionApi\\Resources\\Group<\/a>"],[89.74358974358975,26,"<a href=\"Instance.php.html#15\">Lynkbyte\\EvolutionApi\\Resources\\Instance<\/a>"],[97.5609756097561,50,"<a href=\"Message.php.html#25\">Lynkbyte\\EvolutionApi\\Resources\\Message<\/a>"],[94.44444444444444,18,"<a href=\"Profile.php.html#14\">Lynkbyte\\EvolutionApi\\Resources\\Profile<\/a>"],[100,25,"<a href=\"Resource.php.html#13\">Lynkbyte\\EvolutionApi\\Resources\\Resource<\/a>"],[100,18,"<a href=\"Settings.php.html#14\">Lynkbyte\\EvolutionApi\\Resources\\Settings<\/a>"],[100,12,"<a href=\"Webhook.php.html#15\">Lynkbyte\\EvolutionApi\\Resources\\Webhook<\/a>"]], 'Class Complexity'))
-      .transition()
-      .duration(500)
-      .call(chart);
-
-    nv.utils.windowResize(chart.update);
-
-    return chart;
-  });
-
-  nv.addGraph(function() {
-    var chart = nv.models.scatterChart()
-      .showDistX(true)
-      .showDistY(true)
-      .showLegend(false)
-      .forceX([0, 100]);
-    chart.tooltipContent(function(graph) {
-      return '<p>' + graph.point.class + '</p>';
-    });
-
-    chart.xAxis.axisLabel('Code Coverage (in percent)');
-    chart.yAxis.axisLabel('Method Complexity');
-
-    d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"Chat.php.html#21\">Lynkbyte\\EvolutionApi\\Resources\\Chat::checkNumber<\/a>"],[100,1,"<a href=\"Chat.php.html#35\">Lynkbyte\\EvolutionApi\\Resources\\Chat::isOnWhatsApp<\/a>"],[100,1,"<a href=\"Chat.php.html#43\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findAll<\/a>"],[100,1,"<a href=\"Chat.php.html#53\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findPaginated<\/a>"],[100,1,"<a href=\"Chat.php.html#66\">Lynkbyte\\EvolutionApi\\Resources\\Chat::find<\/a>"],[100,1,"<a href=\"Chat.php.html#78\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findContacts<\/a>"],[100,1,"<a href=\"Chat.php.html#88\">Lynkbyte\\EvolutionApi\\Resources\\Chat::searchContacts<\/a>"],[100,2,"<a href=\"Chat.php.html#104\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findMessages<\/a>"],[100,2,"<a href=\"Chat.php.html#132\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findAllMessages<\/a>"],[100,1,"<a href=\"Chat.php.html#148\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findMessagesByDate<\/a>"],[100,1,"<a href=\"Chat.php.html#173\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findStatusMessages<\/a>"],[100,1,"<a href=\"Chat.php.html#183\">Lynkbyte\\EvolutionApi\\Resources\\Chat::findLabels<\/a>"],[100,1,"<a href=\"Chat.php.html#193\">Lynkbyte\\EvolutionApi\\Resources\\Chat::markChatUnread<\/a>"],[100,1,"<a href=\"Chat.php.html#205\">Lynkbyte\\EvolutionApi\\Resources\\Chat::archive<\/a>"],[100,1,"<a href=\"Chat.php.html#222\">Lynkbyte\\EvolutionApi\\Resources\\Chat::unarchive<\/a>"],[100,1,"<a href=\"Chat.php.html#239\">Lynkbyte\\EvolutionApi\\Resources\\Chat::deleteChat<\/a>"],[100,1,"<a href=\"Chat.php.html#251\">Lynkbyte\\EvolutionApi\\Resources\\Chat::clearMessages<\/a>"],[100,1,"<a href=\"Chat.php.html#263\">Lynkbyte\\EvolutionApi\\Resources\\Chat::fetchProfilePicture<\/a>"],[100,1,"<a href=\"Chat.php.html#275\">Lynkbyte\\EvolutionApi\\Resources\\Chat::getBusinessProfile<\/a>"],[100,1,"<a href=\"Chat.php.html#289\">Lynkbyte\\EvolutionApi\\Resources\\Chat::mute<\/a>"],[100,1,"<a href=\"Chat.php.html#302\">Lynkbyte\\EvolutionApi\\Resources\\Chat::unmute<\/a>"],[100,1,"<a href=\"Chat.php.html#314\">Lynkbyte\\EvolutionApi\\Resources\\Chat::pin<\/a>"],[100,1,"<a href=\"Chat.php.html#327\">Lynkbyte\\EvolutionApi\\Resources\\Chat::unpin<\/a>"],[100,1,"<a href=\"Chat.php.html#340\">Lynkbyte\\EvolutionApi\\Resources\\Chat::block<\/a>"],[100,1,"<a href=\"Chat.php.html#353\">Lynkbyte\\EvolutionApi\\Resources\\Chat::unblock<\/a>"],[100,1,"<a href=\"Chat.php.html#366\">Lynkbyte\\EvolutionApi\\Resources\\Chat::getPresence<\/a>"],[100,1,"<a href=\"Chat.php.html#378\">Lynkbyte\\EvolutionApi\\Resources\\Chat::updateContactName<\/a>"],[100,2,"<a href=\"Group.php.html#21\">Lynkbyte\\EvolutionApi\\Resources\\Group::create<\/a>"],[100,1,"<a href=\"Group.php.html#40\">Lynkbyte\\EvolutionApi\\Resources\\Group::updateSubject<\/a>"],[100,1,"<a href=\"Group.php.html#53\">Lynkbyte\\EvolutionApi\\Resources\\Group::updateDescription<\/a>"],[100,1,"<a href=\"Group.php.html#68\">Lynkbyte\\EvolutionApi\\Resources\\Group::updatePicture<\/a>"],[100,1,"<a href=\"Group.php.html#81\">Lynkbyte\\EvolutionApi\\Resources\\Group::removePicture<\/a>"],[100,1,"<a href=\"Group.php.html#93\">Lynkbyte\\EvolutionApi\\Resources\\Group::fetchOne<\/a>"],[100,2,"<a href=\"Group.php.html#105\">Lynkbyte\\EvolutionApi\\Resources\\Group::fetchAll<\/a>"],[100,1,"<a href=\"Group.php.html#117\">Lynkbyte\\EvolutionApi\\Resources\\Group::participants<\/a>"],[100,1,"<a href=\"Group.php.html#129\">Lynkbyte\\EvolutionApi\\Resources\\Group::inviteCode<\/a>"],[100,1,"<a href=\"Group.php.html#141\">Lynkbyte\\EvolutionApi\\Resources\\Group::revokeInviteCode<\/a>"],[100,1,"<a href=\"Group.php.html#153\">Lynkbyte\\EvolutionApi\\Resources\\Group::acceptInvite<\/a>"],[100,1,"<a href=\"Group.php.html#165\">Lynkbyte\\EvolutionApi\\Resources\\Group::inviteInfo<\/a>"],[100,2,"<a href=\"Group.php.html#179\">Lynkbyte\\EvolutionApi\\Resources\\Group::sendInvite<\/a>"],[100,1,"<a href=\"Group.php.html#200\">Lynkbyte\\EvolutionApi\\Resources\\Group::addParticipants<\/a>"],[100,1,"<a href=\"Group.php.html#216\">Lynkbyte\\EvolutionApi\\Resources\\Group::removeParticipants<\/a>"],[100,1,"<a href=\"Group.php.html#232\">Lynkbyte\\EvolutionApi\\Resources\\Group::promoteToAdmin<\/a>"],[100,1,"<a href=\"Group.php.html#248\">Lynkbyte\\EvolutionApi\\Resources\\Group::demoteFromAdmin<\/a>"],[100,1,"<a href=\"Group.php.html#265\">Lynkbyte\\EvolutionApi\\Resources\\Group::updateSettings<\/a>"],[100,2,"<a href=\"Group.php.html#278\">Lynkbyte\\EvolutionApi\\Resources\\Group::setAnnouncementMode<\/a>"],[100,2,"<a href=\"Group.php.html#286\">Lynkbyte\\EvolutionApi\\Resources\\Group::setLockedMode<\/a>"],[100,1,"<a href=\"Group.php.html#297\">Lynkbyte\\EvolutionApi\\Resources\\Group::toggleEphemeral<\/a>"],[100,1,"<a href=\"Group.php.html#310\">Lynkbyte\\EvolutionApi\\Resources\\Group::leave<\/a>"],[100,1,"<a href=\"Group.php.html#322\">Lynkbyte\\EvolutionApi\\Resources\\Group::isAdmin<\/a>"],[100,1,"<a href=\"Group.php.html#334\">Lynkbyte\\EvolutionApi\\Resources\\Group::pendingParticipants<\/a>"],[100,1,"<a href=\"Group.php.html#348\">Lynkbyte\\EvolutionApi\\Resources\\Group::acceptJoinRequests<\/a>"],[100,1,"<a href=\"Group.php.html#363\">Lynkbyte\\EvolutionApi\\Resources\\Group::rejectJoinRequests<\/a>"],[100,1,"<a href=\"Instance.php.html#22\">Lynkbyte\\EvolutionApi\\Resources\\Instance::create<\/a>"],[100,1,"<a href=\"Instance.php.html#47\">Lynkbyte\\EvolutionApi\\Resources\\Instance::connect<\/a>"],[100,1,"<a href=\"Instance.php.html#58\">Lynkbyte\\EvolutionApi\\Resources\\Instance::connectionState<\/a>"],[100,1,"<a href=\"Instance.php.html#69\">Lynkbyte\\EvolutionApi\\Resources\\Instance::fetchAll<\/a>"],[100,1,"<a href=\"Instance.php.html#77\">Lynkbyte\\EvolutionApi\\Resources\\Instance::fetch<\/a>"],[100,1,"<a href=\"Instance.php.html#87\">Lynkbyte\\EvolutionApi\\Resources\\Instance::setPresence<\/a>"],[100,1,"<a href=\"Instance.php.html#100\">Lynkbyte\\EvolutionApi\\Resources\\Instance::restart<\/a>"],[100,1,"<a href=\"Instance.php.html#111\">Lynkbyte\\EvolutionApi\\Resources\\Instance::logout<\/a>"],[100,1,"<a href=\"Instance.php.html#122\">Lynkbyte\\EvolutionApi\\Resources\\Instance::remove<\/a>"],[100,1,"<a href=\"Instance.php.html#133\">Lynkbyte\\EvolutionApi\\Resources\\Instance::getQrCode<\/a>"],[100,1,"<a href=\"Instance.php.html#144\">Lynkbyte\\EvolutionApi\\Resources\\Instance::getQrCodeBase64<\/a>"],[85.71428571428571,4,"<a href=\"Instance.php.html#155\">Lynkbyte\\EvolutionApi\\Resources\\Instance::isConnected<\/a>"],[0,3,"<a href=\"Instance.php.html#178\">Lynkbyte\\EvolutionApi\\Resources\\Instance::waitForConnection<\/a>"],[85.71428571428571,3,"<a href=\"Instance.php.html#199\">Lynkbyte\\EvolutionApi\\Resources\\Instance::getStatus<\/a>"],[100,1,"<a href=\"Instance.php.html#221\">Lynkbyte\\EvolutionApi\\Resources\\Instance::updateSettings<\/a>"],[100,1,"<a href=\"Instance.php.html#232\">Lynkbyte\\EvolutionApi\\Resources\\Instance::getSettings<\/a>"],[100,1,"<a href=\"Instance.php.html#243\">Lynkbyte\\EvolutionApi\\Resources\\Instance::refreshQrCode<\/a>"],[100,1,"<a href=\"Instance.php.html#254\">Lynkbyte\\EvolutionApi\\Resources\\Instance::connectWithNumber<\/a>"],[100,1,"<a href=\"Instance.php.html#269\">Lynkbyte\\EvolutionApi\\Resources\\Instance::verifyCode<\/a>"],[100,2,"<a href=\"Message.php.html#30\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendText<\/a>"],[100,1,"<a href=\"Message.php.html#44\">Lynkbyte\\EvolutionApi\\Resources\\Message::text<\/a>"],[100,2,"<a href=\"Message.php.html#56\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendMedia<\/a>"],[100,1,"<a href=\"Message.php.html#70\">Lynkbyte\\EvolutionApi\\Resources\\Message::image<\/a>"],[100,1,"<a href=\"Message.php.html#88\">Lynkbyte\\EvolutionApi\\Resources\\Message::video<\/a>"],[100,1,"<a href=\"Message.php.html#106\">Lynkbyte\\EvolutionApi\\Resources\\Message::document<\/a>"],[75,2,"<a href=\"Message.php.html#126\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendAudio<\/a>"],[100,1,"<a href=\"Message.php.html#140\">Lynkbyte\\EvolutionApi\\Resources\\Message::audio<\/a>"],[75,2,"<a href=\"Message.php.html#152\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendLocation<\/a>"],[100,1,"<a href=\"Message.php.html#166\">Lynkbyte\\EvolutionApi\\Resources\\Message::location<\/a>"],[100,2,"<a href=\"Message.php.html#185\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendContact<\/a>"],[75,2,"<a href=\"Message.php.html#199\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendPoll<\/a>"],[100,1,"<a href=\"Message.php.html#215\">Lynkbyte\\EvolutionApi\\Resources\\Message::poll<\/a>"],[100,2,"<a href=\"Message.php.html#232\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendList<\/a>"],[75,2,"<a href=\"Message.php.html#246\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendReaction<\/a>"],[100,1,"<a href=\"Message.php.html#260\">Lynkbyte\\EvolutionApi\\Resources\\Message::react<\/a>"],[100,1,"<a href=\"Message.php.html#273\">Lynkbyte\\EvolutionApi\\Resources\\Message::unreact<\/a>"],[75,2,"<a href=\"Message.php.html#285\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendSticker<\/a>"],[100,1,"<a href=\"Message.php.html#299\">Lynkbyte\\EvolutionApi\\Resources\\Message::sticker<\/a>"],[100,2,"<a href=\"Message.php.html#310\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendStatus<\/a>"],[100,2,"<a href=\"Message.php.html#324\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendTemplate<\/a>"],[100,1,"<a href=\"Message.php.html#340\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendButtons<\/a>"],[100,1,"<a href=\"Message.php.html#363\">Lynkbyte\\EvolutionApi\\Resources\\Message::markAsRead<\/a>"],[100,1,"<a href=\"Message.php.html#382\">Lynkbyte\\EvolutionApi\\Resources\\Message::markMultipleAsRead<\/a>"],[100,1,"<a href=\"Message.php.html#399\">Lynkbyte\\EvolutionApi\\Resources\\Message::archiveChat<\/a>"],[100,1,"<a href=\"Message.php.html#416\">Lynkbyte\\EvolutionApi\\Resources\\Message::unarchiveChat<\/a>"],[100,1,"<a href=\"Message.php.html#424\">Lynkbyte\\EvolutionApi\\Resources\\Message::deleteMessage<\/a>"],[100,1,"<a href=\"Message.php.html#441\">Lynkbyte\\EvolutionApi\\Resources\\Message::deleteForMe<\/a>"],[100,1,"<a href=\"Message.php.html#449\">Lynkbyte\\EvolutionApi\\Resources\\Message::updateMessage<\/a>"],[100,1,"<a href=\"Message.php.html#466\">Lynkbyte\\EvolutionApi\\Resources\\Message::starMessage<\/a>"],[100,1,"<a href=\"Message.php.html#483\">Lynkbyte\\EvolutionApi\\Resources\\Message::unstarMessage<\/a>"],[100,1,"<a href=\"Message.php.html#491\">Lynkbyte\\EvolutionApi\\Resources\\Message::getMessageById<\/a>"],[100,1,"<a href=\"Message.php.html#510\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendWithTyping<\/a>"],[100,1,"<a href=\"Message.php.html#529\">Lynkbyte\\EvolutionApi\\Resources\\Message::reply<\/a>"],[100,1,"<a href=\"Message.php.html#552\">Lynkbyte\\EvolutionApi\\Resources\\Message::forward<\/a>"],[100,1,"<a href=\"Message.php.html#573\">Lynkbyte\\EvolutionApi\\Resources\\Message::sendPresence<\/a>"],[100,1,"<a href=\"Message.php.html#586\">Lynkbyte\\EvolutionApi\\Resources\\Message::typing<\/a>"],[100,1,"<a href=\"Message.php.html#594\">Lynkbyte\\EvolutionApi\\Resources\\Message::recording<\/a>"],[100,1,"<a href=\"Message.php.html#602\">Lynkbyte\\EvolutionApi\\Resources\\Message::stopPresence<\/a>"],[100,1,"<a href=\"Profile.php.html#19\">Lynkbyte\\EvolutionApi\\Resources\\Profile::getName<\/a>"],[100,1,"<a href=\"Profile.php.html#29\">Lynkbyte\\EvolutionApi\\Resources\\Profile::updateName<\/a>"],[0,1,"<a href=\"Profile.php.html#41\">Lynkbyte\\EvolutionApi\\Resources\\Profile::getStatus<\/a>"],[100,1,"<a href=\"Profile.php.html#51\">Lynkbyte\\EvolutionApi\\Resources\\Profile::updateStatus<\/a>"],[100,1,"<a href=\"Profile.php.html#63\">Lynkbyte\\EvolutionApi\\Resources\\Profile::getPicture<\/a>"],[100,1,"<a href=\"Profile.php.html#75\">Lynkbyte\\EvolutionApi\\Resources\\Profile::updatePicture<\/a>"],[100,1,"<a href=\"Profile.php.html#87\">Lynkbyte\\EvolutionApi\\Resources\\Profile::removePicture<\/a>"],[100,1,"<a href=\"Profile.php.html#97\">Lynkbyte\\EvolutionApi\\Resources\\Profile::getPrivacySettings<\/a>"],[100,1,"<a href=\"Profile.php.html#111\">Lynkbyte\\EvolutionApi\\Resources\\Profile::updatePrivacySettings<\/a>"],[100,1,"<a href=\"Profile.php.html#123\">Lynkbyte\\EvolutionApi\\Resources\\Profile::setReadReceiptsPrivacy<\/a>"],[100,1,"<a href=\"Profile.php.html#133\">Lynkbyte\\EvolutionApi\\Resources\\Profile::setProfilePicturePrivacy<\/a>"],[100,1,"<a href=\"Profile.php.html#143\">Lynkbyte\\EvolutionApi\\Resources\\Profile::setStatusPrivacy<\/a>"],[100,1,"<a href=\"Profile.php.html#153\">Lynkbyte\\EvolutionApi\\Resources\\Profile::setOnlinePrivacy<\/a>"],[100,1,"<a href=\"Profile.php.html#163\">Lynkbyte\\EvolutionApi\\Resources\\Profile::setLastSeenPrivacy<\/a>"],[100,1,"<a href=\"Profile.php.html#173\">Lynkbyte\\EvolutionApi\\Resources\\Profile::setGroupAddPrivacy<\/a>"],[100,1,"<a href=\"Profile.php.html#181\">Lynkbyte\\EvolutionApi\\Resources\\Profile::fetch<\/a>"],[100,1,"<a href=\"Profile.php.html#191\">Lynkbyte\\EvolutionApi\\Resources\\Profile::getBusinessProfile<\/a>"],[100,1,"<a href=\"Profile.php.html#203\">Lynkbyte\\EvolutionApi\\Resources\\Profile::updateBusinessProfile<\/a>"],[100,1,"<a href=\"Resource.php.html#18\">Lynkbyte\\EvolutionApi\\Resources\\Resource::__construct<\/a>"],[100,1,"<a href=\"Resource.php.html#25\">Lynkbyte\\EvolutionApi\\Resources\\Resource::getInstanceName<\/a>"],[100,1,"<a href=\"Resource.php.html#35\">Lynkbyte\\EvolutionApi\\Resources\\Resource::get<\/a>"],[100,1,"<a href=\"Resource.php.html#45\">Lynkbyte\\EvolutionApi\\Resources\\Resource::post<\/a>"],[100,1,"<a href=\"Resource.php.html#55\">Lynkbyte\\EvolutionApi\\Resources\\Resource::put<\/a>"],[100,1,"<a href=\"Resource.php.html#65\">Lynkbyte\\EvolutionApi\\Resources\\Resource::delete<\/a>"],[100,1,"<a href=\"Resource.php.html#75\">Lynkbyte\\EvolutionApi\\Resources\\Resource::patch<\/a>"],[100,1,"<a href=\"Resource.php.html#83\">Lynkbyte\\EvolutionApi\\Resources\\Resource::instanceEndpoint<\/a>"],[100,2,"<a href=\"Resource.php.html#91\">Lynkbyte\\EvolutionApi\\Resources\\Resource::buildInstancePath<\/a>"],[100,1,"<a href=\"Resource.php.html#105\">Lynkbyte\\EvolutionApi\\Resources\\Resource::getClient<\/a>"],[100,1,"<a href=\"Resource.php.html#115\">Lynkbyte\\EvolutionApi\\Resources\\Resource::instance<\/a>"],[100,1,"<a href=\"Resource.php.html#128\">Lynkbyte\\EvolutionApi\\Resources\\Resource::filterNull<\/a>"],[100,4,"<a href=\"Resource.php.html#140\">Lynkbyte\\EvolutionApi\\Resources\\Resource::buildPayload<\/a>"],[100,2,"<a href=\"Resource.php.html#159\">Lynkbyte\\EvolutionApi\\Resources\\Resource::formatPhoneNumber<\/a>"],[100,2,"<a href=\"Resource.php.html#175\">Lynkbyte\\EvolutionApi\\Resources\\Resource::formatRemoteJid<\/a>"],[100,2,"<a href=\"Resource.php.html#192\">Lynkbyte\\EvolutionApi\\Resources\\Resource::formatGroupJid<\/a>"],[100,2,"<a href=\"Resource.php.html#207\">Lynkbyte\\EvolutionApi\\Resources\\Resource::ensureInstance<\/a>"],[100,1,"<a href=\"Settings.php.html#21\">Lynkbyte\\EvolutionApi\\Resources\\Settings::set<\/a>"],[100,1,"<a href=\"Settings.php.html#31\">Lynkbyte\\EvolutionApi\\Resources\\Settings::find<\/a>"],[100,2,"<a href=\"Settings.php.html#41\">Lynkbyte\\EvolutionApi\\Resources\\Settings::setRejectCalls<\/a>"],[100,1,"<a href=\"Settings.php.html#55\">Lynkbyte\\EvolutionApi\\Resources\\Settings::rejectCallsWithMessage<\/a>"],[100,1,"<a href=\"Settings.php.html#63\">Lynkbyte\\EvolutionApi\\Resources\\Settings::allowCalls<\/a>"],[100,1,"<a href=\"Settings.php.html#71\">Lynkbyte\\EvolutionApi\\Resources\\Settings::setReadMessages<\/a>"],[100,1,"<a href=\"Settings.php.html#79\">Lynkbyte\\EvolutionApi\\Resources\\Settings::enableAutoRead<\/a>"],[100,1,"<a href=\"Settings.php.html#87\">Lynkbyte\\EvolutionApi\\Resources\\Settings::disableAutoRead<\/a>"],[100,1,"<a href=\"Settings.php.html#95\">Lynkbyte\\EvolutionApi\\Resources\\Settings::setReadStatus<\/a>"],[100,1,"<a href=\"Settings.php.html#103\">Lynkbyte\\EvolutionApi\\Resources\\Settings::setSyncFullHistory<\/a>"],[100,1,"<a href=\"Settings.php.html#111\">Lynkbyte\\EvolutionApi\\Resources\\Settings::setGroupsIgnore<\/a>"],[100,1,"<a href=\"Settings.php.html#119\">Lynkbyte\\EvolutionApi\\Resources\\Settings::ignoreGroups<\/a>"],[100,1,"<a href=\"Settings.php.html#127\">Lynkbyte\\EvolutionApi\\Resources\\Settings::processGroups<\/a>"],[100,1,"<a href=\"Settings.php.html#135\">Lynkbyte\\EvolutionApi\\Resources\\Settings::setAlwaysOnline<\/a>"],[100,1,"<a href=\"Settings.php.html#143\">Lynkbyte\\EvolutionApi\\Resources\\Settings::enableAlwaysOnline<\/a>"],[100,1,"<a href=\"Settings.php.html#151\">Lynkbyte\\EvolutionApi\\Resources\\Settings::disableAlwaysOnline<\/a>"],[100,1,"<a href=\"Settings.php.html#169\">Lynkbyte\\EvolutionApi\\Resources\\Settings::configure<\/a>"],[100,1,"<a href=\"Webhook.php.html#22\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::set<\/a>"],[100,1,"<a href=\"Webhook.php.html#45\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::find<\/a>"],[100,1,"<a href=\"Webhook.php.html#55\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::enable<\/a>"],[100,1,"<a href=\"Webhook.php.html#63\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::disable<\/a>"],[100,1,"<a href=\"Webhook.php.html#71\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::updateUrl<\/a>"],[100,3,"<a href=\"Webhook.php.html#85\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToEvents<\/a>"],[100,1,"<a href=\"Webhook.php.html#104\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToAll<\/a>"],[100,1,"<a href=\"Webhook.php.html#114\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToMessages<\/a>"],[100,1,"<a href=\"Webhook.php.html#130\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::subscribeToConnection<\/a>"],[100,1,"<a href=\"Webhook.php.html#145\">Lynkbyte\\EvolutionApi\\Resources\\Webhook::availableEvents<\/a>"]], 'Method Complexity'))
-      .transition()
-      .duration(500)
-      .call(chart);
-
-    nv.utils.windowResize(chart.update);
-
-    return chart;
-  });
-
-  function getComplexityData(data, label) {
-    var values = [];
-    $.each(data, function(key) {
-      var value = Math.round(data[key][0]*100) / 100;
-      values.push({
-        x: value,
-        y: data[key][1],
-        class: data[key][2],
-        size: 0.05,
-        shape: 'diamond'
-      });
-    });
-
-    return [
-      {
-        key: label,
-        values: values,
-        color: "#4572A7"
-      }
-    ];
-  }
-});
+  const classComplexityData = JSON.parse(document.getElementById('complexity_class').textContent);
+  bb.generate(
+    scatterConfig("class", classComplexityData)
+  );
+  const methodComplexityData = JSON.parse(document.getElementById('complexity_method').textContent);
+  bb.generate(
+    scatterConfig("method", methodComplexityData),
+  );
   </script>
  </body>
 </html>
