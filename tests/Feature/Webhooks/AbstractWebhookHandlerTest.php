@@ -10,11 +10,12 @@ use Lynkbyte\EvolutionApi\Webhooks\AbstractWebhookHandler;
 class TestableWebhookHandler extends AbstractWebhookHandler
 {
     public array $receivedPayloads = [];
+
     public array $calledMethods = [];
 
     public function events(): array
     {
-        return array_map(fn($event) => $event->value, $this->allowedEvents);
+        return array_map(fn ($event) => $event->value, $this->allowedEvents);
     }
 
     protected function onWebhookReceived(WebhookPayloadDto $payload): void
@@ -133,7 +134,7 @@ class TestableWebhookHandler extends AbstractWebhookHandler
 describe('AbstractWebhookHandler', function () {
 
     beforeEach(function () {
-        $this->handler = new TestableWebhookHandler();
+        $this->handler = new TestableWebhookHandler;
     });
 
     describe('shouldHandle', function () {
@@ -640,7 +641,7 @@ class MinimalWebhookHandler extends AbstractWebhookHandler
 
     public function events(): array
     {
-        return array_map(fn($event) => $event->value, $this->allowedEvents);
+        return array_map(fn ($event) => $event->value, $this->allowedEvents);
     }
 
     protected function onWebhookReceived(WebhookPayloadDto $payload): void
@@ -651,7 +652,7 @@ class MinimalWebhookHandler extends AbstractWebhookHandler
 
 describe('AbstractWebhookHandler Base Callbacks', function () {
     beforeEach(function () {
-        $this->handler = new MinimalWebhookHandler();
+        $this->handler = new MinimalWebhookHandler;
     });
 
     describe('base class callback methods execute without error', function () {

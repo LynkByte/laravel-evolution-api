@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
+use Lynkbyte\EvolutionApi\Enums\WebhookEvent;
 use Lynkbyte\EvolutionApi\Events\WebhookReceived;
 use Lynkbyte\EvolutionApi\Jobs\ProcessWebhookJob;
-use Lynkbyte\EvolutionApi\Enums\WebhookEvent;
 use Lynkbyte\EvolutionApi\Webhooks\WebhookProcessor;
 
 describe('ProcessWebhookJob', function () {
@@ -191,7 +191,7 @@ describe('ProcessWebhookJob', function () {
 
         it('uses configured queue name', function () {
             config(['evolution-api.queue.queue' => 'custom-queue']);
-            
+
             $job = new ProcessWebhookJob(['data' => []]);
 
             expect($job->queue)->toBe('custom-queue');
@@ -199,7 +199,7 @@ describe('ProcessWebhookJob', function () {
 
         it('uses default queue name when not configured', function () {
             config(['evolution-api.queue' => []]);
-            
+
             $job = new ProcessWebhookJob(['data' => []]);
 
             expect($job->queue)->toBe('evolution-api');
@@ -207,7 +207,7 @@ describe('ProcessWebhookJob', function () {
 
         it('uses configured connection when set', function () {
             config(['evolution-api.queue.connection' => 'redis']);
-            
+
             $job = new ProcessWebhookJob(['data' => []]);
 
             expect($job->connection)->toBe('redis');

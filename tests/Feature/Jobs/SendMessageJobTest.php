@@ -156,7 +156,7 @@ describe('SendMessageJob', function () {
     describe('job configuration', function () {
         it('uses configured queue name', function () {
             config(['evolution-api.queue.queue' => 'messages-queue']);
-            
+
             $job = new SendMessageJob(
                 instanceName: 'test-instance',
                 messageType: 'text',
@@ -168,7 +168,7 @@ describe('SendMessageJob', function () {
 
         it('uses default queue name when not configured', function () {
             config(['evolution-api.queue' => []]);
-            
+
             $job = new SendMessageJob(
                 instanceName: 'test-instance',
                 messageType: 'text',
@@ -180,7 +180,7 @@ describe('SendMessageJob', function () {
 
         it('uses configured connection when set', function () {
             config(['evolution-api.queue.connection' => 'redis']);
-            
+
             $job = new SendMessageJob(
                 instanceName: 'test-instance',
                 messageType: 'text',
@@ -192,7 +192,7 @@ describe('SendMessageJob', function () {
 
         it('sets tries from config', function () {
             config(['evolution-api.queue.max_exceptions' => 5]);
-            
+
             $job = new SendMessageJob(
                 instanceName: 'test-instance',
                 messageType: 'text',
@@ -205,7 +205,7 @@ describe('SendMessageJob', function () {
 
         it('sets backoff from config', function () {
             config(['evolution-api.queue.backoff' => [30, 60, 120]]);
-            
+
             $job = new SendMessageJob(
                 instanceName: 'test-instance',
                 messageType: 'text',

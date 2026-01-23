@@ -16,7 +16,7 @@ describe('EvolutionApi Facade', function () {
         it('has correct facade accessor name', function () {
             // We test the accessor by checking what fake() swaps
             $fake = EvolutionApi::fake();
-            
+
             expect($fake)->toBeInstanceOf(EvolutionApiFake::class);
             expect(EvolutionApi::getFacadeRoot())->toBe($fake);
         });
@@ -89,9 +89,9 @@ describe('EvolutionApi Facade', function () {
 
         it('clears the resolved facade instance', function () {
             EvolutionApi::fake();
-            
+
             expect(EvolutionApi::isFaked())->toBeTrue();
-            
+
             EvolutionApi::clearFake();
 
             // After clearing, the fake should be reset

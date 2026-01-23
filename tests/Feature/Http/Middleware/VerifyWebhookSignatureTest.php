@@ -10,7 +10,7 @@ uses(\Lynkbyte\EvolutionApi\Tests\TestCase::class);
 describe('VerifyWebhookSignature Middleware', function () {
 
     beforeEach(function () {
-        $this->middleware = new VerifyWebhookSignature();
+        $this->middleware = new VerifyWebhookSignature;
     });
 
     describe('when verification is disabled', function () {
@@ -19,7 +19,7 @@ describe('VerifyWebhookSignature Middleware', function () {
             config(['evolution-api.webhook.secret' => 'my-secret']);
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], '{"event":"test"}');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -33,7 +33,7 @@ describe('VerifyWebhookSignature Middleware', function () {
             config(['evolution-api.webhook.secret' => null]);
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], '{"event":"test"}');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -44,7 +44,7 @@ describe('VerifyWebhookSignature Middleware', function () {
             config(['evolution-api.webhook.secret' => '']);
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], '{"event":"test"}');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -59,7 +59,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
         it('returns 401 when signature header is missing', function () {
             $request = Request::create('/webhook', 'POST', [], [], [], [], '{"event":"test"}');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(401);
@@ -70,7 +70,7 @@ describe('VerifyWebhookSignature Middleware', function () {
         it('returns 401 when signature is invalid', function () {
             $request = Request::create('/webhook', 'POST', [], [], [], [], '{"event":"test"}');
             $request->headers->set('X-Webhook-Signature', 'invalid-signature');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(401);
@@ -84,7 +84,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $payload);
             $request->headers->set('X-Webhook-Signature', $signature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -98,7 +98,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $payload);
             $request->headers->set('X-Evolution-Signature', $signature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -111,7 +111,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $payload);
             $request->headers->set('X-Signature', $signature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -126,7 +126,7 @@ describe('VerifyWebhookSignature Middleware', function () {
             $request->headers->set('X-Webhook-Signature', $validSignature);
             $request->headers->set('X-Evolution-Signature', 'invalid');
             $request->headers->set('X-Signature', 'invalid');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -152,7 +152,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $payload);
             $request->headers->set('X-Webhook-Signature', $signature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -166,7 +166,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $tamperedPayload);
             $request->headers->set('X-Webhook-Signature', $signature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(401);
@@ -180,7 +180,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $payload);
             $request->headers->set('X-Webhook-Signature', $signature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(401);
@@ -193,7 +193,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $payload);
             $request->headers->set('X-Webhook-Signature', $signature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(200);
@@ -205,13 +205,13 @@ describe('VerifyWebhookSignature Middleware', function () {
             $payload = '{"event":"test"}';
             $secret = 'test-secret-key';
             $validSignature = hash_hmac('sha256', $payload, $secret);
-            
+
             // Create a signature that differs by one character
-            $invalidSignature = substr($validSignature, 0, -1) . '0';
+            $invalidSignature = substr($validSignature, 0, -1).'0';
 
             $request = Request::create('/webhook', 'POST', [], [], [], [], $payload);
             $request->headers->set('X-Webhook-Signature', $invalidSignature);
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->getStatusCode())->toBe(401);
@@ -226,7 +226,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
         it('returns JSON response with correct structure', function () {
             $request = Request::create('/webhook', 'POST', [], [], [], [], '{"event":"test"}');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             expect($response->headers->get('Content-Type'))->toContain('application/json');
@@ -234,7 +234,7 @@ describe('VerifyWebhookSignature Middleware', function () {
 
         it('includes status and message in error response', function () {
             $request = Request::create('/webhook', 'POST', [], [], [], [], '{"event":"test"}');
-            
+
             $response = $this->middleware->handle($request, fn ($req) => response()->json(['passed' => true]));
 
             $data = $response->getData(true);

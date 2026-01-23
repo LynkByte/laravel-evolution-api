@@ -451,11 +451,11 @@ describe('NullCache methods', function () {
     it('null cache store methods', function () {
         // Access the NullCache directly through reflection to test store methods
         $limiter = RateLimiter::null();
-        
+
         // Through the limiter, we can verify the cache operations work as no-ops
         $limiter->clear('any-key');
         $limiter->clear('any-key', 'default');
-        
+
         // Should still work normally
         expect($limiter->attempt('any-key', 'default'))->toBeTrue();
     });
@@ -464,7 +464,7 @@ describe('NullCache methods', function () {
 describe('NullCache direct method tests', function () {
     beforeEach(function () {
         // Create NullCache instance directly via reflection
-        $this->nullCache = new \Lynkbyte\EvolutionApi\Client\NullCache();
+        $this->nullCache = new \Lynkbyte\EvolutionApi\Client\NullCache;
     });
 
     it('has() returns false', function () {
@@ -567,7 +567,7 @@ describe('NullCache direct method tests', function () {
 
 describe('NullCache Store methods', function () {
     beforeEach(function () {
-        $nullCache = new \Lynkbyte\EvolutionApi\Client\NullCache();
+        $nullCache = new \Lynkbyte\EvolutionApi\Client\NullCache;
         $this->store = $nullCache->getStore();
     });
 
@@ -672,7 +672,7 @@ describe('handleLimitExceeded with default action', function () {
         // The default match arm throws RateLimitException for unknown actions
         // This tests the 'default' case in the match expression
         $cache = new CacheRepository(new ArrayStore);
-        
+
         // Create limiter with a known action first
         $limiter = new RateLimiter($cache, [
             'on_limit_reached' => 'throw',
@@ -710,7 +710,7 @@ describe('configuration edge cases', function () {
 
         // Valid limit should work
         expect($limiter->remaining('key', 'valid'))->toBe(5);
-        
+
         // Invalid limits should fall back to default
         expect($limiter->remaining('key', 'invalid-missing-max'))->toBe(60);
         expect($limiter->remaining('key', 'invalid-missing-decay'))->toBe(60);

@@ -22,7 +22,7 @@ describe('WebhookController', function () {
     describe('handle()', function () {
         it('processes valid webhook payload synchronously', function () {
             Event::fake([WebhookReceived::class]);
-            
+
             $response = $this->postJson('/api/evolution-api/webhook', [
                 'event' => 'messages.upsert',
                 'instance' => 'test-instance',
@@ -237,7 +237,7 @@ describe('WebhookController', function () {
             $response = $this->getJson('/api/evolution-api/health');
 
             $data = $response->json();
-            
+
             // Verify timestamp is valid ISO 8601
             $timestamp = \DateTime::createFromFormat(\DateTime::ATOM, $data['timestamp']);
             expect($timestamp)->not->toBeFalse();
@@ -255,7 +255,7 @@ describe('WebhookController', function () {
 
         it('accepts custom logger', function () {
             $processor = $this->app->make(WebhookProcessor::class);
-            $logger = new \Psr\Log\NullLogger();
+            $logger = new \Psr\Log\NullLogger;
             $controller = new WebhookController($processor, $logger);
 
             expect($controller)->toBeInstanceOf(WebhookController::class);
