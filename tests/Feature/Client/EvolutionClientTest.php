@@ -1038,6 +1038,86 @@ describe('EvolutionClient', function () {
             expect($requestLog[2]['options']['json']['token'])->toBe('secret-token');
         });
 
+        it('redacts sensitive fields in deeply nested arrays', function () {
+            Http::fake([
+                'api.evolution.test/*' => Http::response(['ok' => true], 200),
+            ]);
+
+            $logger = new class implements \Psr\Log\LoggerInterface
+            {
+                public array $logs = [];
+
+                public function emergency(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['emergency', $message, $context];
+                }
+
+                public function alert(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['alert', $message, $context];
+                }
+
+                public function critical(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['critical', $message, $context];
+                }
+
+                public function error(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['error', $message, $context];
+                }
+
+                public function warning(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['warning', $message, $context];
+                }
+
+                public function notice(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['notice', $message, $context];
+                }
+
+                public function info(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['info', $message, $context];
+                }
+
+                public function debug(\Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = ['debug', $message, $context];
+                }
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    $this->logs[] = [$level, $message, $context];
+                }
+            };
+
+            $this->client->setLogger($logger);
+            $this->client->post('/test', [
+                'data' => 'value',
+                'nested' => [
+                    'token' => 'nested-secret',
+                    'deep' => [
+                        'apikey' => 'deeply-nested-secret',
+                        'safe' => 'visible',
+                    ],
+                ],
+            ]);
+
+            $requestLogs = array_filter($logger->logs, fn ($log) => $log[1] === 'Evolution API Request');
+            $requestLog = array_values($requestLogs)[0];
+
+            // Top-level data should remain
+            expect($requestLog[2]['options']['json']['data'])->toBe('value');
+            // Nested token should be redacted
+            expect($requestLog[2]['options']['json']['nested']['token'])->toBe('[REDACTED]');
+            // Deeply nested apikey should be redacted
+            expect($requestLog[2]['options']['json']['nested']['deep']['apikey'])->toBe('[REDACTED]');
+            // Safe data should remain
+            expect($requestLog[2]['options']['json']['nested']['deep']['safe'])->toBe('visible');
+        });
+
         it('includes instance name in logs when set', function () {
             Http::fake([
                 'api.evolution.test/*' => Http::response(['ok' => true], 200),
@@ -1483,6 +1563,80 @@ describe('EvolutionClient', function () {
 
             expect($response->isSuccessful())->toBeTrue();
             expect($attempts)->toBe(3);
+        });
+
+        it('retries on connection exceptions', function () {
+            $attempts = 0;
+
+            Http::fake([
+                'api.evolution.test/*' => function () use (&$attempts) {
+                    $attempts++;
+                    if ($attempts < 3) {
+                        throw new \Illuminate\Http\Client\ConnectionException('Connection failed');
+                    }
+
+                    return Http::response(['ok' => true], 200);
+                },
+            ]);
+
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'retry' => [
+                    'enabled' => true,
+                    'max_attempts' => 3,
+                    'base_delay' => 10, // 10ms for fast test
+                    'retryable_status_codes' => [503],
+                ],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            $response = $client->get('/test');
+
+            expect($response->isSuccessful())->toBeTrue();
+            expect($attempts)->toBe(3);
+        });
+
+        it('does not retry on non-retryable status codes', function () {
+            $attempts = 0;
+
+            Http::fake([
+                'api.evolution.test/*' => function () use (&$attempts) {
+                    $attempts++;
+
+                    return Http::response(['error' => 'Bad request'], 400);
+                },
+            ]);
+
+            $config = [
+                'connections' => [
+                    'default' => [
+                        'server_url' => 'https://api.evolution.test',
+                        'api_key' => 'test-api-key',
+                    ],
+                ],
+                'retry' => [
+                    'enabled' => true,
+                    'max_attempts' => 3,
+                    'base_delay' => 10,
+                    'retryable_status_codes' => [503],
+                ],
+            ];
+
+            $connectionManager = new ConnectionManager($config);
+            $client = new EvolutionClient($connectionManager);
+
+            $response = $client->withoutThrowing()->get('/test');
+
+            expect($response->isFailed())->toBeTrue();
+            // Should only attempt once since 400 is not in retryable list
+            expect($attempts)->toBe(1);
         });
     });
 
