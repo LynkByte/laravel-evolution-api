@@ -48,6 +48,23 @@ abstract class Resource
     }
 
     /**
+     * Make a POST request for message operations with extended timeout.
+     *
+     * This method uses the client's postMessage method which has:
+     * - Longer timeout (default 60s vs 30s)
+     * - Better error handling for timeout scenarios
+     * - Detection of pre-key upload timeout issues
+     *
+     * @param  array<string, mixed>  $data
+     * @param  string|null  $recipientNumber  Recipient for error context
+     * @param  string|null  $messageType  Message type for error context
+     */
+    protected function postMessage(string $endpoint, array $data = [], ?string $recipientNumber = null, ?string $messageType = null): ApiResponse
+    {
+        return $this->client->postMessage($endpoint, $data, $recipientNumber, $messageType);
+    }
+
+    /**
      * Make a PUT request.
      *
      * @param  array<string, mixed>  $data

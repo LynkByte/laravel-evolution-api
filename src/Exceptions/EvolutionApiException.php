@@ -82,7 +82,15 @@ class EvolutionApiException extends Exception
      */
     public static function fromResponse(array $response, int $statusCode, ?string $instanceName = null): static
     {
-        $message = $response['message'] ?? $response['error'] ?? 'Unknown error';
+        // Evolution API returns errors in different formats:
+        // 1. { "message": "Error message" }
+        // 2. { "error": "Error message" }
+        // 3. { "response": { "message": "Connection Closed" }, "error": "Internal Server Error" }
+        // Prefer the nested response.message as it's more specific
+        $message = $response['response']['message']
+            ?? $response['message']
+            ?? $response['error']
+            ?? 'Unknown error';
 
         return new static(
             message: $message,

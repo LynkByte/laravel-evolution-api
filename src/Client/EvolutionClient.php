@@ -15,6 +15,7 @@ use Lynkbyte\EvolutionApi\Exceptions\AuthenticationException;
 use Lynkbyte\EvolutionApi\Exceptions\ConnectionException;
 use Lynkbyte\EvolutionApi\Exceptions\EvolutionApiException;
 use Lynkbyte\EvolutionApi\Exceptions\InstanceNotFoundException;
+use Lynkbyte\EvolutionApi\Exceptions\MessageTimeoutException;
 use Lynkbyte\EvolutionApi\Exceptions\RateLimitException;
 use Psr\Log\LoggerInterface;
 
@@ -259,6 +260,112 @@ class EvolutionClient implements EvolutionClientInterface
     }
 
     /**
+     * Make a message-specific HTTP request with extended timeout.
+     *
+     * Message operations typically take longer due to WhatsApp's encryption
+     * handshake and potential "pre-key upload" delays. This method uses a
+     * longer timeout and provides better error handling for message timeouts.
+     *
+     * @param  string  $endpoint  The API endpoint
+     * @param  array<string, mixed>  $data  The request data
+     * @param  string|null  $recipientNumber  The recipient number (for error context)
+     * @param  string|null  $messageType  The message type (for error context)
+     *
+     * @throws MessageTimeoutException
+     * @throws EvolutionApiException
+     */
+    public function postMessage(string $endpoint, array $data = [], ?string $recipientNumber = null, ?string $messageType = null): ApiResponse
+    {
+        $startTime = microtime(true);
+        $config = $this->connectionManager->getConfig();
+        $messageTimeout = $config['http']['message_timeout'] ?? 60;
+
+        // Apply rate limiting
+        $this->applyRateLimit('POST', $endpoint);
+
+        // Build the full URL
+        $url = $this->buildUrl($endpoint);
+
+        // Log the request
+        $this->logRequest('POST', $url, ['json' => $data, 'timeout' => $messageTimeout]);
+
+        try {
+            // Create HTTP client with message-specific timeout
+            $client = $this->createMessageHttpClient();
+
+            // Execute the request
+            $response = $client->post($url, $data);
+
+            $responseTime = (microtime(true) - $startTime) * 1000;
+
+            // Convert to ApiResponse
+            $apiResponse = $this->createApiResponse($response, $responseTime);
+
+            // Log the response
+            $this->logResponse('POST', $url, $apiResponse);
+
+            // Clear pending state
+            $this->clearPendingState();
+
+            // Handle error responses
+            if ($apiResponse->isFailed() && $this->throwOnError) {
+                $this->handleErrorResponse($apiResponse);
+            }
+
+            return $apiResponse;
+        } catch (RequestException $e) {
+            $responseTime = (microtime(true) - $startTime) * 1000;
+            $this->clearPendingState();
+
+            // Check if this is a timeout error
+            if (MessageTimeoutException::isTimeoutError($e)) {
+                throw MessageTimeoutException::messageSendTimeout(
+                    recipientNumber: $recipientNumber ?? 'unknown',
+                    timeout: $messageTimeout,
+                    messageType: $messageType,
+                    instanceName: $this->instanceName,
+                    previous: $e
+                );
+            }
+
+            throw $this->convertRequestException($e, $responseTime);
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            $this->clearPendingState();
+
+            // Connection exceptions during message sending often indicate pre-key issues
+            throw MessageTimeoutException::messageSendTimeout(
+                recipientNumber: $recipientNumber ?? 'unknown',
+                timeout: $messageTimeout,
+                messageType: $messageType,
+                instanceName: $this->instanceName,
+                previous: $e
+            );
+        } catch (\Throwable $e) {
+            $this->clearPendingState();
+
+            if ($e instanceof EvolutionApiException) {
+                throw $e;
+            }
+
+            // Check if this might be a timeout or pre-key issue
+            if (MessageTimeoutException::isTimeoutError($e) || MessageTimeoutException::isPossiblePreKeyError($e)) {
+                throw MessageTimeoutException::messageSendTimeout(
+                    recipientNumber: $recipientNumber ?? 'unknown',
+                    timeout: $messageTimeout,
+                    messageType: $messageType,
+                    instanceName: $this->instanceName,
+                    previous: $e
+                );
+            }
+
+            throw new ConnectionException(
+                message: "Failed to send message: {$e->getMessage()}",
+                previous: $e
+            );
+        }
+    }
+
+    /**
      * Create and configure the HTTP client.
      */
     protected function createHttpClient(): PendingRequest
@@ -289,6 +396,72 @@ class EvolutionClient implements EvolutionClientInterface
         }
 
         return $client;
+    }
+
+    /**
+     * Create HTTP client configured for message operations.
+     *
+     * Uses a longer timeout for message operations since they may involve
+     * encryption handshakes with WhatsApp servers (pre-key uploads) which
+     * can take longer than regular API calls.
+     */
+    protected function createMessageHttpClient(): PendingRequest
+    {
+        $config = $this->connectionManager->getConfig();
+        $httpConfig = $config['http'] ?? [];
+        $messageConfig = $config['messages'] ?? [];
+
+        // Use message-specific timeout (default 60s) instead of regular timeout (default 30s)
+        $messageTimeout = $httpConfig['message_timeout'] ?? 60;
+
+        $client = Http::baseUrl($this->getBaseUrl())
+            ->timeout($messageTimeout)
+            ->connectTimeout($httpConfig['connect_timeout'] ?? 10)
+            ->withHeaders($this->getDefaultHeaders())
+            ->withHeaders($this->pendingHeaders);
+
+        // Configure SSL verification
+        if (isset($httpConfig['verify_ssl']) && ! $httpConfig['verify_ssl']) {
+            $client->withoutVerifying();
+        }
+
+        // Configure retries specifically for message operations
+        $maxRetries = $messageConfig['max_send_retries'] ?? 2;
+        $retryDelay = $messageConfig['retry_delay'] ?? 2000;
+
+        if ($maxRetries > 0) {
+            $client->retry(
+                times: $maxRetries,
+                sleepMilliseconds: $retryDelay,
+                when: fn ($exception, $request) => $this->shouldRetryMessage($exception),
+                throw: false
+            );
+        }
+
+        return $client;
+    }
+
+    /**
+     * Determine if a message request should be retried.
+     *
+     * More conservative retry strategy for messages to avoid duplicate sends.
+     */
+    protected function shouldRetryMessage(\Throwable $exception): bool
+    {
+        // Only retry on connection errors or gateway timeouts
+        // Don't retry on other errors as the message may have been sent
+        if ($exception instanceof \Illuminate\Http\Client\ConnectionException) {
+            return true;
+        }
+
+        if ($exception instanceof RequestException && $exception->response) {
+            $status = $exception->response->status();
+
+            // Only retry on gateway timeout or service unavailable
+            return in_array($status, [504, 503]);
+        }
+
+        return false;
     }
 
     /**

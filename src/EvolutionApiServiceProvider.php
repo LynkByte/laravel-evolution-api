@@ -60,9 +60,7 @@ class EvolutionApiServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ConnectionManager::class, function ($app) {
             return new ConnectionManager(
-                config('evolution-api.connections', []),
-                config('evolution-api.server_url'),
-                config('evolution-api.api_key')
+                config('evolution-api', [])
             );
         });
     }
@@ -73,8 +71,10 @@ class EvolutionApiServiceProvider extends ServiceProvider
     protected function registerRateLimiter(): void
     {
         $this->app->singleton(RateLimiterInterface::class, function ($app) {
+            $store = config('evolution-api.rate_limiting.store');
+
             return new RateLimiter(
-                $app['cache']->store(config('evolution-api.rate_limiting.driver')),
+                $app['cache']->store($store),
                 config('evolution-api.rate_limiting', [])
             );
         });
@@ -116,10 +116,7 @@ class EvolutionApiServiceProvider extends ServiceProvider
             return new EvolutionClient(
                 $app->make(ConnectionManager::class),
                 $app->make(RateLimiterInterface::class),
-                $app->make(EvolutionApiLogger::class),
-                $app->make(MetricsCollector::class),
-                config('evolution-api.http', []),
-                config('evolution-api.retry', [])
+                $app->make(EvolutionApiLogger::class)->getLogger()
             );
         });
 
@@ -134,9 +131,9 @@ class EvolutionApiServiceProvider extends ServiceProvider
     {
         $this->app->singleton(EvolutionService::class, function ($app) {
             return new EvolutionService(
-                $app->make(EvolutionClientInterface::class),
-                config('evolution-api.default_instance'),
-                config('evolution-api.queue', [])
+                $app->make(ConnectionManager::class),
+                $app->make(RateLimiterInterface::class),
+                $app->make(EvolutionApiLogger::class)->getLogger()
             );
         });
 

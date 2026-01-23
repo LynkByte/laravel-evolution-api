@@ -16,6 +16,7 @@ use Lynkbyte\EvolutionApi\DTOs\Message\SendStatusMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendStickerMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendTemplateMessageDto;
 use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
+use Lynkbyte\EvolutionApi\Exceptions\ConnectionException;
 
 /**
  * Message sending resource for Evolution API.
@@ -25,17 +26,93 @@ use Lynkbyte\EvolutionApi\DTOs\Message\SendTextMessageDto;
 class Message extends Resource
 {
     /**
+     * Whether to verify connection before sending messages.
+     */
+    protected bool $verifyConnection = true;
+
+    /**
+     * Disable connection verification for this instance.
+     *
+     * @return $this
+     */
+    public function withoutConnectionVerification(): static
+    {
+        $this->verifyConnection = false;
+
+        return $this;
+    }
+
+    /**
+     * Enable connection verification for this instance.
+     *
+     * @return $this
+     */
+    public function withConnectionVerification(): static
+    {
+        $this->verifyConnection = true;
+
+        return $this;
+    }
+
+    /**
+     * Verify that the instance is connected before sending.
+     *
+     * @throws ConnectionException
+     */
+    protected function verifyConnectionIfEnabled(): void
+    {
+        if (! $this->verifyConnection) {
+            return;
+        }
+
+        $config = $this->client->getConnectionManager()->getConfig();
+        $shouldVerify = $config['messages']['verify_connection_before_send'] ?? true;
+
+        if (! $shouldVerify) {
+            return;
+        }
+
+        // Check instance connection state
+        $instanceResource = new Instance($this->client);
+        $status = $instanceResource->connectionState();
+
+        if (! $status->isSuccessful()) {
+            throw new ConnectionException(
+                message: 'Failed to verify connection state before sending message',
+                instanceName: $this->getInstanceName()
+            );
+        }
+
+        $data = $status->getData();
+        $state = $data['state'] ?? $data['instance']['state'] ?? 'unknown';
+
+        if ($state !== 'open') {
+            throw new ConnectionException(
+                message: "Cannot send message: WhatsApp connection is not open (state: {$state}). ".
+                         'Please reconnect the instance before sending messages.',
+                instanceName: $this->getInstanceName()
+            );
+        }
+    }
+
+    /**
      * Send a text message.
      */
     public function sendText(SendTextMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendTextMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendText/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendText/{instance}',
+            $message->toArray(),
+            $message->number,
+            'text'
+        );
     }
 
     /**
@@ -56,12 +133,18 @@ class Message extends Resource
     public function sendMedia(SendMediaMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendMediaMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendMedia/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendMedia/{instance}',
+            $message->toArray(),
+            $message->number,
+            $message->mediatype ?? 'media'
+        );
     }
 
     /**
@@ -126,12 +209,18 @@ class Message extends Resource
     public function sendAudio(SendAudioMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendAudioMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendWhatsAppAudio/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendWhatsAppAudio/{instance}',
+            $message->toArray(),
+            $message->number,
+            'audio'
+        );
     }
 
     /**
@@ -152,12 +241,18 @@ class Message extends Resource
     public function sendLocation(SendLocationMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendLocationMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendLocation/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendLocation/{instance}',
+            $message->toArray(),
+            $message->number,
+            'location'
+        );
     }
 
     /**
@@ -185,12 +280,18 @@ class Message extends Resource
     public function sendContact(SendContactMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendContactMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendContact/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendContact/{instance}',
+            $message->toArray(),
+            $message->number,
+            'contact'
+        );
     }
 
     /**
@@ -199,12 +300,18 @@ class Message extends Resource
     public function sendPoll(SendPollMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendPollMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendPoll/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendPoll/{instance}',
+            $message->toArray(),
+            $message->number,
+            'poll'
+        );
     }
 
     /**
@@ -232,12 +339,18 @@ class Message extends Resource
     public function sendList(SendListMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendListMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendList/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendList/{instance}',
+            $message->toArray(),
+            $message->number,
+            'list'
+        );
     }
 
     /**
@@ -246,12 +359,18 @@ class Message extends Resource
     public function sendReaction(SendReactionMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendReactionMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendReaction/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendReaction/{instance}',
+            $message->toArray(),
+            null,
+            'reaction'
+        );
     }
 
     /**
@@ -285,12 +404,18 @@ class Message extends Resource
     public function sendSticker(SendStickerMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendStickerMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendSticker/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendSticker/{instance}',
+            $message->toArray(),
+            $message->number,
+            'sticker'
+        );
     }
 
     /**
@@ -310,12 +435,18 @@ class Message extends Resource
     public function sendStatus(SendStatusMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendStatusMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendStatus/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendStatus/{instance}',
+            $message->toArray(),
+            null,
+            'status'
+        );
     }
 
     /**
@@ -324,12 +455,18 @@ class Message extends Resource
     public function sendTemplate(SendTemplateMessageDto|array $message): ApiResponse
     {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         if (is_array($message)) {
             $message = SendTemplateMessageDto::fromArray($message);
         }
 
-        return $this->post('message/sendTemplate/{instance}', $message->toArray());
+        return $this->postMessage(
+            'message/sendTemplate/{instance}',
+            $message->toArray(),
+            $message->number,
+            'template'
+        );
     }
 
     /**
@@ -345,6 +482,7 @@ class Message extends Resource
         ?string $footer = null
     ): ApiResponse {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
         $data = $this->filterNull([
             'number' => $number,
@@ -354,7 +492,7 @@ class Message extends Resource
             'footer' => $footer,
         ]);
 
-        return $this->post('message/sendButtons/{instance}', $data);
+        return $this->postMessage('message/sendButtons/{instance}', $data, $number, 'buttons');
     }
 
     /**
@@ -513,14 +651,15 @@ class Message extends Resource
         int $delay = 1000
     ): ApiResponse {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
-        return $this->post('message/sendText/{instance}', [
+        return $this->postMessage('message/sendText/{instance}', [
             'number' => $number,
             'text' => $text,
             'options' => [
                 'delay' => $delay,
             ],
-        ]);
+        ], $number, 'text');
     }
 
     /**
@@ -532,8 +671,9 @@ class Message extends Resource
         string $quotedMessageId
     ): ApiResponse {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
-        return $this->post('message/sendText/{instance}', [
+        return $this->postMessage('message/sendText/{instance}', [
             'number' => $number,
             'text' => $text,
             'options' => [
@@ -543,7 +683,7 @@ class Message extends Resource
                     ],
                 ],
             ],
-        ]);
+        ], $number, 'text');
     }
 
     /**
@@ -555,8 +695,9 @@ class Message extends Resource
         string $remoteJid
     ): ApiResponse {
         $this->ensureInstance();
+        $this->verifyConnectionIfEnabled();
 
-        return $this->post('message/forwardMessage/{instance}', [
+        return $this->postMessage('message/forwardMessage/{instance}', [
             'number' => $number,
             'message' => [
                 'key' => [
@@ -564,7 +705,7 @@ class Message extends Resource
                     'id' => $messageId,
                 ],
             ],
-        ]);
+        ], $number, 'forward');
     }
 
     /**

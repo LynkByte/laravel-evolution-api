@@ -744,6 +744,7 @@ use Lynkbyte\EvolutionApi\Exceptions\AuthenticationException;
 use Lynkbyte\EvolutionApi\Exceptions\ConnectionException;
 use Lynkbyte\EvolutionApi\Exceptions\InstanceNotFoundException;
 use Lynkbyte\EvolutionApi\Exceptions\MessageException;
+use Lynkbyte\EvolutionApi\Exceptions\MessageTimeoutException;
 use Lynkbyte\EvolutionApi\Exceptions\RateLimitException;
 use Lynkbyte\EvolutionApi\Exceptions\ValidationException;
 use Lynkbyte\EvolutionApi\Exceptions\WebhookException;
@@ -758,12 +759,211 @@ try {
     // Too many requests - retry after $e->retryAfter seconds
 } catch (ConnectionException $e) {
     // Network error
+} catch (MessageTimeoutException $e) {
+    // Message sending timed out - see Known Limitations below
+    $suggestions = $e->getSuggestions();
+    $isPrekeyIssue = $e->isPossiblePreKeyIssue();
 } catch (MessageException $e) {
     // Message sending failed
 } catch (ValidationException $e) {
     // Invalid data
 }
 ```
+
+## Timeout Configuration
+
+Message operations typically take longer than other API calls due to WhatsApp's encryption handshake. The package provides specific timeout configuration for message operations:
+
+```env
+# Regular API timeout (default: 30 seconds)
+EVOLUTION_HTTP_TIMEOUT=30
+
+# Message-specific timeout (default: 60 seconds)
+EVOLUTION_HTTP_MESSAGE_TIMEOUT=60
+
+# Connection timeout (default: 10 seconds)
+EVOLUTION_HTTP_CONNECT_TIMEOUT=10
+
+# Verify connection before sending (default: true)
+EVOLUTION_VERIFY_CONNECTION=true
+
+# Connection stabilization delay after connecting (default: 5 seconds)
+EVOLUTION_CONNECTION_DELAY=5
+
+# Maximum message send retries (default: 2)
+EVOLUTION_MESSAGE_MAX_RETRIES=2
+
+# Delay between message retries in milliseconds (default: 2000)
+EVOLUTION_MESSAGE_RETRY_DELAY=2000
+```
+
+### Checking Connection Before Sending
+
+The package can automatically verify the WhatsApp connection before sending messages:
+
+```php
+use Lynkbyte\EvolutionApi\Facades\EvolutionApi;
+
+// Connection is verified by default
+EvolutionApi::instance('my-instance')
+    ->message()
+    ->text('5511999999999', 'Hello!');
+
+// Disable connection verification for this request
+EvolutionApi::instance('my-instance')
+    ->message()
+    ->withoutConnectionVerification()
+    ->text('5511999999999', 'Hello!');
+
+// Check if instance is ready to send manually
+$instance = EvolutionApi::instance('my-instance');
+if ($instance->isReadyToSend()) {
+    $instance->message()->text('5511999999999', 'Hello!');
+}
+
+// Wait for instance to be ready (useful after reconnecting)
+if ($instance->waitUntilReady(timeout: 60, stabilize: true)) {
+    $instance->message()->text('5511999999999', 'Hello!');
+}
+
+// Get detailed connection diagnostics
+$diagnostics = $instance->getConnectionDiagnostics();
+// Returns: ['connected' => bool, 'state' => string, 'ready_to_send' => bool, 'details' => array]
+```
+
+## Known Limitations
+
+### Pre-Key Upload Timeout Issue
+
+Evolution API (via the Baileys library) may experience "pre-key upload timeout" errors. This is a **known upstream issue** in the Baileys WhatsApp library, not a bug in this Laravel package.
+
+**What happens:**
+- The WhatsApp connection shows as "open"
+- QR code scanning and pairing work correctly
+- Receiving messages works fine
+- But sending messages times out or fails
+
+**Root cause:** The Baileys library needs to upload encryption pre-keys to WhatsApp servers before sending messages. Sometimes this handshake times out due to:
+- Network instability between Evolution API and WhatsApp servers
+- WhatsApp server rate limiting or temporary blocks
+- Connection stability issues in the Baileys library
+
+**What this package does to help:**
+1. Uses longer timeouts for message operations (60s vs 30s)
+2. Provides `MessageTimeoutException` with helpful suggestions
+3. Can verify connection state before sending
+4. Detects potential pre-key issues and provides guidance
+
+**Suggested workarounds:**
+1. Wait and retry - The issue is often temporary
+2. Disconnect and reconnect the instance
+3. Check Evolution API logs for "Pre-key upload timeout" errors
+4. Try a different Evolution API version
+
+```php
+use Lynkbyte\EvolutionApi\Exceptions\MessageTimeoutException;
+
+try {
+    $response = EvolutionApi::instance('my-instance')
+        ->message()
+        ->text('5511999999999', 'Hello!');
+} catch (MessageTimeoutException $e) {
+    // Get suggestions for resolving the issue
+    foreach ($e->getSuggestions() as $suggestion) {
+        Log::warning($suggestion);
+    }
+    
+    // Check if this might be a pre-key issue
+    if ($e->isPossiblePreKeyIssue()) {
+        // Consider reconnecting the instance
+        EvolutionApi::instance('my-instance')->logout();
+        sleep(5);
+        EvolutionApi::instance('my-instance')->connect();
+    }
+}
+```
+
+### Evolution API Version Compatibility
+
+| Evolution API Version | Status | Notes |
+|----------------------|--------|-------|
+| v2.3.x | Recommended | Best compatibility, built from source recommended |
+| v2.2.x | Works | May have some stability issues |
+| v2.1.x | Partial | Connection issues with Docker Hub images |
+| v2.0.x | Untested | May not work with this package |
+
+**Recommendation:** Build Evolution API v2.3.7+ from source using the latest Baileys version for best results.
+
+## Troubleshooting
+
+### Common Issues
+
+#### 1. "Message timed out" errors
+
+**Symptoms:** Messages fail with timeout errors even though the instance shows as connected.
+
+**Solutions:**
+- Increase the message timeout: `EVOLUTION_HTTP_MESSAGE_TIMEOUT=120`
+- Check Evolution API logs for "Pre-key upload timeout" errors
+- Try disconnecting and reconnecting the instance
+- Verify network connectivity between your server and Evolution API
+
+#### 2. "Connection is not open" errors
+
+**Symptoms:** `ConnectionException` thrown when sending messages.
+
+**Solutions:**
+- Check instance status: `EvolutionApi::instance('name')->connectionState()`
+- Reconnect the instance if disconnected
+- Use `waitUntilReady()` after reconnecting before sending
+
+#### 3. Instance shows connected but messages don't deliver
+
+**Symptoms:** No errors, but messages never reach the recipient.
+
+**Solutions:**
+- Check the recipient number format (include country code, no + or spaces)
+- Verify the number is registered on WhatsApp
+- Check Evolution API logs for any errors
+- The recipient may have blocked the number
+
+#### 4. QR code scanning works but messages fail
+
+**Symptoms:** QR code scans successfully, connection shows "open", but sending fails.
+
+**Solutions:**
+- This is likely the pre-key timeout issue (see Known Limitations)
+- Wait a few minutes after connecting before sending
+- Try using `waitUntilReady(stabilize: true)` before sending
+- Check Evolution API Docker logs
+
+#### 5. Rate limit errors
+
+**Symptoms:** `RateLimitException` thrown frequently.
+
+**Solutions:**
+- Reduce message sending frequency
+- Implement exponential backoff
+- Use the queue system for bulk messages
+- Check Evolution API rate limit configuration
+
+### Debug Mode
+
+Enable debug mode for more detailed error information:
+
+```env
+EVOLUTION_DEBUG=true
+EVOLUTION_LOG_REQUESTS=true
+EVOLUTION_LOG_RESPONSES=true
+```
+
+### Getting Help
+
+1. Check Evolution API logs: `docker logs evolution-api -f`
+2. Enable Laravel debug logging for this package
+3. Check the [Evolution API documentation](https://doc.evolution-api.com)
+4. Search [Baileys issues](https://github.com/WhiskeySockets/Baileys/issues) for pre-key related problems
+5. Open an issue on this package's GitHub repository
 
 ## Changelog
 

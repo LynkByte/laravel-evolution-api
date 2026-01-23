@@ -17,13 +17,14 @@ class Instance extends Resource
     /**
      * Create a new WhatsApp instance.
      *
+     * @param  string  $integration  Integration type (default: WHATSAPP-BAILEYS)
      * @param  array<string, mixed>  $options  Additional options
      */
     public function create(
         string $instanceName,
         ?string $token = null,
         ?int $qrcode = null,
-        ?bool $integration = null,
+        string $integration = 'WHATSAPP-BAILEYS',
         ?string $number = null,
         ?string $businessId = null,
         array $options = []
@@ -274,5 +275,148 @@ class Instance extends Resource
         return $this->post('instance/verifyCode/{instance}', [
             'code' => $code,
         ]);
+    }
+
+    /**
+     * Check if instance is ready to send messages.
+     *
+     * This method performs a more thorough check than isConnected() by:
+     * 1. Verifying the connection state is "open"
+     * 2. Optionally waiting for connection stabilization
+     *
+     * Note: Even if this returns true, messages may still fail due to
+     * Evolution API's "pre-key upload timeout" issues. This is an upstream
+     * issue in the Baileys library, not a Laravel package issue.
+     *
+     * @param  string|null  $instanceName  Instance name (uses current if null)
+     * @param  bool  $waitForStabilization  Wait for connection to stabilize
+     * @return bool True if ready to send, false otherwise
+     */
+    public function isReadyToSend(?string $instanceName = null, bool $waitForStabilization = false): bool
+    {
+        try {
+            $response = $this->connectionState($instanceName);
+
+            if (! $response->isSuccessful()) {
+                return false;
+            }
+
+            $data = $response->getData();
+            $state = $data['state'] ?? $data['instance']['state'] ?? 'unknown';
+
+            if ($state !== 'open') {
+                return false;
+            }
+
+            // Optionally wait for connection to stabilize
+            if ($waitForStabilization) {
+                $config = $this->client->getConnectionManager()->getConfig();
+                $delay = $config['messages']['connection_stabilization_delay'] ?? 5;
+
+                if ($delay > 0) {
+                    sleep($delay);
+
+                    // Re-check after waiting
+                    $response = $this->connectionState($instanceName);
+                    if (! $response->isSuccessful()) {
+                        return false;
+                    }
+
+                    $data = $response->getData();
+                    $state = $data['state'] ?? $data['instance']['state'] ?? 'unknown';
+
+                    return $state === 'open';
+                }
+            }
+
+            return true;
+        } catch (\Throwable) {
+            return false;
+        }
+    }
+
+    /**
+     * Get detailed connection info for diagnostics.
+     *
+     * Returns information useful for debugging connection issues,
+     * including the current state and any available error information.
+     *
+     * @param  string|null  $instanceName  Instance name (uses current if null)
+     * @return array{connected: bool, state: string, ready_to_send: bool, instance_name: string|null, details: array<string, mixed>}
+     */
+    public function getConnectionDiagnostics(?string $instanceName = null): array
+    {
+        $instance = $instanceName ?? $this->getInstanceName();
+
+        try {
+            $response = $this->connectionState($instance);
+
+            if (! $response->isSuccessful()) {
+                return [
+                    'connected' => false,
+                    'state' => 'error',
+                    'ready_to_send' => false,
+                    'instance_name' => $instance,
+                    'details' => [
+                        'error' => $response->message ?? 'Failed to get connection state',
+                        'status_code' => $response->statusCode,
+                    ],
+                ];
+            }
+
+            $data = $response->getData();
+            $state = $data['state'] ?? $data['instance']['state'] ?? 'unknown';
+
+            return [
+                'connected' => $state === 'open',
+                'state' => $state,
+                'ready_to_send' => $state === 'open',
+                'instance_name' => $instance,
+                'details' => $data,
+            ];
+        } catch (\Throwable $e) {
+            return [
+                'connected' => false,
+                'state' => 'exception',
+                'ready_to_send' => false,
+                'instance_name' => $instance,
+                'details' => [
+                    'error' => $e->getMessage(),
+                    'exception_class' => get_class($e),
+                ],
+            ];
+        }
+    }
+
+    /**
+     * Wait for instance to be ready to send messages.
+     *
+     * This method polls the connection state until either:
+     * - The instance is connected and ready
+     * - The timeout is reached
+     *
+     * @param  string|null  $instanceName  Instance name (uses current if null)
+     * @param  int  $timeout  Maximum time to wait in seconds
+     * @param  int  $interval  Time between checks in seconds
+     * @param  bool  $stabilize  Wait extra time for connection to stabilize after connecting
+     * @return bool True if ready to send within timeout, false otherwise
+     */
+    public function waitUntilReady(
+        ?string $instanceName = null,
+        int $timeout = 60,
+        int $interval = 2,
+        bool $stabilize = true
+    ): bool {
+        $startTime = time();
+
+        while ((time() - $startTime) < $timeout) {
+            if ($this->isReadyToSend($instanceName, $stabilize)) {
+                return true;
+            }
+
+            sleep($interval);
+        }
+
+        return false;
     }
 }

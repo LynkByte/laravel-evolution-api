@@ -65,13 +65,48 @@ return [
     | Configure the underlying HTTP client behavior including timeouts,
     | retries, and SSL verification settings.
     |
+    | Note: Message operations typically take longer than other API calls
+    | due to WhatsApp's encryption handshake. Use 'message_timeout' for
+    | message-specific operations.
+    |
     */
     'http' => [
         'timeout' => env('EVOLUTION_HTTP_TIMEOUT', 30),
         'connect_timeout' => env('EVOLUTION_HTTP_CONNECT_TIMEOUT', 10),
+        'message_timeout' => env('EVOLUTION_HTTP_MESSAGE_TIMEOUT', 60), // Longer timeout for messages
         'retry_times' => env('EVOLUTION_HTTP_RETRY_TIMES', 3),
         'retry_sleep' => env('EVOLUTION_HTTP_RETRY_SLEEP', 1000), // milliseconds
         'verify_ssl' => env('EVOLUTION_VERIFY_SSL', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Message Sending Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure message sending behavior including connection verification,
+    | timeout handling, and retry strategies.
+    |
+    | Known Issue: Evolution API (via Baileys) may experience "pre-key upload
+    | timeout" errors where the encryption handshake with WhatsApp servers
+    | fails. This is an upstream issue, not a Laravel package issue.
+    |
+    */
+    'messages' => [
+        // Verify instance connection before sending messages
+        'verify_connection_before_send' => env('EVOLUTION_VERIFY_CONNECTION', true),
+
+        // Throw exception on timeout (false = return error response instead)
+        'throw_on_timeout' => env('EVOLUTION_THROW_ON_TIMEOUT', true),
+
+        // Wait time (seconds) for connection to stabilize after connecting
+        'connection_stabilization_delay' => env('EVOLUTION_CONNECTION_DELAY', 5),
+
+        // Maximum retries specifically for message sending
+        'max_send_retries' => env('EVOLUTION_MESSAGE_MAX_RETRIES', 2),
+
+        // Delay between message send retries (milliseconds)
+        'retry_delay' => env('EVOLUTION_MESSAGE_RETRY_DELAY', 2000),
     ],
 
     /*
@@ -167,7 +202,7 @@ return [
     */
     'rate_limiting' => [
         'enabled' => env('EVOLUTION_RATE_LIMIT_ENABLED', true),
-        'driver' => env('EVOLUTION_RATE_LIMIT_DRIVER', 'cache'), // cache, redis, array
+        'store' => env('EVOLUTION_RATE_LIMIT_STORE', null), // null = default, or: file, database, redis, array
         'limits' => [
             'default' => [
                 'max_attempts' => 60,
