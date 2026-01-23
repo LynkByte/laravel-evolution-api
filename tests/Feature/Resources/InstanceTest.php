@@ -62,7 +62,7 @@ describe('Instance Resource', function () {
                 instanceName: 'my-instance',
                 token: 'secret-token',
                 qrcode: 1,
-                integration: true,
+                integration: 'WHATSAPP-BAILEYS',
                 number: '5511999999999',
                 businessId: 'business-123',
                 options: ['webhook' => 'https://example.com/webhook']
@@ -72,7 +72,7 @@ describe('Instance Resource', function () {
                 return $request['instanceName'] === 'my-instance' &&
                     $request['token'] === 'secret-token' &&
                     $request['qrcode'] === 1 &&
-                    $request['integration'] === true &&
+                    $request['integration'] === 'WHATSAPP-BAILEYS' &&
                     $request['number'] === '5511999999999' &&
                     $request['businessId'] === 'business-123' &&
                     $request['webhook'] === 'https://example.com/webhook';

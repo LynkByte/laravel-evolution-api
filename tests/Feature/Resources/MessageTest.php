@@ -31,6 +31,7 @@ describe('Message Resource', function () {
                 ],
             ],
             'retry' => ['enabled' => false],
+            'messages' => ['verify_connection_before_send' => false],
         ];
 
         $this->connectionManager = new ConnectionManager($config);

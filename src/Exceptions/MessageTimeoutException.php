@@ -126,8 +126,8 @@ class MessageTimeoutException extends MessageException
         ?string $messageType = null,
         ?string $instanceName = null,
         ?\Throwable $previous = null
-    ): static {
-        return new static(
+    ): self {
+        return new self(
             message: "Message to {$recipientNumber} timed out after {$timeout} seconds. ".
                      'The Evolution API server did not respond in time. '.
                      'This may indicate the WhatsApp connection is unstable.',
@@ -147,8 +147,8 @@ class MessageTimeoutException extends MessageException
         int $timeout,
         ?string $instanceName = null,
         ?\Throwable $previous = null
-    ): static {
-        return new static(
+    ): self {
+        return new self(
             message: "Connection to Evolution API timed out after {$timeout} seconds",
             timeout: $timeout,
             instanceName: $instanceName,
@@ -162,8 +162,8 @@ class MessageTimeoutException extends MessageException
     public static function preKeyIssue(
         ?string $instanceName = null,
         ?\Throwable $previous = null
-    ): static {
-        return new static(
+    ): self {
+        return new self(
             message: 'Message sending failed, possibly due to pre-key upload timeout. '.
                      'This is a known Evolution API/Baileys issue where the encryption '.
                      'key exchange with WhatsApp servers fails. Try reconnecting the instance.',
