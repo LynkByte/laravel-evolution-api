@@ -58,9 +58,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: tests
     name: Code Coverage
-    permissions:
-      contents: write
-      pages: write
 
     steps:
       - name: Checkout code
@@ -79,12 +76,11 @@ jobs:
       - name: Run tests with coverage
         run: vendor/bin/pest --coverage --coverage-html=coverage-report
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main'
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./coverage-report
+          name: coverage-report
+          path: coverage-report
 
   static-analysis:
     runs-on: ubuntu-latest
@@ -125,3 +121,219 @@ jobs:
 
       - name: Check code style
         run: vendor/bin/pint --test
+
+  codeql:
+    runs-on: ubuntu-latest
+    name: Code Security (CodeQL)
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: php
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          output: sarif-results
+          upload: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate CodeQL HTML report
+        run: |
+          mkdir -p codeql-report
+          npx -y sarif-to-html -i sarif-results/php.sarif -o codeql-report/index.html
+
+      - name: Upload CodeQL report
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-report
+          path: codeql-report
+
+  publish-reports:
+    runs-on: ubuntu-latest
+    name: Reports Dashboard
+    needs: [coverage, codeql]
+    permissions:
+      contents: write
+      pages: write
+
+    steps:
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: public/coverage
+
+      - name: Download CodeQL report
+        uses: actions/download-artifact@v4
+        with:
+          name: codeql-report
+          path: public/codeql
+
+      - name: Generate reports dashboard
+        run: |
+          cat <<'EOF' > public/index.html
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>Reports Dashboard</title>
+              <style>
+                :root {
+                  color-scheme: light;
+                  --bg: #f6f2ed;
+                  --card: #fff7ef;
+                  --text: #2b241d;
+                  --muted: #6f6356;
+                  --accent: #c75b39;
+                  --shadow: 0 18px 40px rgba(28, 23, 17, 0.18);
+                  --border: 1px solid rgba(111, 99, 86, 0.18);
+                }
+
+                * {
+                  box-sizing: border-box;
+                }
+
+                body {
+                  margin: 0;
+                  min-height: 100vh;
+                  font-family: "Space Grotesk", "Trebuchet MS", "Segoe UI", sans-serif;
+                  background:
+                    radial-gradient(circle at top, rgba(199, 91, 57, 0.18), transparent 55%),
+                    linear-gradient(135deg, #fef7ee 0%, #f1e8dd 50%, #efe7dc 100%);
+                  color: var(--text);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 40px 20px;
+                }
+
+                main {
+                  width: min(980px, 100%);
+                  display: grid;
+                  gap: 24px;
+                }
+
+                header {
+                  display: grid;
+                  gap: 12px;
+                  padding: 28px;
+                  background: var(--card);
+                  border-radius: 24px;
+                  border: var(--border);
+                  box-shadow: var(--shadow);
+                }
+
+                h1 {
+                  margin: 0;
+                  font-size: clamp(2rem, 3vw, 2.8rem);
+                  letter-spacing: -0.02em;
+                }
+
+                p {
+                  margin: 0;
+                  color: var(--muted);
+                  font-size: 1.05rem;
+                }
+
+                .grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                  gap: 20px;
+                }
+
+                a {
+                  text-decoration: none;
+                  color: inherit;
+                }
+
+                .card {
+                  background: var(--card);
+                  border-radius: 20px;
+                  border: var(--border);
+                  padding: 22px;
+                  display: grid;
+                  gap: 12px;
+                  box-shadow: 0 8px 20px rgba(28, 23, 17, 0.12);
+                  transition: transform 0.25s ease, box-shadow 0.25s ease;
+                }
+
+                .card:hover {
+                  transform: translateY(-4px);
+                  box-shadow: var(--shadow);
+                }
+
+                .eyebrow {
+                  text-transform: uppercase;
+                  font-size: 0.75rem;
+                  letter-spacing: 0.16em;
+                  color: var(--muted);
+                }
+
+                .title {
+                  font-size: 1.35rem;
+                  margin: 0;
+                }
+
+                .cta {
+                  font-weight: 600;
+                  color: var(--accent);
+                }
+
+                footer {
+                  text-align: center;
+                  color: var(--muted);
+                  font-size: 0.9rem;
+                }
+              </style>
+            </head>
+            <body>
+              <main>
+                <header>
+                  <h1>Engineering Reports</h1>
+                  <p>Quick access to the latest quality and security insights for this repository.</p>
+                </header>
+
+                <section class="grid">
+                  <a class="card" href="coverage/">
+                    <span class="eyebrow">Quality</span>
+                    <h2 class="title">Code Coverage</h2>
+                    <p>Explore test coverage trends and untested areas.</p>
+                    <span class="cta">View coverage report →</span>
+                  </a>
+
+                  <a class="card" href="codeql/">
+                    <span class="eyebrow">Security</span>
+                    <h2 class="title">CodeQL Findings</h2>
+                    <p>Review static analysis alerts and recommended fixes.</p>
+                    <span class="cta">View CodeQL report →</span>
+                  </a>
+                </section>
+
+                <footer>Generated automatically on successful main branch runs.</footer>
+              </main>
+            </body>
+          </html>
+          EOF
+
+      - name: Deploy reports dashboard
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
